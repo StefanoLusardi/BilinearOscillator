@@ -50,7 +50,8 @@ MainUi::MainUi (Component* parent, ValueTree& model)
 
     //[Constructor] You can add your own custom stuff here..
 	const String xmlModelFile = "D:/Workspace/Projects/Juce/BilinearOscillator/model_dump_main.xml";
-	mModel = ValueTree::fromXml(*XmlDocument::parse(File(xmlModelFile)));
+	XmlElement* xmlElementModel = XmlDocument::parse(File(xmlModelFile));
+	mModel = xmlElementModel ? ValueTree::fromXml(*xmlElementModel) : ValueTree("NewModel");
 
 	if (!mModel.getChildWithProperty("name", mUiSliderStrip->getName()).isValid())
 		mModel.appendChild({ "Ui", {{"name", mUiSliderStrip->getName()}} }, nullptr);
@@ -61,6 +62,7 @@ MainUi::MainUi (Component* parent, ValueTree& model)
 	mUiSliderStrip->setModel(mModel.getChildWithProperty("name", mUiSliderStrip->getName()));
 	mUiButtonStrip->setModel(mModel.getChildWithProperty("name", mUiButtonStrip->getName()));
 
+	mModel.createXml()->writeToFile({"D:/Workspace/Projects/Juce/BilinearOscillator/model_dump_ui.xml"}, "");
 	
 	/*	 
 	//const auto xmlModelDoc = std::make_unique<XmlDocument>(xmlModelFile);
