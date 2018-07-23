@@ -33,8 +33,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class UiButtonStrip  : public Component,
-                       public Button::Listener
+class UiButtonStrip  : public Component
 {
 public:
     //==============================================================================
@@ -43,12 +42,11 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void setModel(ValueTree& model);
+	void setModel(ValueTree&& model);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
     void resized() override;
-    void buttonClicked (Button* buttonThatWasClicked) override;
 
 
 

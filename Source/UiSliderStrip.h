@@ -33,8 +33,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class UiSliderStrip  : public Component,
-                       public Slider::Listener
+class UiSliderStrip  : public Component
 {
 public:
     //==============================================================================
@@ -43,12 +42,11 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void setModel(ValueTree& model);
+	void setModel(ValueTree&& model);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
     void resized() override;
-    void sliderValueChanged (Slider* sliderThatWasMoved) override;
 
 
 

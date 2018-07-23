@@ -49,17 +49,30 @@ MainUi::MainUi (Component* parent, ValueTree& model)
 
 
     //[Constructor] You can add your own custom stuff here..
-	mModel.appendChild({ "Ui", {{"name", mUiButtonStrip->getName()}} }, nullptr);
-	mModel.appendChild({ "Ui", {{"name", mUiSliderStrip->getName()}} }, nullptr);
+	const String xmlModelFile = "D:/Workspace/Projects/Juce/BilinearOscillator/model_dump_main.xml";
+	mModel = ValueTree::fromXml(*XmlDocument::parse(File(xmlModelFile)));
 
-	//auto t1 = mModel.getChildWithProperty("name", mUiSliderStrip->getName());
-	//auto t2 = mModel.getChildWithProperty("name", mUiButtonStrip->getName());
-	//mUiSliderStrip->setModel(t1);
-	//mUiButtonStrip->setModel(t2);
+	if (!mModel.getChildWithProperty("name", mUiSliderStrip->getName()).isValid())
+		mModel.appendChild({ "Ui", {{"name", mUiSliderStrip->getName()}} }, nullptr);
+	
+	if (!mModel.getChildWithProperty("name", mUiButtonStrip->getName()).isValid())
+		mModel.appendChild({ "Ui", {{"name", mUiButtonStrip->getName()}} }, nullptr);
 
 	mUiSliderStrip->setModel(mModel.getChildWithProperty("name", mUiSliderStrip->getName()));
 	mUiButtonStrip->setModel(mModel.getChildWithProperty("name", mUiButtonStrip->getName()));
-    
+
+	
+	/*	 
+	//const auto xmlModelDoc = std::make_unique<XmlDocument>(xmlModelFile);
+	auto xmlModelDoc = new XmlDocument(File(xmlModelFile));
+	auto doc = xmlModelDoc->getDocumentElement();
+
+	std::unique_ptr<XmlElement> xmlModelData { XmlDocument::parse(xmlModelFile) };// ->getDocumentElement();
+	mModel = ValueTree::fromXml(*xmlModelData.get());
+
+	mModel = ValueTree::fromXml(*XmlDocument::parse(xmlModelFile));
+	 */
+
 	//[/Constructor]
 }
 
@@ -103,9 +116,13 @@ void MainUi::resized()
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void MainUi::valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged, const Identifier& property)
 {
-    auto propertyChangedId = property;
-    var propertyChanged = treeWhosePropertyHasChanged.getProperty(property);
-	auto valueChanged = propertyChanged.isDouble() ? static_cast<double>(propertyChanged) : 0.0;
+	auto uiComponentName = treeWhosePropertyHasChanged.getParent().getProperty("name");
+	auto uiComponentParam = treeWhosePropertyHasChanged.getProperty("id");
+	const auto& paramValue = treeWhosePropertyHasChanged.getProperty(property);
+	
+	DBG("Ui Component: " << uiComponentName.toString() );
+	DBG("Param: " << uiComponentParam.toString() );
+	DBG("Value: " << paramValue.toString() );
 
 	mModel.createXml()->writeToFile({"D:/Workspace/Projects/Juce/BilinearOscillator/model_dump_main.xml"}, "");
 }
