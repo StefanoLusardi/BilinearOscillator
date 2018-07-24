@@ -33,6 +33,13 @@ MainUi::MainUi (Component* parent, ValueTree& model)
     : mParent{parent}, mModel{model}
 {
     //[Constructor_pre] You can add your own custom stuff here..
+	const String xmlModelFilePath = "D:/Workspace/Projects/Juce/BilinearOscillator/model_dump_ui.xml";
+	const std::unique_ptr<XmlElement> xmlElementModel { XmlDocument::parse(File(xmlModelFilePath)) };
+	mModel = xmlElementModel != nullptr ? ValueTree::fromXml(*xmlElementModel) : ValueTree("NewModel");
+
+	//mUiSliderStrip->setModel(mModel.getChildWithProperty("name", mUiSliderStrip->getName()));
+	//mUiButtonStrip->setModel(mModel.getChildWithProperty("name", mUiButtonStrip->getName()));
+
 	mModel.addListener(this);
     //[/Constructor_pre]
 
@@ -49,31 +56,11 @@ MainUi::MainUi (Component* parent, ValueTree& model)
 
 
     //[Constructor] You can add your own custom stuff here..
-	const String xmlModelFile = "D:/Workspace/Projects/Juce/BilinearOscillator/model_dump_main.xml";
-	XmlElement* xmlElementModel = XmlDocument::parse(File(xmlModelFile));
-	mModel = xmlElementModel ? ValueTree::fromXml(*xmlElementModel) : ValueTree("NewModel");
-
-	if (!mModel.getChildWithProperty("name", mUiSliderStrip->getName()).isValid())
-		mModel.appendChild({ "Ui", {{"name", mUiSliderStrip->getName()}} }, nullptr);
-	
+		
 	if (!mModel.getChildWithProperty("name", mUiButtonStrip->getName()).isValid())
 		mModel.appendChild({ "Ui", {{"name", mUiButtonStrip->getName()}} }, nullptr);
 
-	mUiSliderStrip->setModel(mModel.getChildWithProperty("name", mUiSliderStrip->getName()));
-	mUiButtonStrip->setModel(mModel.getChildWithProperty("name", mUiButtonStrip->getName()));
-
 	mModel.createXml()->writeToFile({"D:/Workspace/Projects/Juce/BilinearOscillator/model_dump_ui.xml"}, "");
-	
-	/*	 
-	//const auto xmlModelDoc = std::make_unique<XmlDocument>(xmlModelFile);
-	auto xmlModelDoc = new XmlDocument(File(xmlModelFile));
-	auto doc = xmlModelDoc->getDocumentElement();
-
-	std::unique_ptr<XmlElement> xmlModelData { XmlDocument::parse(xmlModelFile) };// ->getDocumentElement();
-	mModel = ValueTree::fromXml(*xmlModelData.get());
-
-	mModel = ValueTree::fromXml(*XmlDocument::parse(xmlModelFile));
-	 */
 
 	//[/Constructor]
 }

@@ -72,6 +72,51 @@ UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model)
 
 
     //[UserPreSize]
+	if (!mModel.getChildWithProperty("name", this->getName()).isValid())
+	{
+		mModel.appendChild({ "Ui", {{"name", this->getName()}} }, nullptr);
+	}
+
+	///
+	const auto setModelParam = [&] (ValueTree parentModel, auto* component)
+	{
+		if (!component) { return; }
+
+		if (auto& paramSliderAmp = parentModel.getChildWithProperty("id", component->getName()); !paramSliderAmp.isValid())
+		{
+			parentModel.appendChild({ "Param", {{"id", component->getName() }, {"value", component->getValue() }} }, nullptr);
+		}
+		else
+		{
+			component->setValue(paramSliderAmp["value"], NotificationType::dontSendNotification);
+		}
+	};
+
+	setModelParam(mModel, mSliderAmp.get());
+
+	///
+	//if (auto paramSliderAmp = mModel.getChildWithProperty("id", mSliderAmp->getName()); !paramSliderAmp.isValid())
+	//{
+	//	mModel.appendChild({ "Param", {{"id", mSliderAmp->getName() }, {"value", mSliderAmp->getValue() }} }, nullptr);
+	//}
+	//else
+	//{
+	//	mSliderAmp->setValue(paramSliderAmp["value"], dontSendNotification);
+	//}
+
+	///	
+	if (auto paramSliderFreq = mModel.getChildWithProperty("id", mSliderFreq->getName()); !paramSliderFreq.isValid())
+	{
+		mModel.appendChild({ "Param", {{"id", mSliderFreq->getName() }, {"value", mSliderFreq->getValue() }} }, nullptr);
+	}
+	else
+	{
+		mSliderFreq->setValue(paramSliderFreq["value"], dontSendNotification);
+	}
+
+	//mModel.appendChild({ "Param", {{"id", mSliderAmp->getName() }, {"value", mSliderAmp->getValue() }} }, nullptr);
+	//mModel.appendChild({ "Param", {{"id", mSliderFreq->getName()}, {"value", mSliderFreq->getValue()}} }, nullptr);
+
     //[/UserPreSize]
 
     setSize (435, 120);
@@ -80,15 +125,15 @@ UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model)
     //[Constructor] You can add your own custom stuff here..
 	mSliderAmp->onValueChange = [&]
 	{
-		auto uiModel = mModel.getChildWithProperty("name", this->getName());
+		const auto uiModel = mModel.getChildWithProperty("name", this->getName());
 		auto uiProperty = uiModel.getChildWithProperty("id", mSliderAmp->getName());
 		uiProperty.setProperty("value", mSliderAmp->getValue(), nullptr);
 	};
 
 	mSliderFreq->onValueChange = [&]
 	{
-		auto uiModel = mModel.getChildWithProperty("name", this->getName());
-		auto uiProperty = uiModel.getChildWithProperty("id", mSliderFreq->getName());
+		const auto uiModel = mModel.getChildWithProperty("name", this->getName());
+		auto uiProperty = mModel.getChildWithProperty("id", mSliderFreq->getName());
 		uiProperty.setProperty("value", mSliderFreq->getValue(), nullptr);
 	};
     //[/Constructor]

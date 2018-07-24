@@ -56,14 +56,14 @@ UiButtonStrip::UiButtonStrip (Component* parent, ValueTree& model)
     //[Constructor] You can add your own custom stuff here..
 	mButtonMute->onClick = [&]
 	{
-		auto uiModel = mModel.getChildWithProperty("name", getName());
+		const auto uiModel = mModel.getChildWithProperty("name", getName());
 		auto sliderProperty = uiModel.getChildWithProperty("id", mButtonMute->getName());
 		sliderProperty.setProperty("value", mButtonMute->getToggleState(), nullptr);
 	};
 
 	mButtonPlay->onClick = [&]
 	{
-		auto uiModel = mModel.getChildWithProperty("name", getName());
+		const auto uiModel = mModel.getChildWithProperty("name", getName());
 		auto sliderProperty = uiModel.getChildWithProperty("id", mButtonPlay->getName());
 		sliderProperty.setProperty("value", mButtonPlay->getToggleState(), nullptr);
 	};
