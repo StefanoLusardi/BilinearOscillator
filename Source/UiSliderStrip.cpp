@@ -18,6 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#include "ParameterTags.h"
 //[/Headers]
 
 #include "UiSliderStrip.h"
@@ -28,7 +29,7 @@
 
 //==============================================================================
 UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model)
-    : mParent{parent}, mModel{model}
+    : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -72,51 +73,40 @@ UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model)
 
 
     //[UserPreSize]
-	if (!mModel.getChildWithProperty("name", this->getName()).isValid())
-	{
-		mModel.appendChild({ "Ui", {{"name", this->getName()}} }, nullptr);
-	}
-
-	///
-	const auto setModelParam = [&] (ValueTree parentModel, auto* component)
+	const auto setUiModelParam = [&] (ValueTree& uiModel, auto* component)
 	{
 		if (!component) { return; }
 
-		if (auto& paramSliderAmp = parentModel.getChildWithProperty("id", component->getName()); !paramSliderAmp.isValid())
+		if (auto& paramSlider = uiModel.getChildWithProperty(Properties[Property::Id], component->getName()); !paramSlider.isValid())
 		{
-			parentModel.appendChild({ "Param", {{"id", component->getName() }, {"value", component->getValue() }} }, nullptr);
+			uiModel.appendChild(
+			{
+				Tags[Tag::Param],
+				{
+					{ Properties[Property::Id],    component->getName() },
+					{ Properties[Property::Value], component->getValue() }
+				}
+			}, nullptr);
 		}
 		else
 		{
-			component->setValue(paramSliderAmp["value"], NotificationType::dontSendNotification);
+			component->setValue(paramSlider[Properties[Property::Value]], NotificationType::dontSendNotification);
 		}
 	};
 
-	setModelParam(mModel, mSliderAmp.get());
-
-	///
-	//if (auto paramSliderAmp = mModel.getChildWithProperty("id", mSliderAmp->getName()); !paramSliderAmp.isValid())
-	//{
-	//	mModel.appendChild({ "Param", {{"id", mSliderAmp->getName() }, {"value", mSliderAmp->getValue() }} }, nullptr);
-	//}
-	//else
-	//{
-	//	mSliderAmp->setValue(paramSliderAmp["value"], dontSendNotification);
-	//}
-
-	///	
-	if (auto paramSliderFreq = mModel.getChildWithProperty("id", mSliderFreq->getName()); !paramSliderFreq.isValid())
+	const auto setUiModel = [&]
 	{
-		mModel.appendChild({ "Param", {{"id", mSliderFreq->getName() }, {"value", mSliderFreq->getValue() }} }, nullptr);
-	}
-	else
-	{
-		mSliderFreq->setValue(paramSliderFreq["value"], dontSendNotification);
-	}
+		if (!model.getChildWithProperty(Properties[Property::Id], this->getName()).isValid())
+		{
+			model.appendChild( { Tags[Tag::Ui], {{Properties[Property::Id], this->getName()}} }, nullptr);
+		}
 
-	//mModel.appendChild({ "Param", {{"id", mSliderAmp->getName() }, {"value", mSliderAmp->getValue() }} }, nullptr);
-	//mModel.appendChild({ "Param", {{"id", mSliderFreq->getName()}, {"value", mSliderFreq->getValue()}} }, nullptr);
+		return model.getChildWithProperty(Properties[Property::Id], this->getName());
+	};
 
+	mUiModel = setUiModel();
+	setUiModelParam(mUiModel, mSliderAmp.get());
+	setUiModelParam(mUiModel, mSliderFreq.get());
     //[/UserPreSize]
 
     setSize (435, 120);
@@ -125,16 +115,14 @@ UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model)
     //[Constructor] You can add your own custom stuff here..
 	mSliderAmp->onValueChange = [&]
 	{
-		const auto uiModel = mModel.getChildWithProperty("name", this->getName());
-		auto uiProperty = uiModel.getChildWithProperty("id", mSliderAmp->getName());
-		uiProperty.setProperty("value", mSliderAmp->getValue(), nullptr);
+		auto uiProperty = mUiModel.getChildWithProperty(Properties[Property::Id], mSliderAmp->getName());
+		uiProperty.setProperty(Properties[Property::Value], mSliderAmp->getValue(), nullptr);
 	};
 
 	mSliderFreq->onValueChange = [&]
 	{
-		const auto uiModel = mModel.getChildWithProperty("name", this->getName());
-		auto uiProperty = mModel.getChildWithProperty("id", mSliderFreq->getName());
-		uiProperty.setProperty("value", mSliderFreq->getValue(), nullptr);
+		auto uiProperty = mUiModel.getChildWithProperty(Properties[Property::Id], mSliderFreq->getName());
+		uiProperty.setProperty(Properties[Property::Value], mSliderFreq->getValue(), nullptr);
 	};
     //[/Constructor]
 }
@@ -189,10 +177,10 @@ void UiSliderStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mSliderFreq->setBounds (proportionOfWidth (0.2503f), proportionOfHeight (0.0000f), proportionOfWidth (0.6991f), proportionOfHeight (0.5045f));
-    mLabelFreq->setBounds (proportionOfWidth (0.0507f), proportionOfHeight (0.0000f), proportionOfWidth (0.2503f), proportionOfHeight (0.5045f));
-    mSliderAmp->setBounds (proportionOfWidth (0.2534f), proportionOfHeight (0.5076f), proportionOfWidth (0.6991f), proportionOfHeight (0.5045f));
-    mLabelAmp->setBounds (proportionOfWidth (0.0507f), proportionOfHeight (0.5045f), proportionOfWidth (0.2503f), proportionOfHeight (0.5045f));
+    mSliderFreq->setBounds (proportionOfWidth (0.2500f), proportionOfHeight (0.0000f), proportionOfWidth (0.6992f), proportionOfHeight (0.5046f));
+    mLabelFreq->setBounds (proportionOfWidth (0.0508f), proportionOfHeight (0.0000f), proportionOfWidth (0.2500f), proportionOfHeight (0.5046f));
+    mSliderAmp->setBounds (proportionOfWidth (0.2533f), proportionOfHeight (0.5081f), proportionOfWidth (0.6992f), proportionOfHeight (0.5046f));
+    mLabelAmp->setBounds (proportionOfWidth (0.0508f), proportionOfHeight (0.5046f), proportionOfWidth (0.2500f), proportionOfHeight (0.5046f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -200,20 +188,6 @@ void UiSliderStrip::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void UiSliderStrip::setModel(ValueTree&& model)
-{
-	if (!model.getChildWithProperty("id", mSliderAmp->getName()).isValid())
-	{
-		model.appendChild({ "Param", {{"id", mSliderAmp->getName() }, {"value", mSliderAmp->getValue() }} }, nullptr);
-	}
-	else
-	{
-		double val = (double)model.getChildWithProperty("id", mSliderAmp->getName()).getProperty("value");
-		mSliderAmp->setValue(val, dontSendNotification);
-	}
-	
-	model.appendChild({ "Param", {{"id", mSliderFreq->getName()}, {"value", mSliderFreq->getValue()}} }, nullptr);
-}
 //[/MiscUserCode]
 
 
@@ -228,9 +202,9 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="UiSliderStrip" componentName="SliderStrip"
                  parentClasses="public Component" constructorParams="Component* parent, ValueTree&amp; model"
-                 variableInitialisers="mParent{parent}, mModel{model}" snapPixels="8"
-                 snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="0"
-                 initialWidth="435" initialHeight="120">
+                 variableInitialisers="mParent{parent}" snapPixels="8" snapActive="1"
+                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="435"
+                 initialHeight="120">
   <BACKGROUND backgroundColour="ff323e44">
     <ROUNDRECT pos="0% 0% 100% 50%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
                hasStroke="0"/>
@@ -238,25 +212,25 @@ BEGIN_JUCER_METADATA
                hasStroke="0"/>
   </BACKGROUND>
   <SLIDER name="SliderFreq" id="49b85c14e9b29fb6" memberName="mSliderFreq"
-          virtualName="" explicitFocusOrder="0" pos="25% 0% 69.922% 50.463%"
+          virtualName="" explicitFocusOrder="0" pos="25.026% 0% 69.905% 50.453%"
           textboxtext="ff000000" min="0.00000000000000000000" max="1.00000000000000000000"
           int="0.00000000000000000000" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
           needsCallback="0"/>
   <LABEL name="freq label" id="6bca026c5b9e7e17" memberName="mLabelFreq"
-         virtualName="" explicitFocusOrder="0" pos="5.078% 0% 25% 50.463%"
+         virtualName="" explicitFocusOrder="0" pos="5.069% 0% 25.026% 50.453%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Frequency"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <SLIDER name="SliderAmp" id="b06f49a585e9b552" memberName="mSliderAmp"
-          virtualName="" explicitFocusOrder="0" pos="25.326% 50.81% 69.922% 50.463%"
+          virtualName="" explicitFocusOrder="0" pos="25.343% 50.755% 69.905% 50.453%"
           textboxtext="ff000000" min="0.00000000000000000000" max="1.00000000000000000000"
           int="0.00000000000000000000" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
           needsCallback="0"/>
   <LABEL name="amp label" id="531e30d8428f3fd" memberName="mLabelAmp"
-         virtualName="" explicitFocusOrder="0" pos="5.078% 50.463% 25% 50.463%"
+         virtualName="" explicitFocusOrder="0" pos="5.069% 50.453% 25.026% 50.453%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Amplitude"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"

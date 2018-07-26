@@ -14,6 +14,7 @@
       <FILE id="EGZDM7" name="UiSliderStrip.h" compile="0" resource="0" file="Source/UiSliderStrip.h"/>
     </GROUP>
     <GROUP id="{5DADDD06-4DF5-F3D9-CF9C-899BDB1C5061}" name="Core">
+      <FILE id="H3RnoL" name="ParameterTags.h" compile="0" resource="0" file="Source/ParameterTags.h"/>
       <FILE id="AO8FIW" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="GtySQ1" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>

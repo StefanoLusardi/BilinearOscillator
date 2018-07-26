@@ -18,17 +18,17 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#include "ParameterTags.h"
 //[/Headers]
 
 #include "UiButtonStrip.h"
-
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
 //==============================================================================
 UiButtonStrip::UiButtonStrip (Component* parent, ValueTree& model)
-    : mParent{parent}, mModel{model}
+    : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -48,6 +48,42 @@ UiButtonStrip::UiButtonStrip (Component* parent, ValueTree& model)
     //[UserPreSize]
 	mButtonMute->setClickingTogglesState(true);
 	mButtonPlay->setClickingTogglesState(true);
+
+	const auto setUiModelParam = [&] (ValueTree& uiModel, auto* component)
+	{
+		if (!component) { return; }
+
+		if (auto& paramButton = uiModel.getChildWithProperty(Properties[Property::Id], component->getName()); !paramButton.isValid())
+		{
+			uiModel.appendChild(
+			{
+				Tags[Tag::Param],
+				{
+					{ Properties[Property::Id],    component->getName() },
+					{ Properties[Property::Value], component->getToggleState() }
+				}
+			}, nullptr);
+		}
+		else
+		{
+			component->setToggleState(paramButton[Properties[Property::Value]], NotificationType::dontSendNotification);
+		}
+	};
+
+	const auto setUiModel = [&]
+	{
+		if (!model.getChildWithProperty(Properties[Property::Id], this->getName()).isValid())
+		{
+			model.appendChild( { Tags[Tag::Ui], {{Properties[Property::Id], this->getName()}} }, nullptr);
+		}
+
+		return model.getChildWithProperty(Properties[Property::Id], this->getName());
+	};
+
+	mUiModel = setUiModel();
+	setUiModelParam(mUiModel, mButtonMute.get());
+	setUiModelParam(mUiModel, mButtonPlay.get());
+
     //[/UserPreSize]
 
     setSize (435, 60);
@@ -56,16 +92,14 @@ UiButtonStrip::UiButtonStrip (Component* parent, ValueTree& model)
     //[Constructor] You can add your own custom stuff here..
 	mButtonMute->onClick = [&]
 	{
-		const auto uiModel = mModel.getChildWithProperty("name", getName());
-		auto sliderProperty = uiModel.getChildWithProperty("id", mButtonMute->getName());
-		sliderProperty.setProperty("value", mButtonMute->getToggleState(), nullptr);
+		auto uiProperty = mUiModel.getChildWithProperty(Properties[Property::Id], mButtonMute->getName());
+		uiProperty.setProperty(Properties[Property::Value], mButtonMute->getToggleState(), nullptr);
 	};
 
 	mButtonPlay->onClick = [&]
 	{
-		const auto uiModel = mModel.getChildWithProperty("name", getName());
-		auto sliderProperty = uiModel.getChildWithProperty("id", mButtonPlay->getName());
-		sliderProperty.setProperty("value", mButtonPlay->getToggleState(), nullptr);
+		auto uiProperty = mUiModel.getChildWithProperty(Properties[Property::Id], mButtonPlay->getName());
+		uiProperty.setProperty(Properties[Property::Value], mButtonPlay->getToggleState(), nullptr);
 	};
     //[/Constructor]
 }
@@ -118,11 +152,6 @@ void UiButtonStrip::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void UiButtonStrip::setModel(ValueTree&& model)
-{
-	model.appendChild({ "Param", { {"id", mButtonMute->getName()}, {"value", {mButtonMute->getToggleState()}} } }, nullptr);
-	model.appendChild({ "Param", { {"id", mButtonPlay->getName()}, {"value", {mButtonPlay->getToggleState()}} } }, nullptr);
-}
 //[/MiscUserCode]
 
 
@@ -137,9 +166,9 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="UiButtonStrip" componentName="ButtonStrip"
                  parentClasses="public Component" constructorParams="Component* parent, ValueTree&amp; model"
-                 variableInitialisers="mParent{parent}, mModel{model}" snapPixels="8"
-                 snapActive="1" snapShown="1" overlayOpacity="0.330" fixedSize="0"
-                 initialWidth="435" initialHeight="60">
+                 variableInitialisers="mParent{parent}" snapPixels="8" snapActive="1"
+                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="435"
+                 initialHeight="60">
   <BACKGROUND backgroundColour="ff323e44">
     <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
                hasStroke="0"/>

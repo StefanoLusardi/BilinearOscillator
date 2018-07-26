@@ -20,6 +20,7 @@
 //[Headers] You can add your own extra header files here...
 #include "UiButtonStrip.h"
 #include "UiSliderStrip.h"
+#include "ParameterTags.h"
 //[/Headers]
 
 #include "MainUi.h"
@@ -33,13 +34,6 @@ MainUi::MainUi (Component* parent, ValueTree& model)
     : mParent{parent}, mModel{model}
 {
     //[Constructor_pre] You can add your own custom stuff here..
-	const String xmlModelFilePath = "D:/Workspace/Projects/Juce/BilinearOscillator/model_dump_ui.xml";
-	const std::unique_ptr<XmlElement> xmlElementModel { XmlDocument::parse(File(xmlModelFilePath)) };
-	mModel = xmlElementModel != nullptr ? ValueTree::fromXml(*xmlElementModel) : ValueTree("NewModel");
-
-	//mUiSliderStrip->setModel(mModel.getChildWithProperty("name", mUiSliderStrip->getName()));
-	//mUiButtonStrip->setModel(mModel.getChildWithProperty("name", mUiButtonStrip->getName()));
-
 	mModel.addListener(this);
     //[/Constructor_pre]
 
@@ -56,12 +50,6 @@ MainUi::MainUi (Component* parent, ValueTree& model)
 
 
     //[Constructor] You can add your own custom stuff here..
-		
-	if (!mModel.getChildWithProperty("name", mUiButtonStrip->getName()).isValid())
-		mModel.appendChild({ "Ui", {{"name", mUiButtonStrip->getName()}} }, nullptr);
-
-	mModel.createXml()->writeToFile({"D:/Workspace/Projects/Juce/BilinearOscillator/model_dump_ui.xml"}, "");
-
 	//[/Constructor]
 }
 
@@ -105,15 +93,17 @@ void MainUi::resized()
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void MainUi::valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged, const Identifier& property)
 {
-	auto uiComponentName = treeWhosePropertyHasChanged.getParent().getProperty("name");
-	auto uiComponentParam = treeWhosePropertyHasChanged.getProperty("id");
-	const auto& paramValue = treeWhosePropertyHasChanged.getProperty(property);
+	const auto& uiName		{ treeWhosePropertyHasChanged.getParent().getProperty(Properties[Property::Id]) };
+	const auto& uiParam		{ treeWhosePropertyHasChanged.getProperty(Properties[Property::Id]) };
+	const auto& paramValue	{ treeWhosePropertyHasChanged.getProperty(property) };
 	
-	DBG("Ui Component: " << uiComponentName.toString() );
-	DBG("Param: " << uiComponentParam.toString() );
-	DBG("Value: " << paramValue.toString() );
+	DBG("Ui Name: "		<< uiName.toString() );
+	DBG("Ui Param: "	<< uiParam.toString() );
+	DBG("Param Value: " << paramValue.toString() );
 
-	mModel.createXml()->writeToFile({"D:/Workspace/Projects/Juce/BilinearOscillator/model_dump_main.xml"}, "");
+	const StringRef xmlModelFile { "model_dump_ui.xml" };
+	const auto xmlModelFilePath { File::getCurrentWorkingDirectory().getChildFile(xmlModelFile) }; 
+	const auto ok = mModel.createXml()->writeToFile(xmlModelFilePath, StringRef{});
 }
 
 void MainUi::valueTreeChildAdded(ValueTree& parentTree, ValueTree& childWhichHasBeenAdded)

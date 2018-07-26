@@ -12,7 +12,11 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-	mModel = {"UiParams", {}};
+	const StringRef xmlModelFile { "model_dump_ui.xml" };
+	const auto xmlModelFilePath { File::getCurrentWorkingDirectory().getChildFile(xmlModelFile) };
+	const std::unique_ptr<XmlElement> xmlElementModel { XmlDocument::parse(xmlModelFilePath) };
+	mModel = xmlElementModel != nullptr ? ValueTree::fromXml(*xmlElementModel) : ValueTree("MainUi");
+
 	mMainUi.reset(new MainUi(this, mModel));
 	addAndMakeVisible(mMainUi.get());
 
