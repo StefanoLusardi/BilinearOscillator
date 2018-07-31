@@ -16,3 +16,6 @@ enum class Property { Id, Value };
 
 static std::map<Tag, const char*> Tags { {Tag::Ui, "Ui"}, {Tag::Param, "Param"}};
 static std::map<Property, const char*> Properties { {Property::Id, "id"}, {Property::Value, "value"}};
+
+
+enum class Bindings { OneWay, TwoWay };

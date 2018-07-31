@@ -28,7 +28,7 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model)
+UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model, UndoManager& undoManager)
     : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
@@ -73,12 +73,25 @@ UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model)
 
 
     //[UserPreSize]
+	const auto setUiModel = [&] () -> ValueTree
+	{
+		if (!model.getChildWithProperty(Properties[Property::Id], this->getName()).isValid())
+		{
+			// model does not contain current Ui ValueTree. Create it and add it to model.
+			model.appendChild( { Tags[Tag::Ui], {{Properties[Property::Id], this->getName()}} }, &undoManager);
+		}
+
+		// Return current Ui ValueTree.
+		return model.getChildWithProperty(Properties[Property::Id], this->getName());
+	};
+
 	const auto setUiModelParam = [&] (ValueTree& uiModel, auto* component)
 	{
 		if (!component) { return; }
 
 		if (auto& paramSlider = uiModel.getChildWithProperty(Properties[Property::Id], component->getName()); !paramSlider.isValid())
 		{
+			// paramSlider does not exist in uiModel. Create its ValueTree and append it to uiModel
 			uiModel.appendChild(
 			{
 				Tags[Tag::Param],
@@ -86,27 +99,38 @@ UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model)
 					{ Properties[Property::Id],    component->getName() },
 					{ Properties[Property::Value], component->getValue() }
 				}
-			}, nullptr);
+			}, &undoManager);
 		}
 		else
 		{
+			// paramSlider already exists in uiModel. Set its current value on component
 			component->setValue(paramSlider[Properties[Property::Value]], NotificationType::dontSendNotification);
 		}
 	};
 
-	const auto setUiModel = [&]
-	{
-		if (!model.getChildWithProperty(Properties[Property::Id], this->getName()).isValid())
-		{
-			model.appendChild( { Tags[Tag::Ui], {{Properties[Property::Id], this->getName()}} }, nullptr);
-		}
+	const auto setParamBinding = [&] (ValueTree& uiModel, auto* component, const Bindings& binding = Bindings::OneWay)
+	{	
+		auto modelValue = uiModel
+			.getChildWithProperty(Properties[Property::Id], component->getName())
+			.getPropertyAsValue(Properties[Property::Value], &undoManager, true);
+		auto& sliderValue = component->getValueObject();
 
-		return model.getChildWithProperty(Properties[Property::Id], this->getName());
+		// OneWay: Ui responds to Model updates.
+		if (Bindings::OneWay == binding) { sliderValue.referTo(modelValue); }
+
+		// TwoWay: Model is set after Ui updates.
+		if (Bindings::TwoWay == binding) { sliderValue.referTo(modelValue); modelValue.referTo(sliderValue); }
 	};
 
+	// Get the ValueTree model for the current Ui
 	mUiModel = setUiModel();
+
 	setUiModelParam(mUiModel, mSliderAmp.get());
+	setParamBinding(mUiModel, mSliderAmp.get());
+
 	setUiModelParam(mUiModel, mSliderFreq.get());
+	setParamBinding(mUiModel, mSliderFreq.get());
+
     //[/UserPreSize]
 
     setSize (435, 120);
@@ -124,6 +148,9 @@ UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model)
 		auto uiProperty = mUiModel.getChildWithProperty(Properties[Property::Id], mSliderFreq->getName());
 		uiProperty.setProperty(Properties[Property::Value], mSliderFreq->getValue(), nullptr);
 	};
+
+	mSliderAmp->onDragStart  = [&] { undoManager.beginNewTransaction(); };
+	mSliderFreq->onDragStart = [&] { undoManager.beginNewTransaction(); };
     //[/Constructor]
 }
 
@@ -177,10 +204,10 @@ void UiSliderStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mSliderFreq->setBounds (proportionOfWidth (0.2500f), proportionOfHeight (0.0000f), proportionOfWidth (0.6992f), proportionOfHeight (0.5046f));
-    mLabelFreq->setBounds (proportionOfWidth (0.0508f), proportionOfHeight (0.0000f), proportionOfWidth (0.2500f), proportionOfHeight (0.5046f));
-    mSliderAmp->setBounds (proportionOfWidth (0.2533f), proportionOfHeight (0.5081f), proportionOfWidth (0.6992f), proportionOfHeight (0.5046f));
-    mLabelAmp->setBounds (proportionOfWidth (0.0508f), proportionOfHeight (0.5046f), proportionOfWidth (0.2500f), proportionOfHeight (0.5046f));
+    mSliderFreq->setBounds (proportionOfWidth (0.2503f), proportionOfHeight (0.0000f), proportionOfWidth (0.6991f), proportionOfHeight (0.5046f));
+    mLabelFreq->setBounds (proportionOfWidth (0.0507f), proportionOfHeight (0.0000f), proportionOfWidth (0.2503f), proportionOfHeight (0.5046f));
+    mSliderAmp->setBounds (proportionOfWidth (0.2524f), proportionOfHeight (0.5046f), proportionOfWidth (0.6991f), proportionOfHeight (0.5046f));
+    mLabelAmp->setBounds (proportionOfWidth (0.0507f), proportionOfHeight (0.5046f), proportionOfWidth (0.2503f), proportionOfHeight (0.5046f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -201,7 +228,7 @@ void UiSliderStrip::resized()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="UiSliderStrip" componentName="SliderStrip"
-                 parentClasses="public Component" constructorParams="Component* parent, ValueTree&amp; model"
+                 parentClasses="public Component" constructorParams="Component* parent, ValueTree&amp; model, UndoManager&amp; undoManager"
                  variableInitialisers="mParent{parent}" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="435"
                  initialHeight="120">
@@ -224,7 +251,7 @@ BEGIN_JUCER_METADATA
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <SLIDER name="SliderAmp" id="b06f49a585e9b552" memberName="mSliderAmp"
-          virtualName="" explicitFocusOrder="0" pos="25.343% 50.755% 69.905% 50.453%"
+          virtualName="" explicitFocusOrder="0" pos="25.238% 50.453% 69.905% 50.453%"
           textboxtext="ff000000" min="0.00000000000000000000" max="1.00000000000000000000"
           int="0.00000000000000000000" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"

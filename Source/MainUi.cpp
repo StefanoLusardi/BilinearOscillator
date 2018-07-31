@@ -40,8 +40,10 @@ MainUi::MainUi (Component* parent, ValueTree& model)
     setName ("MainUi");
     mUiButtonStrip.reset (new UiButtonStrip (this, mModel));
     addAndMakeVisible (mUiButtonStrip.get());
-    mUiSliderStrip.reset (new UiSliderStrip (this, mModel));
+    mUiSliderStrip.reset (new UiSliderStrip (this, mModel, mUndoManager));
     addAndMakeVisible (mUiSliderStrip.get());
+    mUiUndoRedo.reset (new UiUndoRedo (this, mUndoManager));
+    addAndMakeVisible (mUiUndoRedo.get());
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -50,7 +52,7 @@ MainUi::MainUi (Component* parent, ValueTree& model)
 
 
     //[Constructor] You can add your own custom stuff here..
-	//[/Constructor]
+    //[/Constructor]
 }
 
 MainUi::~MainUi()
@@ -60,6 +62,7 @@ MainUi::~MainUi()
 
     mUiButtonStrip = nullptr;
     mUiSliderStrip = nullptr;
+    mUiUndoRedo = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -81,9 +84,11 @@ void MainUi::paint (Graphics& g)
 void MainUi::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
-	//[/UserPreResize]
-    mUiButtonStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (1.0000f), proportionOfHeight (0.3300f));
-    mUiSliderStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3300f), proportionOfWidth (1.0000f), proportionOfHeight (0.6600f));
+    //[/UserPreResize]
+
+    mUiButtonStrip->setBounds (proportionOfWidth (0.2500f), proportionOfHeight (0.0000f), proportionOfWidth (0.7500f), proportionOfHeight (0.3276f));
+    mUiSliderStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3276f), proportionOfWidth (1.0000f), proportionOfHeight (0.6620f));
+    mUiUndoRedo->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (0.2500f), proportionOfHeight (0.3276f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -96,13 +101,13 @@ void MainUi::valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged, co
 	const auto& uiName		{ treeWhosePropertyHasChanged.getParent().getProperty(Properties[Property::Id]) };
 	const auto& uiParam		{ treeWhosePropertyHasChanged.getProperty(Properties[Property::Id]) };
 	const auto& paramValue	{ treeWhosePropertyHasChanged.getProperty(property) };
-	
-	DBG("Ui Name: "		<< uiName.toString() );
-	DBG("Ui Param: "	<< uiParam.toString() );
-	DBG("Param Value: " << paramValue.toString() );
+
+	DBG("Ui Name: "		<< uiName.toString());
+	DBG("Ui Param: "	<< uiParam.toString());
+	DBG("Param Value: " << paramValue.toString() << "\n");
 
 	const StringRef xmlModelFile { "model_dump_ui.xml" };
-	const auto xmlModelFilePath { File::getCurrentWorkingDirectory().getChildFile(xmlModelFile) }; 
+	const auto xmlModelFilePath { File::getCurrentWorkingDirectory().getChildFile(xmlModelFile) };
 	const auto ok = mModel.createXml()->writeToFile(xmlModelFilePath, StringRef{});
 }
 
@@ -140,11 +145,14 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="435" initialHeight="180">
   <BACKGROUND backgroundColour="ff323e44"/>
   <JUCERCOMP name="ButtonStrip" id="94d533df8a0dd9aa" memberName="mUiButtonStrip"
-             virtualName="UiButtonStrip" explicitFocusOrder="0" pos="0% 0% 100% 32.778%"
+             virtualName="UiButtonStrip" explicitFocusOrder="0" pos="25.026% 0% 74.974% 32.779%"
              sourceFile="UiButtonStrip.cpp" constructorParams="this, mModel"/>
   <JUCERCOMP name="SliderStrip" id="187099a553730501" memberName="mUiSliderStrip"
-             virtualName="UiSliderStrip" explicitFocusOrder="0" pos="0% 32.778% 100% 66.111%"
+             virtualName="UiSliderStrip" explicitFocusOrder="0" pos="0% 32.779% 100% 66.163%"
              sourceFile="UiSliderStrip.cpp" constructorParams="this, mModel"/>
+  <JUCERCOMP name="UndoRedo" id="d5fb429b43c90dae" memberName="mUiUndoRedo"
+             virtualName="UiUndoRedo" explicitFocusOrder="0" pos="0% 0% 25.026% 32.779%"
+             sourceFile="UiUndoRedo.cpp" constructorParams="this, mUndoManager"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

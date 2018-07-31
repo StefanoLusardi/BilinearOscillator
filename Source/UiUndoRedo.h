@@ -23,9 +23,6 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 //[/Headers]
 
-#include "UiButtonStrip.h"
-#include "UiSliderStrip.h"
-#include "UiUndoRedo.h"
 
 
 //==============================================================================
@@ -36,21 +33,15 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class MainUi  : public Component,
-                public ValueTree::Listener
+class UiUndoRedo  : public Component
 {
 public:
     //==============================================================================
-    MainUi (Component* parent, ValueTree& model);
-    ~MainUi();
+    UiUndoRedo (Component* parent, UndoManager& undoManager);
+    ~UiUndoRedo();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged, const Identifier& property) override;
-	void valueTreeChildAdded(ValueTree& parentTree, ValueTree& childWhichHasBeenAdded) override;
-	void valueTreeChildRemoved(ValueTree& parentTree, ValueTree& childWhichHasBeenRemoved, int indexFromWhichChildWasRemoved) override;
-	void valueTreeChildOrderChanged(ValueTree& parentTreeWhoseChildrenHaveMoved, int oldIndex, int newIndex) override;
-	void valueTreeParentChanged(ValueTree& treeWhoseParentHasChanged) override;
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -60,19 +51,17 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	Component* mParent;
-	ValueTree& mModel;
-	UndoManager mUndoManager;
+    Component* mParent;
+	UndoManager& mUndoManager;
     //[/UserVariables]
 
     //==============================================================================
-    std::unique_ptr<UiButtonStrip> mUiButtonStrip;
-    std::unique_ptr<UiSliderStrip> mUiSliderStrip;
-    std::unique_ptr<UiUndoRedo> mUiUndoRedo;
+    std::unique_ptr<TextButton> mButtonUndo;
+    std::unique_ptr<TextButton> mButtonRedo;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainUi)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UiUndoRedo)
 };
 
 //[EndFile] You can add extra defines here...

@@ -37,7 +37,7 @@ class UiSliderStrip  : public Component
 {
 public:
     //==============================================================================
-    UiSliderStrip (Component* parent, ValueTree& model);
+    UiSliderStrip (Component* parent, ValueTree& model, UndoManager& undoManager);
     ~UiSliderStrip();
 
     //==============================================================================

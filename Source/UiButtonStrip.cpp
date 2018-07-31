@@ -23,6 +23,7 @@
 
 #include "UiButtonStrip.h"
 
+
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
@@ -143,8 +144,8 @@ void UiButtonStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtonPlay->setBounds (proportionOfWidth (0.0507f), proportionOfHeight (0.2477f), proportionOfWidth (0.4013f), proportionOfHeight (0.4955f));
-    mButtonMute->setBounds (proportionOfWidth (0.5481f), proportionOfHeight (0.2477f), proportionOfWidth (0.4013f), proportionOfHeight (0.4955f));
+    mButtonPlay->setBounds (proportionOfWidth (0.0526f), proportionOfHeight (0.2523f), proportionOfWidth (0.3985f), proportionOfHeight (0.5047f));
+    mButtonMute->setBounds (proportionOfWidth (0.5489f), proportionOfHeight (0.2523f), proportionOfWidth (0.3985f), proportionOfHeight (0.5047f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -174,11 +175,11 @@ BEGIN_JUCER_METADATA
                hasStroke="0"/>
   </BACKGROUND>
   <TEXTBUTTON name="ButtonPlay" id="2905daae1318e8f9" memberName="mButtonPlay"
-              virtualName="" explicitFocusOrder="0" pos="5.069% 24.773% 40.127% 49.547%"
+              virtualName="" explicitFocusOrder="0" pos="5.28% 25.227% 39.81% 50.453%"
               bgColOn="ffa45c94" buttonText="Play" connectedEdges="0" needsCallback="0"
               radioGroupId="0"/>
   <TEXTBUTTON name="ButtonMute" id="f80fc073aaa0b332" memberName="mButtonMute"
-              virtualName="" explicitFocusOrder="0" pos="54.805% 24.773% 40.127% 49.547%"
+              virtualName="" explicitFocusOrder="0" pos="54.91% 25.227% 39.81% 50.453%"
               bgColOn="ffa45c94" buttonText="Mute" connectedEdges="0" needsCallback="0"
               radioGroupId="0"/>
 </JUCER_COMPONENT>
