@@ -9,6 +9,8 @@
       <FILE id="TFiOcv" name="UiButtonStrip.cpp" compile="1" resource="0"
             file="Source/UiButtonStrip.cpp"/>
       <FILE id="PBP6BH" name="UiButtonStrip.h" compile="0" resource="0" file="Source/UiButtonStrip.h"/>
+      <FILE id="hyOgWP" name="UiPlotter.cpp" compile="1" resource="0" file="Source/UiPlotter.cpp"/>
+      <FILE id="GRdbMV" name="UiPlotter.h" compile="0" resource="0" file="Source/UiPlotter.h"/>
       <FILE id="lMTfQo" name="UiSliderStrip.cpp" compile="1" resource="0"
             file="Source/UiSliderStrip.cpp"/>
       <FILE id="EGZDM7" name="UiSliderStrip.h" compile="0" resource="0" file="Source/UiSliderStrip.h"/>
@@ -16,6 +18,8 @@
       <FILE id="iFmO3y" name="UiUndoRedo.h" compile="0" resource="0" file="Source/UiUndoRedo.h"/>
     </GROUP>
     <GROUP id="{5DADDD06-4DF5-F3D9-CF9C-899BDB1C5061}" name="Core">
+      <FILE id="rLMY78" name="Core.cpp" compile="1" resource="0" file="Source/Core.cpp"/>
+      <FILE id="rCp1rh" name="Core.h" compile="0" resource="0" file="Source/Core.h"/>
       <FILE id="H3RnoL" name="ParameterTags.h" compile="0" resource="0" file="Source/ParameterTags.h"/>
       <FILE id="AO8FIW" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="GtySQ1" name="MainComponent.cpp" compile="1" resource="0"

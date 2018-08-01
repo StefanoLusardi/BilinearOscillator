@@ -21,6 +21,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
+class Core;
 //[/Headers]
 
 
@@ -33,11 +34,11 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class UiUndoRedo  : public Component
+class UiUndoRedo  : public Component, public Timer
 {
 public:
     //==============================================================================
-    UiUndoRedo (Component* parent, UndoManager& undoManager);
+    UiUndoRedo (Component* parent, Core& core);
     ~UiUndoRedo();
 
     //==============================================================================
@@ -47,12 +48,11 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
 
-
-
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     Component* mParent;
 	UndoManager& mUndoManager;
+	void timerCallback() override;
     //[/UserVariables]
 
     //==============================================================================

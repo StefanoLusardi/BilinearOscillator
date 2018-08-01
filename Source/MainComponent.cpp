@@ -12,17 +12,12 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-	const StringRef xmlModelFile { "model_dump_ui.xml" };
-	const auto xmlModelFilePath { File::getCurrentWorkingDirectory().getChildFile(xmlModelFile) };
-	const std::unique_ptr<XmlElement> xmlElementModel { XmlDocument::parse(xmlModelFilePath) };
-	mModel = xmlElementModel != nullptr ? ValueTree::fromXml(*xmlElementModel) : ValueTree("MainUi");
-
-	mMainUi.reset(new MainUi(this, mModel));
+	mMainUi.reset(new MainUi(this, mCore));
 	addAndMakeVisible(mMainUi.get());
 
 	// Make sure you set the size of the component after
     // you add any child components.
-    setSize (435, 180);
+    setSize (800, 500);
     
 	// specify the number of input and output channels that we want to open
     setAudioChannels (2, 2);
@@ -55,8 +50,9 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
     // Right now we are not producing any data, in which case we need to clear the buffer
     // (to prevent the output of random noise)
     bufferToFill.clearActiveBufferRegion();
-
-    const auto level = 0.0;
+	
+	
+    const auto level = mCore.getAmp();
 
     auto* leftBuffer  = bufferToFill.buffer->getWritePointer (0, bufferToFill.startSample);
     auto* rightBuffer = bufferToFill.buffer->getWritePointer (1, bufferToFill.startSample);
@@ -66,6 +62,7 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
         leftBuffer[sample]  = (2.0f * mRandom.nextFloat() - 1.0f) * level;
         rightBuffer[sample] = (2.0f * mRandom.nextFloat() - 1.0f) * level;
     }
+	
 }
 
 void MainComponent::releaseResources()

@@ -34,15 +34,16 @@ class Core;
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class UiSliderStrip  : public Component
+class UiPlotter  : public Component
 {
 public:
     //==============================================================================
-    UiSliderStrip (Component* parent, Core& core);
-    ~UiSliderStrip();
+    UiPlotter (Component* parent, Core& core);
+    ~UiPlotter();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void update(const var& propertyChanged, const var& propertyValue) const;
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -57,14 +58,10 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    std::unique_ptr<Slider> mSliderFreq;
-    std::unique_ptr<Label> mLabelFreq;
-    std::unique_ptr<Slider> mSliderAmp;
-    std::unique_ptr<Label> mLabelAmp;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UiSliderStrip)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UiPlotter)
 };
 
 //[EndFile] You can add extra defines here...

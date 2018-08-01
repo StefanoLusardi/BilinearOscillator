@@ -19,6 +19,7 @@
 
 //[Headers] You can add your own extra header files here...
 #include "ParameterTags.h"
+#include "Core.h"
 //[/Headers]
 
 #include "UiSliderStrip.h"
@@ -28,7 +29,7 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model, UndoManager& undoManager)
+UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
     : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
@@ -40,6 +41,7 @@ UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model, UndoManager& 
     mSliderFreq->setRange (0, 1, 0);
     mSliderFreq->setSliderStyle (Slider::LinearHorizontal);
     mSliderFreq->setTextBoxStyle (Slider::TextBoxRight, false, 80, 20);
+    mSliderFreq->setColour (Slider::thumbColourId, Colour (0xffa45c94));
     mSliderFreq->setColour (Slider::textBoxTextColourId, Colours::black);
     mSliderFreq->setSkewFactor (0.5);
 
@@ -58,6 +60,7 @@ UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model, UndoManager& 
     mSliderAmp->setRange (0, 1, 0);
     mSliderAmp->setSliderStyle (Slider::LinearHorizontal);
     mSliderAmp->setTextBoxStyle (Slider::TextBoxRight, false, 80, 20);
+    mSliderAmp->setColour (Slider::thumbColourId, Colour (0xffa45c94));
     mSliderAmp->setColour (Slider::textBoxTextColourId, Colours::black);
     mSliderAmp->setSkewFactor (0.5);
 
@@ -75,44 +78,44 @@ UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model, UndoManager& 
     //[UserPreSize]
 	const auto setUiModel = [&] () -> ValueTree
 	{
-		if (!model.getChildWithProperty(Properties[Property::Id], this->getName()).isValid())
+		if (!core.getModel().getChildWithProperty(Props[Prop::Id], this->getName()).isValid())
 		{
 			// model does not contain current Ui ValueTree. Create it and add it to model.
-			model.appendChild( { Tags[Tag::Ui], {{Properties[Property::Id], this->getName()}} }, &undoManager);
+			core.getModel().appendChild( { Tags[Tag::Ui], {{Props[Prop::Id], this->getName()}} }, nullptr/*&core.getUndoManager()*/);
 		}
 
 		// Return current Ui ValueTree.
-		return model.getChildWithProperty(Properties[Property::Id], this->getName());
+		return core.getModel().getChildWithProperty(Props[Prop::Id], this->getName());
 	};
 
 	const auto setUiModelParam = [&] (ValueTree& uiModel, auto* component)
 	{
 		if (!component) { return; }
 
-		if (auto& paramSlider = uiModel.getChildWithProperty(Properties[Property::Id], component->getName()); !paramSlider.isValid())
+		if (auto& paramSlider = uiModel.getChildWithProperty(Props[Prop::Id], component->getName()); !paramSlider.isValid())
 		{
 			// paramSlider does not exist in uiModel. Create its ValueTree and append it to uiModel
 			uiModel.appendChild(
 			{
 				Tags[Tag::Param],
 				{
-					{ Properties[Property::Id],    component->getName() },
-					{ Properties[Property::Value], component->getValue() }
+					{ Props[Prop::Id],    component->getName() },
+					{ Props[Prop::Value], component->getValue() }
 				}
-			}, &undoManager);
+			}, nullptr/*&core.getUndoManager()*/);
 		}
 		else
 		{
 			// paramSlider already exists in uiModel. Set its current value on component
-			component->setValue(paramSlider[Properties[Property::Value]], NotificationType::dontSendNotification);
+			component->setValue(paramSlider[Props[Prop::Value]], NotificationType::dontSendNotification);
 		}
 	};
 
 	const auto setParamBinding = [&] (ValueTree& uiModel, auto* component, const Bindings& binding = Bindings::OneWay)
-	{	
+	{
 		auto modelValue = uiModel
-			.getChildWithProperty(Properties[Property::Id], component->getName())
-			.getPropertyAsValue(Properties[Property::Value], &undoManager, true);
+			.getChildWithProperty(Props[Prop::Id], component->getName())
+			.getPropertyAsValue(Props[Prop::Value], &core.getUndoManager(), false);
 		auto& sliderValue = component->getValueObject();
 
 		// OneWay: Ui responds to Model updates.
@@ -137,20 +140,22 @@ UiSliderStrip::UiSliderStrip (Component* parent, ValueTree& model, UndoManager& 
 
 
     //[Constructor] You can add your own custom stuff here..
+	mSliderAmp ->onDragStart = [&] { core.getUndoManager().beginNewTransaction(); };
+	mSliderFreq->onDragStart = [&] { core.getUndoManager().beginNewTransaction(); };
+	mSliderAmp ->onDragEnd   = [&] { core.getUndoManager().beginNewTransaction(); };
+	mSliderFreq->onDragEnd   = [&] { core.getUndoManager().beginNewTransaction(); };
+
 	mSliderAmp->onValueChange = [&]
 	{
-		auto uiProperty = mUiModel.getChildWithProperty(Properties[Property::Id], mSliderAmp->getName());
-		uiProperty.setProperty(Properties[Property::Value], mSliderAmp->getValue(), nullptr);
+		auto uiProperty = mUiModel.getChildWithProperty(Props[Prop::Id], mSliderAmp->getName());
+		uiProperty.setProperty(Props[Prop::Value], mSliderAmp->getValue(), nullptr);
 	};
 
 	mSliderFreq->onValueChange = [&]
 	{
-		auto uiProperty = mUiModel.getChildWithProperty(Properties[Property::Id], mSliderFreq->getName());
-		uiProperty.setProperty(Properties[Property::Value], mSliderFreq->getValue(), nullptr);
+		auto uiProperty = mUiModel.getChildWithProperty(Props[Prop::Id], mSliderFreq->getName());
+		uiProperty.setProperty(Props[Prop::Value], mSliderFreq->getValue(), nullptr);
 	};
-
-	mSliderAmp->onDragStart  = [&] { undoManager.beginNewTransaction(); };
-	mSliderFreq->onDragStart = [&] { undoManager.beginNewTransaction(); };
     //[/Constructor]
 }
 
@@ -174,8 +179,6 @@ void UiSliderStrip::paint (Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
-
-    g.fillAll (Colour (0xff323e44));
 
     {
         float x = static_cast<float> (proportionOfWidth (0.0000f)), y = static_cast<float> (proportionOfHeight (0.0000f)), width = static_cast<float> (proportionOfWidth (1.0000f)), height = static_cast<float> (proportionOfHeight (0.5000f));
@@ -204,10 +207,10 @@ void UiSliderStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mSliderFreq->setBounds (proportionOfWidth (0.2503f), proportionOfHeight (0.0000f), proportionOfWidth (0.6991f), proportionOfHeight (0.5046f));
-    mLabelFreq->setBounds (proportionOfWidth (0.0507f), proportionOfHeight (0.0000f), proportionOfWidth (0.2503f), proportionOfHeight (0.5046f));
-    mSliderAmp->setBounds (proportionOfWidth (0.2524f), proportionOfHeight (0.5046f), proportionOfWidth (0.6991f), proportionOfHeight (0.5046f));
-    mLabelAmp->setBounds (proportionOfWidth (0.0507f), proportionOfHeight (0.5046f), proportionOfWidth (0.2503f), proportionOfHeight (0.5046f));
+    mSliderFreq->setBounds (proportionOfWidth (0.2555f), proportionOfHeight (0.0000f), proportionOfWidth (0.6991f), proportionOfHeight (0.5151f));
+    mLabelFreq->setBounds (proportionOfWidth (0.0517f), proportionOfHeight (0.0000f), proportionOfWidth (0.2555f), proportionOfHeight (0.5151f));
+    mSliderAmp->setBounds (proportionOfWidth (0.2555f), proportionOfHeight (0.5151f), proportionOfWidth (0.6991f), proportionOfHeight (0.5151f));
+    mLabelAmp->setBounds (proportionOfWidth (0.0517f), proportionOfHeight (0.5151f), proportionOfWidth (0.2555f), proportionOfHeight (0.5151f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -228,36 +231,36 @@ void UiSliderStrip::resized()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="UiSliderStrip" componentName="SliderStrip"
-                 parentClasses="public Component" constructorParams="Component* parent, ValueTree&amp; model, UndoManager&amp; undoManager"
+                 parentClasses="public Component" constructorParams="Component* parent, Core&amp; core"
                  variableInitialisers="mParent{parent}" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="435"
                  initialHeight="120">
-  <BACKGROUND backgroundColour="ff323e44">
+  <BACKGROUND backgroundColour="0">
     <ROUNDRECT pos="0% 0% 100% 50%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
                hasStroke="0"/>
     <ROUNDRECT pos="0% 50% 100% 50%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
                hasStroke="0"/>
   </BACKGROUND>
   <SLIDER name="SliderFreq" id="49b85c14e9b29fb6" memberName="mSliderFreq"
-          virtualName="" explicitFocusOrder="0" pos="25.026% 0% 69.905% 50.453%"
-          textboxtext="ff000000" min="0.00000000000000000000" max="1.00000000000000000000"
-          int="0.00000000000000000000" style="LinearHorizontal" textBoxPos="TextBoxRight"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
-          needsCallback="0"/>
+          virtualName="" explicitFocusOrder="0" pos="25.554% 0% 69.905% 51.511%"
+          thumbcol="ffa45c94" textboxtext="ff000000" min="0.00000000000000000000"
+          max="1.00000000000000000000" int="0.00000000000000000000" style="LinearHorizontal"
+          textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="0.50000000000000000000" needsCallback="0"/>
   <LABEL name="freq label" id="6bca026c5b9e7e17" memberName="mLabelFreq"
-         virtualName="" explicitFocusOrder="0" pos="5.069% 0% 25.026% 50.453%"
+         virtualName="" explicitFocusOrder="0" pos="5.174% 0% 25.554% 51.511%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Frequency"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <SLIDER name="SliderAmp" id="b06f49a585e9b552" memberName="mSliderAmp"
-          virtualName="" explicitFocusOrder="0" pos="25.238% 50.453% 69.905% 50.453%"
-          textboxtext="ff000000" min="0.00000000000000000000" max="1.00000000000000000000"
-          int="0.00000000000000000000" style="LinearHorizontal" textBoxPos="TextBoxRight"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
-          needsCallback="0"/>
+          virtualName="" explicitFocusOrder="0" pos="25.554% 51.511% 69.905% 51.511%"
+          thumbcol="ffa45c94" textboxtext="ff000000" min="0.00000000000000000000"
+          max="1.00000000000000000000" int="0.00000000000000000000" style="LinearHorizontal"
+          textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="0.50000000000000000000" needsCallback="0"/>
   <LABEL name="amp label" id="531e30d8428f3fd" memberName="mLabelAmp"
-         virtualName="" explicitFocusOrder="0" pos="5.069% 50.453% 25.026% 50.453%"
+         virtualName="" explicitFocusOrder="0" pos="5.174% 51.511% 25.554% 51.511%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Amplitude"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"

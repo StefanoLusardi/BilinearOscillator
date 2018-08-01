@@ -19,6 +19,7 @@
 
 //[Headers] You can add your own extra header files here...
 #include "ParameterTags.h"
+#include "Core.h"
 //[/Headers]
 
 #include "UiButtonStrip.h"
@@ -28,7 +29,7 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-UiButtonStrip::UiButtonStrip (Component* parent, ValueTree& model)
+UiButtonStrip::UiButtonStrip (Component* parent, Core& core)
     : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
@@ -50,40 +51,62 @@ UiButtonStrip::UiButtonStrip (Component* parent, ValueTree& model)
 	mButtonMute->setClickingTogglesState(true);
 	mButtonPlay->setClickingTogglesState(true);
 
+	const auto setUiModel = [&] () -> ValueTree
+	{
+		if (!core.getModel().getChildWithProperty(Props[Prop::Id], this->getName()).isValid())
+		{
+			// model does not contain current Ui ValueTree. Create it and add it to model.
+			core.getModel().appendChild( { Tags[Tag::Ui], {{Props[Prop::Id], this->getName()}} }, nullptr/*&core.getUndoManager()*/);
+		}
+
+		// Return current Ui ValueTree.
+		return core.getModel().getChildWithProperty(Props[Prop::Id], this->getName());
+	};
+
 	const auto setUiModelParam = [&] (ValueTree& uiModel, auto* component)
 	{
 		if (!component) { return; }
 
-		if (auto& paramButton = uiModel.getChildWithProperty(Properties[Property::Id], component->getName()); !paramButton.isValid())
+		if (auto& paramButton = uiModel.getChildWithProperty(Props[Prop::Id], component->getName()); !paramButton.isValid())
 		{
+			// paramButton does not exist in uiModel. Create its ValueTree and append it to uiModel
 			uiModel.appendChild(
 			{
 				Tags[Tag::Param],
 				{
-					{ Properties[Property::Id],    component->getName() },
-					{ Properties[Property::Value], component->getToggleState() }
+					{ Props[Prop::Id],    component->getName() },
+					{ Props[Prop::Value], component->getToggleState() }
 				}
-			}, nullptr);
+			}, nullptr/*&core.getUndoManager()*/);
 		}
 		else
 		{
-			component->setToggleState(paramButton[Properties[Property::Value]], NotificationType::dontSendNotification);
+			// paramButton already exists in uiModel. Set its current value on component
+			component->setToggleState(paramButton[Props[Prop::Value]], NotificationType::dontSendNotification);
 		}
 	};
 
-	const auto setUiModel = [&]
+	const auto setParamBinding = [&] (ValueTree& uiModel, auto* component, const Bindings& binding = Bindings::OneWay)
 	{
-		if (!model.getChildWithProperty(Properties[Property::Id], this->getName()).isValid())
-		{
-			model.appendChild( { Tags[Tag::Ui], {{Properties[Property::Id], this->getName()}} }, nullptr);
-		}
+		auto modelValue = uiModel
+			.getChildWithProperty(Props[Prop::Id], component->getName())
+			.getPropertyAsValue(Props[Prop::Value], &core.getUndoManager(), false);
+		auto& buttonValue = component->getToggleStateValue();
 
-		return model.getChildWithProperty(Properties[Property::Id], this->getName());
+		// OneWay: Ui responds to Model updates.
+		if (Bindings::OneWay == binding) { buttonValue.referTo(modelValue); }
+
+		// TwoWay: Model is set after Ui updates.
+		if (Bindings::TwoWay == binding) { buttonValue.referTo(modelValue); modelValue.referTo(buttonValue); }
 	};
 
 	mUiModel = setUiModel();
+
 	setUiModelParam(mUiModel, mButtonMute.get());
+	setParamBinding(mUiModel, mButtonMute.get());
+
 	setUiModelParam(mUiModel, mButtonPlay.get());
+	setParamBinding(mUiModel, mButtonPlay.get());
 
     //[/UserPreSize]
 
@@ -93,14 +116,16 @@ UiButtonStrip::UiButtonStrip (Component* parent, ValueTree& model)
     //[Constructor] You can add your own custom stuff here..
 	mButtonMute->onClick = [&]
 	{
-		auto uiProperty = mUiModel.getChildWithProperty(Properties[Property::Id], mButtonMute->getName());
-		uiProperty.setProperty(Properties[Property::Value], mButtonMute->getToggleState(), nullptr);
+		core.getUndoManager().beginNewTransaction();
+		auto uiProperty = mUiModel.getChildWithProperty(Props[Prop::Id], mButtonMute->getName());
+		uiProperty.setProperty(Props[Prop::Value], mButtonMute->getToggleState(), &core.getUndoManager());
 	};
 
 	mButtonPlay->onClick = [&]
 	{
-		auto uiProperty = mUiModel.getChildWithProperty(Properties[Property::Id], mButtonPlay->getName());
-		uiProperty.setProperty(Properties[Property::Value], mButtonPlay->getToggleState(), nullptr);
+		core.getUndoManager().beginNewTransaction();
+		auto uiProperty = mUiModel.getChildWithProperty(Props[Prop::Id], mButtonPlay->getName());
+		uiProperty.setProperty(Props[Prop::Value], mButtonPlay->getToggleState(), &core.getUndoManager());
 	};
     //[/Constructor]
 }
@@ -124,8 +149,6 @@ void UiButtonStrip::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff323e44));
-
     {
         float x = 0.0f, y = 0.0f, width = static_cast<float> (proportionOfWidth (1.0000f)), height = static_cast<float> (proportionOfHeight (1.0000f));
         Colour fillColour = Colours::yellow;
@@ -144,8 +167,8 @@ void UiButtonStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtonPlay->setBounds (proportionOfWidth (0.0526f), proportionOfHeight (0.2523f), proportionOfWidth (0.3985f), proportionOfHeight (0.5047f));
-    mButtonMute->setBounds (proportionOfWidth (0.5489f), proportionOfHeight (0.2523f), proportionOfWidth (0.3985f), proportionOfHeight (0.5047f));
+    mButtonPlay->setBounds (proportionOfWidth (0.0496f), proportionOfHeight (0.2583f), proportionOfWidth (0.4002f), proportionOfHeight (0.5000f));
+    mButtonMute->setBounds (proportionOfWidth (0.5502f), proportionOfHeight (0.2583f), proportionOfWidth (0.4002f), proportionOfHeight (0.5000f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -166,20 +189,20 @@ void UiButtonStrip::resized()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="UiButtonStrip" componentName="ButtonStrip"
-                 parentClasses="public Component" constructorParams="Component* parent, ValueTree&amp; model"
+                 parentClasses="public Component" constructorParams="Component* parent, Core&amp; core"
                  variableInitialisers="mParent{parent}" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="435"
                  initialHeight="60">
-  <BACKGROUND backgroundColour="ff323e44">
+  <BACKGROUND backgroundColour="0">
     <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
                hasStroke="0"/>
   </BACKGROUND>
   <TEXTBUTTON name="ButtonPlay" id="2905daae1318e8f9" memberName="mButtonPlay"
-              virtualName="" explicitFocusOrder="0" pos="5.28% 25.227% 39.81% 50.453%"
+              virtualName="" explicitFocusOrder="0" pos="4.963% 25.831% 40.021% 50%"
               bgColOn="ffa45c94" buttonText="Play" connectedEdges="0" needsCallback="0"
               radioGroupId="0"/>
   <TEXTBUTTON name="ButtonMute" id="f80fc073aaa0b332" memberName="mButtonMute"
-              virtualName="" explicitFocusOrder="0" pos="54.91% 25.227% 39.81% 50.453%"
+              virtualName="" explicitFocusOrder="0" pos="55.016% 25.831% 40.021% 50%"
               bgColOn="ffa45c94" buttonText="Mute" connectedEdges="0" needsCallback="0"
               radioGroupId="0"/>
 </JUCER_COMPONENT>

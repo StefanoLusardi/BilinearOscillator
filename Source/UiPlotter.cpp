@@ -18,64 +18,47 @@
 */
 
 //[Headers] You can add your own extra header files here...
-#include "Core.h"
 //[/Headers]
 
-#include "UiUndoRedo.h"
-#include <thread>
+#include "UiPlotter.h"
+
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
 //==============================================================================
-UiUndoRedo::UiUndoRedo (Component* parent, Core& core)
-    : mParent{parent}, mUndoManager{core.getUndoManager()}
+UiPlotter::UiPlotter (Component* parent, Core& core)
+    : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    setName ("UiUndoRedo");
-    mButtonUndo.reset (new TextButton ("ButtonUndo"));
-    addAndMakeVisible (mButtonUndo.get());
-    mButtonUndo->setButtonText (TRANS("Undo"));
-    mButtonUndo->setColour (TextButton::buttonOnColourId, Colour (0xffa45c94));
-
-    mButtonRedo.reset (new TextButton ("ButtonRedo"));
-    addAndMakeVisible (mButtonRedo.get());
-    mButtonRedo->setButtonText (TRANS("Redo"));
-    mButtonRedo->setColour (TextButton::buttonOnColourId, Colour (0xffa45c94));
-
+    setName ("UiPlotter");
 
     //[UserPreSize]
-	mButtonUndo->setEnabled(false);
- 	mButtonRedo->setEnabled(false);
     //[/UserPreSize]
 
     setSize (600, 400);
 
 
     //[Constructor] You can add your own custom stuff here..
-	mButtonUndo->onClick = [&] { mUndoManager.undo(); };
-	mButtonRedo->onClick = [&] { mUndoManager.redo(); };
-	startTimer (250); 
     //[/Constructor]
 }
 
-UiUndoRedo::~UiUndoRedo()
+UiPlotter::~UiPlotter()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    mButtonUndo = nullptr;
-    mButtonRedo = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
 }
 
+
 //==============================================================================
-void UiUndoRedo::paint (Graphics& g)
+void UiPlotter::paint (Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
@@ -93,13 +76,11 @@ void UiUndoRedo::paint (Graphics& g)
     //[/UserPaint]
 }
 
-void UiUndoRedo::resized()
+void UiPlotter::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtonUndo->setBounds (proportionOfWidth (0.0511f), proportionOfHeight (0.2576f), proportionOfWidth (0.4000f), proportionOfHeight (0.5000f));
-    mButtonRedo->setBounds (proportionOfWidth (0.5489f), proportionOfHeight (0.2576f), proportionOfWidth (0.4000f), proportionOfHeight (0.5000f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -107,10 +88,10 @@ void UiUndoRedo::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void UiUndoRedo::timerCallback()
+void UiPlotter::update(const var& propertyChanged, const var& propertyValue) const
 {
-	mButtonUndo->setEnabled(mUndoManager.canUndo());
- 	mButtonRedo->setEnabled(mUndoManager.canRedo());
+	DBG("Property Changed: " << propertyChanged.toString());
+	DBG("Property Value  : " << propertyValue.toString() << "\n");
 }
 //[/MiscUserCode]
 
@@ -124,23 +105,15 @@ void UiUndoRedo::timerCallback()
 
 BEGIN_JUCER_METADATA
 
-<JUCER_COMPONENT documentType="Component" className="UiUndoRedo" componentName="UiUndoRedo"
+<JUCER_COMPONENT documentType="Component" className="UiPlotter" componentName="UiPlotter"
                  parentClasses="public Component" constructorParams="Component* parent, Core&amp; core"
-                 variableInitialisers="mParent{parent}, mUndoManager{core.getUndoManager()}"
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="600" initialHeight="400">
+                 variableInitialisers="mParent{parent}" snapPixels="8" snapActive="1"
+                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
+                 initialHeight="400">
   <BACKGROUND backgroundColour="0">
     <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
                hasStroke="0"/>
   </BACKGROUND>
-  <TEXTBUTTON name="ButtonUndo" id="2905daae1318e8f9" memberName="mButtonUndo"
-              virtualName="" explicitFocusOrder="0" pos="5.069% 25.831% 40.021% 50%"
-              bgColOn="ffa45c94" buttonText="Undo" connectedEdges="0" needsCallback="0"
-              radioGroupId="0"/>
-  <TEXTBUTTON name="ButtonRedo" id="f80fc073aaa0b332" memberName="mButtonRedo"
-              virtualName="" explicitFocusOrder="0" pos="54.91% 25.831% 40.021% 50%"
-              bgColOn="ffa45c94" buttonText="Redo" connectedEdges="0" needsCallback="0"
-              radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

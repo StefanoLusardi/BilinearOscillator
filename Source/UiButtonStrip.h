@@ -21,6 +21,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
+class Core;
 //[/Headers]
 
 
@@ -37,7 +38,7 @@ class UiButtonStrip  : public Component
 {
 public:
     //==============================================================================
-    UiButtonStrip (Component* parent, ValueTree& model);
+    UiButtonStrip (Component* parent, Core& core);
     ~UiButtonStrip();
 
     //==============================================================================

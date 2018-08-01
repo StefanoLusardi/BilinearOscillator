@@ -12,10 +12,28 @@
 #include <map>
 	
 enum class Tag { Ui, Param };
-enum class Property { Id, Value };
+enum class Prop { Id, Value };
+enum class Param { Amp, Freq, Play, Mute};
 
-static std::map<Tag, const char*> Tags { {Tag::Ui, "Ui"}, {Tag::Param, "Param"}};
-static std::map<Property, const char*> Properties { {Property::Id, "id"}, {Property::Value, "value"}};
+static std::map<Tag, const char*> Tags 
+{ 
+	{Tag::Ui, "Ui"}, 
+	{Tag::Param, "Param"}
+};
+
+static std::map<Prop, const char*> Props 
+{ 
+	{Prop::Id, "id"}, 
+	{Prop::Value, "value"}
+};
+
+static std::map<Param, const char*> Params 
+{ 
+	{Param::Amp,  "Amp"}, 
+	{Param::Freq, "Freq"},
+	{Param::Play, "Play"},
+	{Param::Mute, "Mute"}
+};
 
 
 enum class Bindings { OneWay, TwoWay };

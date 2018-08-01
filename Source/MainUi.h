@@ -21,11 +21,13 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
+class Core;
 //[/Headers]
 
 #include "UiButtonStrip.h"
 #include "UiSliderStrip.h"
 #include "UiUndoRedo.h"
+#include "UiPlotter.h"
 
 
 //==============================================================================
@@ -41,7 +43,7 @@ class MainUi  : public Component,
 {
 public:
     //==============================================================================
-    MainUi (Component* parent, ValueTree& model);
+    MainUi (Component* parent, Core& core);
     ~MainUi();
 
     //==============================================================================
@@ -61,14 +63,13 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	Component* mParent;
-	ValueTree& mModel;
-	UndoManager mUndoManager;
     //[/UserVariables]
 
     //==============================================================================
     std::unique_ptr<UiButtonStrip> mUiButtonStrip;
     std::unique_ptr<UiSliderStrip> mUiSliderStrip;
     std::unique_ptr<UiUndoRedo> mUiUndoRedo;
+    std::unique_ptr<UiPlotter> mUiPlotter;
 
 
     //==============================================================================
