@@ -25,8 +25,14 @@ UndoManager& Core::getUndoManager() { return mUndoManager; }
 
 double Core::getAmp() const
 {
-	auto b = mModel.getChildWithProperty(Props[Prop::Id], "SliderStrip");
-	auto amp = b.getChildWithProperty(Props[Prop::Id], "SliderAmp");
-	auto a = amp[Props[Prop::Value]];
-	return (double)a;
+	const auto uiSlider  { mModel.getChildWithProperty(Props[Prop::Id], "SliderStrip") };
+	const auto sliderAmp { uiSlider.getChildWithProperty(Props[Prop::Id], "SliderAmp") };
+	return sliderAmp[Props[Prop::Value]];
+}
+
+double Core::getFreq() const
+{
+	const auto uiSlider  { mModel.getChildWithProperty(Props[Prop::Id], "SliderStrip") };
+	const auto sliderFreq { uiSlider.getChildWithProperty(Props[Prop::Id], "SliderFreq") };
+	return sliderFreq[Props[Prop::Value]];
 }
