@@ -29,7 +29,7 @@ MainComponent::~MainComponent()
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
 	const auto initPhase { 0.5 };
-	mWTO = std::make_unique<WavetableOsc<double>>(sampleRate, mCore.getFreq(), initPhase);
+	mWTO = std::make_unique<WTO>(sampleRate, mCore.getFreq(), initPhase);
     mWTO->Init(WaveformType::Saw);
 }
 
