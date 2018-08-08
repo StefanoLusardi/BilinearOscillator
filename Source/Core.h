@@ -23,7 +23,9 @@ public:
 
 	ValueTree& getModel();
 	UndoManager& getUndoManager();
+
 	double getAmp() const;
+	double getFreq() const;
 
 private:
 	ValueTree mModel;
