@@ -10,10 +10,6 @@
 
 #pragma once
 
-#pragma once
-
-#pragma once
-
 template <typename T>
 class Wavetable
 {

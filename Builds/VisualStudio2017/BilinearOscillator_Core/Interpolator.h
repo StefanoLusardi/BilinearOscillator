@@ -9,15 +9,12 @@
 */
 
 #pragma once
-
-#pragma once
 #include <vector>
 #include <cassert>
 
-
 namespace Interpolation
 {
-	template<typename T>
+	template<typename T = double>
 	class Interpolator
 	{
 	public:
@@ -45,8 +42,8 @@ namespace Interpolation
 		Interpolator() {};
 	};
 
-	template<typename T>
-	class LinearInterpolator : public Interpolator<T>
+	template<typename T = double>
+	class LinearInterpolator : public Interpolator<>
 	{
 	public:  
 		LinearInterpolator() : Interpolator(mSamplesSize) {}
@@ -54,15 +51,15 @@ namespace Interpolation
 
 		const T& ShiftInterpolate(const T& alpha, const T& sample) override
 		{        
-			ShiftSamples(sample);
-			return mSamples[0] + alpha*(mSamples[1] - mSamples[0]);
+			this->ShiftSamples(sample);
+			return this->mSamples[0] + alpha*(this->mSamples[1] - this->mSamples[0]);
 		}
 
 		const T& Interpolate(const T& alpha, const std::vector<T>& samples) override
 		{        	
 			assert(samples.size() == mSamplesSize);
-			mSamples = samples;
-			return mSamples[0] + alpha*(mSamples[1] - mSamples[0]);
+			this->mSamples = samples;
+			return this->mSamples[0] + alpha*(this->mSamples[1] - this->mSamples[0]);
 		}
 
 	private:
@@ -70,7 +67,7 @@ namespace Interpolation
 	};
 
 
-	template<typename T>
+	template<typename T = double>
 	class QuadraticInterpolator : public Interpolator<T>
 	{
 	public:  
@@ -94,7 +91,7 @@ namespace Interpolation
 		static const int mSamplesSize = 3;
 	};
 
-	template<typename T>
+	template<typename T = double>
 	class CubicInterpolator : public Interpolator<T>
 	{
 	public:  

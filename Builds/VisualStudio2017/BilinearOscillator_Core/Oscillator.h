@@ -12,6 +12,8 @@
 
 #include "Interpolator.h"
 #include "Wavetable.h"
+#include "ApiExport.h"
+
 #include <memory>
 #include <execution>
 #include <algorithm>
@@ -204,3 +206,11 @@ private:
 
 };
 
+class CORE_API WTO : public WavetableOsc<double>
+{
+public:
+	WTO(const int& sampleRate, const double& frequency, const double& phaseOffset)
+		: WavetableOsc<double>{sampleRate, frequency, phaseOffset}
+	{
+	}
+};

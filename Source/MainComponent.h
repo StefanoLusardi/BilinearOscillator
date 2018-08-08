@@ -39,7 +39,7 @@ private:
     // Your private member variables go here...	
 	Random mRandom;
 	Core mCore;
-	std::unique_ptr<WavetableOsc<double>> mWTO;
+	std::unique_ptr<WTO> mWTO;
 	std::unique_ptr<Component> mMainUi;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
