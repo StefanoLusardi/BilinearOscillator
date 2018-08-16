@@ -43,7 +43,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void update(const var& propertyChanged, const var& propertyValue) const;
+	void update(const var& propertyChanged, const var& propertyValue);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -55,6 +55,7 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	Component* mParent;
 	ValueTree mUiModel;
+	Value amp;
     //[/UserVariables]
 
     //==============================================================================

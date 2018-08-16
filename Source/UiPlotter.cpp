@@ -18,11 +18,11 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#include "ParameterTags.h"
+#include "Core.h"
 //[/Headers]
 
 #include "UiPlotter.h"
-
-
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
@@ -42,6 +42,10 @@ UiPlotter::UiPlotter (Component* parent, Core& core)
 
 
     //[Constructor] You can add your own custom stuff here..
+	auto uiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "SliderStrip");
+	auto ampModel = uiModel.getChildWithProperty(Props[Prop::Id], "SliderAmp").getPropertyAsValue(Props[Prop::Value], nullptr, false);
+
+	amp.referTo(ampModel);
     //[/Constructor]
 }
 
@@ -73,6 +77,35 @@ void UiPlotter::paint (Graphics& g)
     }
 
     //[UserPaint] Add your own custom painting code here..
+
+	Path p;
+	g.setColour(Colours::blueviolet);
+
+	const auto yc = getLocalBounds().getCentreY() * float(amp.getValue());
+	const auto xq = getLocalBounds().getWidth() / 4.0f;
+
+	const auto x_1_4 = xq;
+	const auto x_2_4 = xq * 2;
+	const auto x_3_4 = xq * 3;
+
+	auto y = yc;
+    p.startNewSubPath(Point<float>(0, y));
+
+	auto step = 0.0f;
+	for (auto x = 0; x < getLocalBounds().getWidth(); ++x)
+	{
+		if (x >= 0	   && x < x_1_4) { step =  yc / xq; }
+		if (x >= x_1_4 && x < x_2_4) { step = -yc / xq; }
+		if (x >= x_2_4 && x < x_3_4) { step = -yc / xq; }
+		if (x >= x_3_4)		     	 { step =  yc / xq; }
+
+		y += step;
+		p.lineTo(Point<float>(x, y));
+	}
+
+	p.applyTransform(AffineTransform::translation(0.0f, getLocalBounds().getCentreY() - yc));
+	g.strokePath(p, PathStrokeType(5.0f));
+
     //[/UserPaint]
 }
 
@@ -88,10 +121,13 @@ void UiPlotter::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void UiPlotter::update(const var& propertyChanged, const var& propertyValue) const
+void UiPlotter::update(const var& propertyChanged, const var& propertyValue)
 {
 	DBG("Property Changed: " << propertyChanged.toString());
 	DBG("Property Value  : " << propertyValue.toString() << "\n");
+
+	// = float(propertyValue);
+	repaint();
 }
 //[/MiscUserCode]
 
