@@ -34,7 +34,8 @@ class Core;
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class UiUndoRedo  : public Component, public Timer
+class UiUndoRedo  : public Component,
+                    public Timer
 {
 public:
     //==============================================================================
@@ -47,6 +48,8 @@ public:
 
     void paint (Graphics& g) override;
     void resized() override;
+
+
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.

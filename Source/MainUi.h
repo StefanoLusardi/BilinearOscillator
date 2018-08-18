@@ -49,10 +49,10 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
 	void valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged, const Identifier& property) override;
-	void valueTreeChildAdded(ValueTree& parentTree, ValueTree& childWhichHasBeenAdded) override;
-	void valueTreeChildRemoved(ValueTree& parentTree, ValueTree& childWhichHasBeenRemoved, int indexFromWhichChildWasRemoved) override;
-	void valueTreeChildOrderChanged(ValueTree& parentTreeWhoseChildrenHaveMoved, int oldIndex, int newIndex) override;
-	void valueTreeParentChanged(ValueTree& treeWhoseParentHasChanged) override;
+	void valueTreeChildAdded(ValueTree& parentTree, ValueTree& childWhichHasBeenAdded) override { }
+	void valueTreeChildRemoved(ValueTree& parentTree, ValueTree& childWhichHasBeenRemoved, int indexFromWhichChildWasRemoved) override { }
+	void valueTreeChildOrderChanged(ValueTree& parentTreeWhoseChildrenHaveMoved, int oldIndex, int newIndex) override { }
+	void valueTreeParentChanged(ValueTree& treeWhoseParentHasChanged) override { }
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -66,6 +66,7 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    std::unique_ptr<TextButton> mDumpModelButton;
     std::unique_ptr<UiButtonStrip> mUiButtonStrip;
     std::unique_ptr<UiSliderStrip> mUiSliderStrip;
     std::unique_ptr<UiUndoRedo> mUiUndoRedo;

@@ -22,7 +22,7 @@
 //[/Headers]
 
 #include "UiUndoRedo.h"
-#include <thread>
+
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
@@ -57,7 +57,7 @@ UiUndoRedo::UiUndoRedo (Component* parent, Core& core)
     //[Constructor] You can add your own custom stuff here..
 	mButtonUndo->onClick = [&] { mUndoManager.undo(); };
 	mButtonRedo->onClick = [&] { mUndoManager.redo(); };
-	startTimer (250); 
+	startTimer (250);
     //[/Constructor]
 }
 
@@ -125,7 +125,7 @@ void UiUndoRedo::timerCallback()
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="UiUndoRedo" componentName="UiUndoRedo"
-                 parentClasses="public Component" constructorParams="Component* parent, Core&amp; core"
+                 parentClasses="public Component, public Timer" constructorParams="Component* parent, Core&amp; core"
                  variableInitialisers="mParent{parent}, mUndoManager{core.getUndoManager()}"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="600" initialHeight="400">
@@ -134,11 +134,11 @@ BEGIN_JUCER_METADATA
                hasStroke="0"/>
   </BACKGROUND>
   <TEXTBUTTON name="ButtonUndo" id="2905daae1318e8f9" memberName="mButtonUndo"
-              virtualName="" explicitFocusOrder="0" pos="5.069% 25.831% 40.021% 50%"
+              virtualName="" explicitFocusOrder="0" pos="5.106% 25.758% 40% 50%"
               bgColOn="ffa45c94" buttonText="Undo" connectedEdges="0" needsCallback="0"
               radioGroupId="0"/>
   <TEXTBUTTON name="ButtonRedo" id="f80fc073aaa0b332" memberName="mButtonRedo"
-              virtualName="" explicitFocusOrder="0" pos="54.91% 25.831% 40.021% 50%"
+              virtualName="" explicitFocusOrder="0" pos="54.894% 25.758% 40% 50%"
               bgColOn="ffa45c94" buttonText="Redo" connectedEdges="0" needsCallback="0"
               radioGroupId="0"/>
 </JUCER_COMPONENT>

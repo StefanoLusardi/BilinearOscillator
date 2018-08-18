@@ -36,20 +36,39 @@ UiButtonStrip::UiButtonStrip (Component* parent, Core& core)
     //[/Constructor_pre]
 
     setName ("ButtonStrip");
-    mButtonPlay.reset (new TextButton ("ButtonPlay"));
-    addAndMakeVisible (mButtonPlay.get());
-    mButtonPlay->setButtonText (TRANS("Play"));
-    mButtonPlay->setColour (TextButton::buttonOnColourId, Colour (0xffa45c94));
+    mButtonSaw.reset (new ImageButton ("ButtonSaw"));
+    addAndMakeVisible (mButtonSaw.get());
+    mButtonSaw->setButtonText (String());
 
-    mButtonMute.reset (new TextButton ("ButtonMute"));
-    addAndMakeVisible (mButtonMute.get());
-    mButtonMute->setButtonText (TRANS("Mute"));
-    mButtonMute->setColour (TextButton::buttonOnColourId, Colour (0xffa45c94));
+    mButtonSaw->setImages (false, true, true,
+                           ImageCache::getFromMemory (saw_png, saw_pngSize), 0.900f, Colour (0xffa45c94),
+                           ImageCache::getFromMemory (saw_png, saw_pngSize), 0.900f, Colours::red,
+                           ImageCache::getFromMemory (saw_png, saw_pngSize), 0.900f, Colours::lime);
+    mButtonSqr.reset (new ImageButton ("ButtonSqr"));
+    addAndMakeVisible (mButtonSqr.get());
+    mButtonSqr->setButtonText (String());
 
+    mButtonSqr->setImages (false, true, true,
+                           ImageCache::getFromMemory (sqr_png, sqr_pngSize), 0.900f, Colour (0xffa45c94),
+                           ImageCache::getFromMemory (sqr_png, sqr_pngSize), 0.900f, Colours::red,
+                           ImageCache::getFromMemory (sqr_png, sqr_pngSize), 0.900f, Colours::lime);
+    mButtonTri.reset (new ImageButton ("ButtonTri"));
+    addAndMakeVisible (mButtonTri.get());
+    mButtonTri->setButtonText (String());
+
+    mButtonTri->setImages (false, true, true,
+                           ImageCache::getFromMemory (tri_png, tri_pngSize), 0.900f, Colour (0xffa45c94),
+                           ImageCache::getFromMemory (tri_png, tri_pngSize), 0.900f, Colours::red,
+                           ImageCache::getFromMemory (tri_png, tri_pngSize), 0.900f, Colours::lime);
 
     //[UserPreSize]
-	mButtonMute->setClickingTogglesState(true);
-	mButtonPlay->setClickingTogglesState(true);
+	mButtonSaw->setClickingTogglesState(true);
+	mButtonSqr->setClickingTogglesState(true);
+	mButtonTri->setClickingTogglesState(true);
+
+	mButtonSaw->setRadioGroupId(1);
+	mButtonSqr->setRadioGroupId(1);
+	mButtonTri->setRadioGroupId(1);
 
 	const auto setUiModel = [&] () -> ValueTree
 	{
@@ -102,11 +121,14 @@ UiButtonStrip::UiButtonStrip (Component* parent, Core& core)
 
 	mUiModel = setUiModel();
 
-	setUiModelParam(mUiModel, mButtonMute.get());
-	setParamBinding(mUiModel, mButtonMute.get());
+	setUiModelParam(mUiModel, mButtonSaw.get());
+	setParamBinding(mUiModel, mButtonSaw.get());
 
-	setUiModelParam(mUiModel, mButtonPlay.get());
-	setParamBinding(mUiModel, mButtonPlay.get());
+	setUiModelParam(mUiModel, mButtonSqr.get());
+	setParamBinding(mUiModel, mButtonSqr.get());
+
+	setUiModelParam(mUiModel, mButtonTri.get());
+	setParamBinding(mUiModel, mButtonTri.get());
 
     //[/UserPreSize]
 
@@ -114,18 +136,25 @@ UiButtonStrip::UiButtonStrip (Component* parent, Core& core)
 
 
     //[Constructor] You can add your own custom stuff here..
-	mButtonMute->onClick = [&]
+	mButtonSaw->onClick = [&]
 	{
-		core.getUndoManager().beginNewTransaction();
-		auto uiProperty = mUiModel.getChildWithProperty(Props[Prop::Id], mButtonMute->getName());
-		uiProperty.setProperty(Props[Prop::Value], mButtonMute->getToggleState(), &core.getUndoManager());
+		if (mButtonSaw->getToggleState()) { core.getUndoManager().beginNewTransaction(); }
+		auto uiProperty = mUiModel.getChildWithProperty(Props[Prop::Id], mButtonSaw->getName());
+		uiProperty.setProperty(Props[Prop::Value], mButtonSaw->getToggleState(), nullptr /*&core.getUndoManager()*/);
 	};
 
-	mButtonPlay->onClick = [&]
+	mButtonSqr->onClick = [&]
 	{
-		core.getUndoManager().beginNewTransaction();
-		auto uiProperty = mUiModel.getChildWithProperty(Props[Prop::Id], mButtonPlay->getName());
-		uiProperty.setProperty(Props[Prop::Value], mButtonPlay->getToggleState(), &core.getUndoManager());
+		if (mButtonSqr->getToggleState()) { core.getUndoManager().beginNewTransaction(); }
+		auto uiProperty = mUiModel.getChildWithProperty(Props[Prop::Id], mButtonSqr->getName());
+		uiProperty.setProperty(Props[Prop::Value], mButtonSqr->getToggleState(), nullptr /*&core.getUndoManager()*/);
+	};
+
+	mButtonTri->onClick = [&]
+	{
+		if (mButtonTri->getToggleState()) { core.getUndoManager().beginNewTransaction(); }
+		auto uiProperty = mUiModel.getChildWithProperty(Props[Prop::Id], mButtonTri->getName());
+		uiProperty.setProperty(Props[Prop::Value], mButtonTri->getToggleState(), nullptr/*&core.getUndoManager()*/);
 	};
     //[/Constructor]
 }
@@ -135,8 +164,9 @@ UiButtonStrip::~UiButtonStrip()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    mButtonPlay = nullptr;
-    mButtonMute = nullptr;
+    mButtonSaw = nullptr;
+    mButtonSqr = nullptr;
+    mButtonTri = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -167,8 +197,9 @@ void UiButtonStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtonPlay->setBounds (proportionOfWidth (0.0496f), proportionOfHeight (0.2583f), proportionOfWidth (0.4002f), proportionOfHeight (0.5000f));
-    mButtonMute->setBounds (proportionOfWidth (0.5502f), proportionOfHeight (0.2583f), proportionOfWidth (0.4002f), proportionOfHeight (0.5000f));
+    mButtonSaw->setBounds (proportionOfWidth (0.0492f), proportionOfHeight (0.2576f), proportionOfWidth (0.2500f), proportionOfHeight (0.5000f));
+    mButtonSqr->setBounds (proportionOfWidth (0.4003f), proportionOfHeight (0.2576f), proportionOfWidth (0.2500f), proportionOfHeight (0.5000f));
+    mButtonTri->setBounds (proportionOfWidth (0.6994f), proportionOfHeight (0.2576f), proportionOfWidth (0.2500f), proportionOfHeight (0.5000f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -197,19 +228,70 @@ BEGIN_JUCER_METADATA
     <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
                hasStroke="0"/>
   </BACKGROUND>
-  <TEXTBUTTON name="ButtonPlay" id="2905daae1318e8f9" memberName="mButtonPlay"
-              virtualName="" explicitFocusOrder="0" pos="4.963% 25.831% 40.021% 50%"
-              bgColOn="ffa45c94" buttonText="Play" connectedEdges="0" needsCallback="0"
-              radioGroupId="0"/>
-  <TEXTBUTTON name="ButtonMute" id="f80fc073aaa0b332" memberName="mButtonMute"
-              virtualName="" explicitFocusOrder="0" pos="55.016% 25.831% 40.021% 50%"
-              bgColOn="ffa45c94" buttonText="Mute" connectedEdges="0" needsCallback="0"
-              radioGroupId="0"/>
+  <IMAGEBUTTON name="ButtonSaw" id="7db05320ddd74eb0" memberName="mButtonSaw"
+               virtualName="" explicitFocusOrder="0" pos="4.963% 25.831% 25.026% 50%"
+               buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
+               keepProportions="1" resourceNormal="saw_png" opacityNormal="0.89999997615814208984"
+               colourNormal="ffa45c94" resourceOver="saw_png" opacityOver="0.89999997615814208984"
+               colourOver="ffff0000" resourceDown="saw_png" opacityDown="0.89999997615814208984"
+               colourDown="ff00ff00"/>
+  <IMAGEBUTTON name="ButtonSqr" id="30c631eda481bac9" memberName="mButtonSqr"
+               virtualName="" explicitFocusOrder="0" pos="40.021% 25.831% 25.026% 50%"
+               buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
+               keepProportions="1" resourceNormal="sqr_png" opacityNormal="0.89999997615814208984"
+               colourNormal="ffa45c94" resourceOver="sqr_png" opacityOver="0.89999997615814208984"
+               colourOver="ffff0000" resourceDown="sqr_png" opacityDown="0.89999997615814208984"
+               colourDown="ff00ff00"/>
+  <IMAGEBUTTON name="ButtonTri" id="4ea5ec108ddbef92" memberName="mButtonTri"
+               virtualName="" explicitFocusOrder="0" pos="69.905% 25.831% 25.026% 50%"
+               buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
+               keepProportions="1" resourceNormal="tri_png" opacityNormal="0.89999997615814208984"
+               colourNormal="ffa45c94" resourceOver="tri_png" opacityOver="0.89999997615814208984"
+               colourOver="ffff0000" resourceDown="tri_png" opacityDown="0.89999997615814208984"
+               colourDown="ff00ff00"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
 */
 #endif
+
+//==============================================================================
+// Binary resources - be careful not to edit any of these sections!
+
+// JUCER_RESOURCE: saw_png, 383, "../Resources/Icons/saw.png"
+static const unsigned char resource_UiButtonStrip_saw_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,64,0,0,0,64,8,6,0,0,0,170,105,113,222,0,0,1,70,73,68,65,84,120,156,237,219,219,13,133,
+32,16,69,209,221,151,253,87,99,17,220,47,19,227,245,129,192,12,243,144,6,216,103,37,126,25,40,235,82,202,186,20,178,158,13,32,45,194,30,32,37,194,17,32,29,194,126,116,74,132,227,224,116,8,103,99,83,33,
+92,13,77,131,112,55,50,5,194,211,192,240,8,53,227,66,35,212,14,11,139,240,102,84,72,132,183,131,194,33,180,140,9,133,208,58,36,12,66,207,136,16,8,189,3,220,35,140,136,119,141,48,42,220,45,194,200,104,
+151,8,163,131,221,33,72,196,186,66,144,10,117,131,32,25,233,2,65,58,208,60,130,70,156,105,4,173,48,179,8,154,81,38,17,180,131,204,33,204,136,49,133,48,43,196,12,194,204,136,153,8,38,240,247,33,179,62,
+67,205,59,47,207,12,4,83,0,160,143,96,14,0,116,17,76,2,128,30,130,89,0,208,65,48,13,0,242,8,230,1,64,22,193,5,0,200,33,184,1,0,25,4,87,0,48,30,193,29,0,140,69,112,9,0,227,16,220,2,192,24,4,215,0,208,143,
+224,30,0,250,16,66,0,64,59,66,24,0,104,67,8,5,0,239,17,194,1,192,59,132,144,0,80,143,16,22,0,234,16,66,3,192,51,66,120,0,184,71,72,1,0,215,8,105,0,224,28,33,21,0,252,35,164,3,128,239,145,40,240,61,21,
+6,12,253,154,159,121,54,128,31,106,152,205,198,99,175,254,46,0,0,0,0,73,69,78,68,174,66,96,130,0,0};
+
+const char* UiButtonStrip::saw_png = (const char*) resource_UiButtonStrip_saw_png;
+const int UiButtonStrip::saw_pngSize = 383;
+
+// JUCER_RESOURCE: sqr_png, 251, "../Resources/Icons/sqr.png"
+static const unsigned char resource_UiButtonStrip_sqr_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,64,0,0,0,64,8,6,0,0,0,170,105,113,222,0,0,0,194,73,68,65,84,120,156,237,208,65,13,192,
+64,12,196,192,227,85,254,104,10,226,202,34,19,169,142,148,183,189,62,247,125,238,134,63,234,244,240,53,1,254,202,231,2,154,207,5,52,159,11,104,62,23,208,124,46,160,249,92,64,243,185,128,230,115,1,205,
+231,2,154,207,5,52,159,11,104,62,23,208,124,46,160,249,92,64,243,185,128,230,115,1,205,231,2,154,207,5,52,159,11,104,62,23,208,124,46,160,249,92,64,243,185,128,230,115,1,205,231,2,154,207,5,52,159,11,
+104,62,23,208,124,46,160,249,92,64,241,245,110,46,82,128,2,20,160,0,5,40,64,1,10,48,205,93,35,82,128,2,20,160,0,5,40,64,1,10,48,205,93,35,82,128,2,20,160,0,5,40,64,1,10,48,205,93,35,82,128,109,1,212,235,
+253,60,192,7,17,76,150,213,241,152,54,141,0,0,0,0,73,69,78,68,174,66,96,130,0,0};
+
+const char* UiButtonStrip::sqr_png = (const char*) resource_UiButtonStrip_sqr_png;
+const int UiButtonStrip::sqr_pngSize = 251;
+
+// JUCER_RESOURCE: tri_png, 406, "../Resources/Icons/tri.png"
+static const unsigned char resource_UiButtonStrip_tri_png[] = { 137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,64,0,0,0,64,8,6,0,0,0,170,105,113,222,0,0,1,93,73,68,65,84,120,156,237,153,75,14,194,
+48,12,68,125,175,222,255,52,61,68,88,141,84,65,91,210,36,254,140,221,183,66,208,198,158,55,192,2,68,38,105,251,214,218,190,181,217,115,40,65,248,87,64,69,9,223,225,203,10,56,62,46,35,225,44,112,73,1,103,
+207,165,151,112,23,180,148,128,187,215,210,74,232,9,88,66,64,207,53,233,36,60,9,150,90,192,147,107,211,72,24,9,148,82,192,200,61,244,18,102,130,164,18,48,115,47,173,132,21,1,82,8,88,113,6,157,132,149,
+139,83,11,88,121,22,141,4,141,133,41,5,104,156,25,94,130,230,162,84,2,52,207,14,43,193,98,65,10,1,22,51,194,73,176,92,44,180,0,203,89,97,36,120,44,20,82,128,199,76,119,9,158,139,132,18,224,57,219,93,130,
+39,222,5,120,204,253,89,194,243,59,200,114,230,37,175,0,227,119,65,200,239,30,15,1,22,179,186,177,106,37,100,251,192,82,128,230,140,97,180,219,9,221,62,176,16,160,113,246,50,180,90,162,104,31,104,253,
+34,77,17,94,100,253,194,84,225,193,234,127,165,104,5,204,46,78,25,30,204,46,79,219,62,152,13,64,29,30,140,134,160,111,31,140,6,73,17,30,60,13,147,166,125,240,52,80,170,240,160,55,84,186,246,65,79,176,
+180,225,65,175,0,203,157,76,185,107,56,125,251,224,159,0,143,157,76,57,107,186,76,251,224,74,128,231,78,166,28,27,47,215,62,40,29,94,228,21,32,34,107,62,251,31,222,133,199,126,216,228,109,65,0,0,0,0,73,
+69,78,68,174,66,96,130,0,0};
+
+const char* UiButtonStrip::tri_png = (const char*) resource_UiButtonStrip_tri_png;
+const int UiButtonStrip::tri_pngSize = 406;
 
 
 //[EndFile] You can add extra defines here...

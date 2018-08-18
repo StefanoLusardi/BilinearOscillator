@@ -48,6 +48,13 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
 
+    // Binary resources:
+    static const char* saw_png;
+    static const int saw_pngSize;
+    static const char* sqr_png;
+    static const int sqr_pngSize;
+    static const char* tri_png;
+    static const int tri_pngSize;
 
 
 private:
@@ -57,8 +64,9 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    std::unique_ptr<TextButton> mButtonPlay;
-    std::unique_ptr<TextButton> mButtonMute;
+    std::unique_ptr<ImageButton> mButtonSaw;
+    std::unique_ptr<ImageButton> mButtonSqr;
+    std::unique_ptr<ImageButton> mButtonTri;
 
 
     //==============================================================================

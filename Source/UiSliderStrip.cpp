@@ -207,10 +207,10 @@ void UiSliderStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mSliderFreq->setBounds (proportionOfWidth (0.2555f), proportionOfHeight (0.0000f), proportionOfWidth (0.6991f), proportionOfHeight (0.5166f));
-    mLabelFreq->setBounds (proportionOfWidth (0.0528f), proportionOfHeight (0.0000f), proportionOfWidth (0.2555f), proportionOfHeight (0.5166f));
-    mSliderAmp->setBounds (proportionOfWidth (0.2555f), proportionOfHeight (0.5166f), proportionOfWidth (0.6991f), proportionOfHeight (0.5166f));
-    mLabelAmp->setBounds (proportionOfWidth (0.0528f), proportionOfHeight (0.5166f), proportionOfWidth (0.2555f), proportionOfHeight (0.5166f));
+    mSliderFreq->setBounds (proportionOfWidth (0.2549f), proportionOfHeight (0.0000f), proportionOfWidth (0.6986f), proportionOfHeight (0.5152f));
+    mLabelFreq->setBounds (proportionOfWidth (0.0521f), proportionOfHeight (0.0000f), proportionOfWidth (0.2549f), proportionOfHeight (0.5152f));
+    mSliderAmp->setBounds (proportionOfWidth (0.2549f), proportionOfHeight (0.5152f), proportionOfWidth (0.6986f), proportionOfHeight (0.5152f));
+    mLabelAmp->setBounds (proportionOfWidth (0.0521f), proportionOfHeight (0.5152f), proportionOfWidth (0.2549f), proportionOfHeight (0.5152f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -242,26 +242,26 @@ BEGIN_JUCER_METADATA
                hasStroke="0"/>
   </BACKGROUND>
   <SLIDER name="SliderFreq" id="49b85c14e9b29fb6" memberName="mSliderFreq"
-          virtualName="" explicitFocusOrder="0" pos="25.554% 0% 69.905% 51.662%"
+          virtualName="" explicitFocusOrder="0" pos="25.493% 0% 69.859% 51.515%"
           thumbcol="ffa45c94" textboxtext="ff000000" min="20.00000000000000000000"
           max="5000.00000000000000000000" int="0.00000000000000000000"
           style="LinearHorizontal" textBoxPos="TextBoxRight" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
           needsCallback="0"/>
   <LABEL name="freq label" id="6bca026c5b9e7e17" memberName="mLabelFreq"
-         virtualName="" explicitFocusOrder="0" pos="5.28% 0% 25.554% 51.662%"
+         virtualName="" explicitFocusOrder="0" pos="5.211% 0% 25.493% 51.515%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Frequency"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <SLIDER name="SliderAmp" id="b06f49a585e9b552" memberName="mSliderAmp"
-          virtualName="" explicitFocusOrder="0" pos="25.554% 51.662% 69.905% 51.662%"
+          virtualName="" explicitFocusOrder="0" pos="25.493% 51.515% 69.859% 51.515%"
           thumbcol="ffa45c94" textboxtext="ff000000" min="0.00000000000000000000"
           max="1.00000000000000000000" int="0.00000000000000000000" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.50000000000000000000" needsCallback="0"/>
   <LABEL name="amp label" id="531e30d8428f3fd" memberName="mLabelAmp"
-         virtualName="" explicitFocusOrder="0" pos="5.28% 51.662% 25.554% 51.662%"
+         virtualName="" explicitFocusOrder="0" pos="5.211% 51.515% 25.493% 51.515%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Amplitude"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"

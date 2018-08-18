@@ -21,6 +21,8 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "ParameterTags.h"
+#include <map>
 class Core;
 //[/Headers]
 
@@ -43,7 +45,16 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void update(const var& propertyChanged, const var& propertyValue);
+private:
+	void plotSaw(Path& path);
+	void plotSqr(Path& path);
+	void plotTri(Path& path);
+
+	float getAmp() const;
+	float getFreq() const;
+	Wave getWaveform() const;
+
+public:
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -55,7 +66,10 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	Component* mParent;
 	ValueTree mUiModel;
-	Value amp;
+
+	Value mAmp;
+	Value mFreq;
+	std::map<Wave, Value> mWaveforms;
     //[/UserVariables]
 
     //==============================================================================

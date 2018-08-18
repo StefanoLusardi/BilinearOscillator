@@ -18,11 +18,12 @@
 */
 
 //[Headers] You can add your own extra header files here...
-#include "ParameterTags.h"
 #include "Core.h"
 //[/Headers]
 
 #include "UiPlotter.h"
+
+
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
@@ -42,10 +43,20 @@ UiPlotter::UiPlotter (Component* parent, Core& core)
 
 
     //[Constructor] You can add your own custom stuff here..
-	auto uiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "SliderStrip");
-	auto ampModel = uiModel.getChildWithProperty(Props[Prop::Id], "SliderAmp").getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto sliderUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "SliderStrip");
+	const auto ampModel  = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderAmp" ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto freqModel = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderFreq").getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	mAmp.referTo(ampModel);
+	mFreq.referTo(freqModel);
 
-	amp.referTo(ampModel);
+	const auto buttonUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "ButtonStrip");
+	const auto sawModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonSaw").getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto sqrModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonSqr").getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto triModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonTri").getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	mWaveforms[Wave::Saw].referTo(sawModel);
+	mWaveforms[Wave::Sqr].referTo(sqrModel);
+	mWaveforms[Wave::Tri].referTo(triModel);
+
     //[/Constructor]
 }
 
@@ -59,7 +70,6 @@ UiPlotter::~UiPlotter()
     //[Destructor]. You can add your own custom destruction code here..
     //[/Destructor]
 }
-
 
 //==============================================================================
 void UiPlotter::paint (Graphics& g)
@@ -79,31 +89,15 @@ void UiPlotter::paint (Graphics& g)
     //[UserPaint] Add your own custom painting code here..
 
 	Path p;
-	g.setColour(Colours::blueviolet);
-
-	const auto yc = getLocalBounds().getCentreY() * float(amp.getValue());
-	const auto xq = getLocalBounds().getWidth() / 4.0f;
-
-	const auto x_1_4 = xq;
-	const auto x_2_4 = xq * 2;
-	const auto x_3_4 = xq * 3;
-
-	auto y = yc;
-    p.startNewSubPath(Point<float>(0, y));
-
-	auto step = 0.0f;
-	for (auto x = 0; x < getLocalBounds().getWidth(); ++x)
+	switch(getWaveform())
 	{
-		if (x >= 0	   && x < x_1_4) { step =  yc / xq; }
-		if (x >= x_1_4 && x < x_2_4) { step = -yc / xq; }
-		if (x >= x_2_4 && x < x_3_4) { step = -yc / xq; }
-		if (x >= x_3_4)		     	 { step =  yc / xq; }
-
-		y += step;
-		p.lineTo(Point<float>(x, y));
+		case Wave::Saw: plotSaw(p); break;
+		case Wave::Sqr: plotSqr(p); break;
+		case Wave::Tri: plotTri(p); break;
+		default: break;
 	}
 
-	p.applyTransform(AffineTransform::translation(0.0f, getLocalBounds().getCentreY() - yc));
+	g.setColour(Colours::blueviolet);
 	g.strokePath(p, PathStrokeType(5.0f));
 
     //[/UserPaint]
@@ -121,14 +115,96 @@ void UiPlotter::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void UiPlotter::update(const var& propertyChanged, const var& propertyValue)
+float UiPlotter::getAmp() const
 {
-	DBG("Property Changed: " << propertyChanged.toString());
-	DBG("Property Value  : " << propertyValue.toString() << "\n");
-
-	// = float(propertyValue);
-	repaint();
+	return float(mAmp.getValue());
 }
+
+float UiPlotter::getFreq() const
+{
+	return float(mFreq.getValue());
+}
+
+Wave UiPlotter::getWaveform() const
+{
+	return std::find_if(mWaveforms.begin(), mWaveforms.end(),
+		[](const auto& w) { return w.second == 1; })->first;
+}
+
+void UiPlotter::plotSaw(Path& path)
+{
+	const auto yc = getLocalBounds().getCentreY() * getAmp();
+	const auto xq = getLocalBounds().getWidth() / 4.0f;
+
+    path.startNewSubPath(Point<float>(0, yc)); // first point
+
+	auto y = 0.0f;
+	auto step = 2.0f * yc / float(getLocalBounds().getWidth());
+	for (auto x = 0; x < getLocalBounds().getWidth(); ++x)
+	{
+		y += step;
+		path.lineTo(Point<float>(x, y));
+	}
+	path.lineTo(Point<float>(getLocalBounds().getWidth()-1, yc)); // last point
+
+	path.applyTransform(AffineTransform::translation(0.0f, getLocalBounds().getCentreY() - yc));
+}
+
+void UiPlotter::plotSqr(Path& path)
+{
+	const auto yc = getLocalBounds().getCentreY() * getAmp();
+	const auto xq = getLocalBounds().getWidth() / 4.0f;
+
+	const auto x_1_4 = xq;
+	const auto x_2_4 = xq * 2;
+	const auto x_3_4 = xq * 3;
+
+    path.startNewSubPath(Point<float>(0, yc)); // first point
+
+	auto y = 0.0f;
+	auto step = 0.0f;
+	for (auto x = 0; x < getLocalBounds().getWidth(); ++x)
+	{
+		if (x >= 0	   && x < x_1_4) { step = 0.0f; }
+		if (x >= x_1_4 && x < x_2_4) { step = 0.0f; }
+		if (x >= x_2_4 && x < x_3_4) { step = 2.0f*yc; }
+		if (x >= x_3_4)				 { step = 2.0f*yc; }
+
+		y = step;
+		path.lineTo(Point<float>(x, y));
+	}
+	path.lineTo(Point<float>(getLocalBounds().getWidth()-1, yc)); // last point
+
+	path.applyTransform(AffineTransform::translation(0.0f, getLocalBounds().getCentreY() - yc));
+}
+
+void UiPlotter::plotTri(Path& path)
+{
+	const auto yc = getLocalBounds().getCentreY() * getAmp();
+	const auto xq = getLocalBounds().getWidth() / 4.0f;
+
+	const auto x_1_4 = xq;
+	const auto x_2_4 = xq * 2;
+	const auto x_3_4 = xq * 3;
+
+	auto y = yc;
+    path.startNewSubPath(Point<float>(0, y)); // first point
+
+	auto step = 0.0f;
+	for (auto x = 0; x < getLocalBounds().getWidth(); ++x)
+	{
+		if (x >= 0	   && x < x_1_4) { step =  yc / xq; }
+		if (x >= x_1_4 && x < x_2_4) { step = -yc / xq; }
+		if (x >= x_2_4 && x < x_3_4) { step = -yc / xq; }
+		if (x >= x_3_4)		     	 { step =  yc / xq; }
+
+		y += step;
+		path.lineTo(Point<float>(x, y));
+	}
+
+	path.applyTransform(AffineTransform::translation(0.0f, getLocalBounds().getCentreY() - yc));
+}
+
 //[/MiscUserCode]
 
 
