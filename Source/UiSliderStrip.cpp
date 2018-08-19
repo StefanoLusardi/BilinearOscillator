@@ -41,7 +41,6 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
     mSliderFreq->setRange (20, 5000, 0.001);
     mSliderFreq->setSliderStyle (Slider::LinearHorizontal);
     mSliderFreq->setTextBoxStyle (Slider::TextBoxRight, false, 80, 20);
-    mSliderFreq->setColour (Slider::thumbColourId, Colour (0xffa45c94));
     mSliderFreq->setColour (Slider::textBoxTextColourId, Colours::black);
     mSliderFreq->setSkewFactor (0.5);
 
@@ -60,7 +59,6 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
     mSliderAmp->setRange (0, 1, 0.001);
     mSliderAmp->setSliderStyle (Slider::LinearHorizontal);
     mSliderAmp->setTextBoxStyle (Slider::TextBoxRight, false, 80, 20);
-    mSliderAmp->setColour (Slider::thumbColourId, Colour (0xffa45c94));
     mSliderAmp->setColour (Slider::textBoxTextColourId, Colours::black);
     mSliderAmp->setColour (Slider::textBoxOutlineColourId, Colour (0xff8e989b));
     mSliderAmp->setSkewFactor (0.5);
@@ -86,6 +84,8 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
 
     //[UserPreSize]
 	mPhaseInvert->setClickingTogglesState(true);
+
+	/// MODEL BINDING
 
 	const auto setUiModel = [&] () -> ValueTree
 	{
@@ -305,33 +305,31 @@ BEGIN_JUCER_METADATA
                hasStroke="0"/>
   </BACKGROUND>
   <SLIDER name="SliderFreq" id="49b85c14e9b29fb6" memberName="mSliderFreq"
-          virtualName="" explicitFocusOrder="0" pos="15.317% 0% 59.941% 51.515%"
-          thumbcol="ffa45c94" textboxtext="ff000000" min="20.00000000000000000000"
-          max="5000.00000000000000000000" int="0.00100000000000000002"
-          style="LinearHorizontal" textBoxPos="TextBoxRight" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
+          virtualName="" explicitFocusOrder="0" pos="15.359% 0% 59.89% 51.511%"
+          textboxtext="ff000000" min="20.00000000000000000000" max="5000.00000000000000000000"
+          int="0.00100000000000000002" style="LinearHorizontal" textBoxPos="TextBoxRight"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
           needsCallback="0"/>
   <LABEL name="freq label" id="6bca026c5b9e7e17" memberName="mLabelFreq"
-         virtualName="" explicitFocusOrder="0" pos="5.155% 0% 10.162% 51.515%"
+         virtualName="" explicitFocusOrder="0" pos="5.193% 0% 10.166% 51.511%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Frequency"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <SLIDER name="SliderAmp" id="b06f49a585e9b552" memberName="mSliderAmp"
-          virtualName="" explicitFocusOrder="0" pos="15.317% 51.515% 59.941% 51.515%"
-          thumbcol="ffa45c94" textboxtext="ff000000" textboxoutline="ff8e989b"
-          min="0.00000000000000000000" max="1.00000000000000000000" int="0.00100000000000000002"
-          style="LinearHorizontal" textBoxPos="TextBoxRight" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
-          needsCallback="0"/>
+          virtualName="" explicitFocusOrder="0" pos="15.359% 51.511% 59.89% 51.511%"
+          textboxtext="ff000000" textboxoutline="ff8e989b" min="0.00000000000000000000"
+          max="1.00000000000000000000" int="0.00100000000000000002" style="LinearHorizontal"
+          textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="0.50000000000000000000" needsCallback="0"/>
   <LABEL name="amp label" id="531e30d8428f3fd" memberName="mLabelAmp"
-         virtualName="" explicitFocusOrder="0" pos="5.155% 51.515% 10.162% 51.515%"
+         virtualName="" explicitFocusOrder="0" pos="5.193% 51.511% 10.166% 51.511%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Amplitude"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <IMAGEBUTTON name="PhaseInvert" id="14f6f7c6a495ed84" memberName="mPhaseInvert"
-               virtualName="" explicitFocusOrder="0" pos="80.265% 65.152% 15.317% 25%"
+               virtualName="" explicitFocusOrder="0" pos="80.221% 65.106% 15.359% 25.076%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="phase_invert_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="phase_invert_png" opacityOver="0.89999997615814208984"

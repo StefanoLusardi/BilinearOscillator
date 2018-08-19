@@ -3,6 +3,10 @@
 <JUCERPROJECT id="BsBq6k" name="BilinearOscillator" projectType="guiapp" jucerVersion="5.3.2"
               cppLanguageStandard="17">
   <MAINGROUP id="sN5qq1" name="BilinearOscillator">
+    <GROUP id="{480B5E67-5FBE-0961-4B31-6CB14086996F}" name="LookAndFeel">
+      <FILE id="RnUlIf" name="BaseLNF.h" compile="0" resource="0" file="Source/BaseLNF.h"/>
+      <FILE id="pLhHxf" name="SliderLNF.h" compile="0" resource="0" file="Source/SliderLNF.h"/>
+    </GROUP>
     <GROUP id="{16245E02-1F5F-01D6-67C1-08CB0B89CDBA}" name="Ui">
       <FILE id="mfl7hA" name="MainUi.cpp" compile="1" resource="0" file="Source/MainUi.cpp"/>
       <FILE id="x4GJHM" name="MainUi.h" compile="0" resource="0" file="Source/MainUi.h"/>

@@ -1820,6 +1820,8 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\BaseLNF.h"/>
+    <ClInclude Include="..\..\Source\SliderLNF.h"/>
     <ClInclude Include="..\..\Source\MainUi.h"/>
     <ClInclude Include="..\..\Source\UiButtonStrip.h"/>
     <ClInclude Include="..\..\Source\UiPlotter.h"/>

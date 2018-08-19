@@ -25,7 +25,7 @@
 //[/Headers]
 
 #include "MainUi.h"
-
+#include "SliderLNF.h"
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
@@ -36,6 +36,8 @@ MainUi::MainUi (Component* parent, Core& core)
 {
     //[Constructor_pre] You can add your own custom stuff here..
 	core.getModel().addListener(this);
+	mLookAndFeel.reset(new SliderLNF());
+	setLookAndFeel(mLookAndFeel.get());
     //[/Constructor_pre]
 
     setName ("MainUi");
