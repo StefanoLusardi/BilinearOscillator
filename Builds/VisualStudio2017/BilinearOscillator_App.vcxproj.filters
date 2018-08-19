@@ -4112,13 +4112,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Resources\Icons\saw.png">
-      <Filter>BilinearOscillator\Resources\Icons</Filter>
-    </None>
-    <None Include="..\..\Resources\Icons\sqr.png">
-      <Filter>BilinearOscillator\Resources\Icons</Filter>
-    </None>
-    <None Include="..\..\Resources\Icons\tri.png">
+    <None Include="..\..\Resources\Icons\BiOs.png">
       <Filter>BilinearOscillator\Resources\Icons</Filter>
     </None>
     <None Include="..\..\..\..\..\Libraries\JUCE\modules\juce_audio_formats\codecs\flac\Flac Licence.txt">

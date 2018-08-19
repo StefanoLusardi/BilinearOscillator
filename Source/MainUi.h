@@ -66,8 +66,8 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    std::unique_ptr<TextButton> mDumpModelButton;
     std::unique_ptr<UiButtonStrip> mUiButtonStrip;
+    std::unique_ptr<TextButton> mDumpModelButton;
     std::unique_ptr<UiSliderStrip> mUiSliderStrip;
     std::unique_ptr<UiUndoRedo> mUiUndoRedo;
     std::unique_ptr<UiPlotter> mUiPlotter;

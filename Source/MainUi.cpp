@@ -39,6 +39,8 @@ MainUi::MainUi (Component* parent, Core& core)
     //[/Constructor_pre]
 
     setName ("MainUi");
+    mUiButtonStrip.reset (new UiButtonStrip (this, core));
+    addAndMakeVisible (mUiButtonStrip.get());
     mDumpModelButton.reset (new TextButton ("DumpModelButton"));
     addAndMakeVisible (mDumpModelButton.get());
     mDumpModelButton->setButtonText (String());
@@ -47,8 +49,6 @@ MainUi::MainUi (Component* parent, Core& core)
     mDumpModelButton->setColour (TextButton::textColourOffId, Colours::red);
     mDumpModelButton->setColour (TextButton::textColourOnId, Colours::red);
 
-    mUiButtonStrip.reset (new UiButtonStrip (this, core));
-    addAndMakeVisible (mUiButtonStrip.get());
     mUiSliderStrip.reset (new UiSliderStrip (this, core));
     addAndMakeVisible (mUiSliderStrip.get());
     mUiUndoRedo.reset (new UiUndoRedo (this, core));
@@ -80,8 +80,8 @@ MainUi::~MainUi()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
-    mDumpModelButton = nullptr;
     mUiButtonStrip = nullptr;
+    mDumpModelButton = nullptr;
     mUiSliderStrip = nullptr;
     mUiUndoRedo = nullptr;
     mUiPlotter = nullptr;
@@ -106,8 +106,8 @@ void MainUi::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mDumpModelButton->setBounds (proportionOfWidth (0.7497f), proportionOfHeight (0.0997f), proportionOfWidth (0.2503f), proportionOfHeight (0.1994f));
     mUiButtonStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (0.7519f), proportionOfHeight (0.0997f));
+    mDumpModelButton->setBounds (proportionOfWidth (0.7497f), proportionOfHeight (0.0997f), proportionOfWidth (0.2503f), proportionOfHeight (0.1994f));
     mUiSliderStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0997f), proportionOfWidth (0.7497f), proportionOfHeight (0.1994f));
     mUiUndoRedo->setBounds (proportionOfWidth (0.7519f), proportionOfHeight (0.0000f), proportionOfWidth (0.2482f), proportionOfHeight (0.0997f));
     mUiPlotter->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3006f), proportionOfWidth (1.0000f), proportionOfHeight (0.6994f));
@@ -152,13 +152,13 @@ BEGIN_JUCER_METADATA
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
                  fixedSize="0" initialWidth="800" initialHeight="500">
   <BACKGROUND backgroundColour="ffffff"/>
+  <JUCERCOMP name="ButtonStrip" id="94d533df8a0dd9aa" memberName="mUiButtonStrip"
+             virtualName="UiButtonStrip" explicitFocusOrder="0" pos="0% 0% 75.185% 9.97%"
+             sourceFile="UiButtonStrip.cpp" constructorParams="this, core"/>
   <TEXTBUTTON name="DumpModelButton" id="4e58062973560f20" memberName="mDumpModelButton"
               virtualName="" explicitFocusOrder="0" pos="74.974% 9.97% 25.026% 19.94%"
               bgColOff="ffffff" bgColOn="ffffff" textCol="ffff0000" textColOn="ffff0000"
               buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"/>
-  <JUCERCOMP name="ButtonStrip" id="94d533df8a0dd9aa" memberName="mUiButtonStrip"
-             virtualName="UiButtonStrip" explicitFocusOrder="0" pos="0% 0% 75.185% 9.97%"
-             sourceFile="UiButtonStrip.cpp" constructorParams="this, core"/>
   <JUCERCOMP name="SliderStrip" id="187099a553730501" memberName="mUiSliderStrip"
              virtualName="UiSliderStrip" explicitFocusOrder="0" pos="0% 9.97% 74.974% 19.94%"
              sourceFile="UiSliderStrip.cpp" constructorParams="this, core"/>

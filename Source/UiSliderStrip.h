@@ -48,6 +48,9 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
 
+    // Binary resources:
+    static const char* phase_invert_png;
+    static const int phase_invert_pngSize;
 
 
 private:
@@ -61,6 +64,7 @@ private:
     std::unique_ptr<Label> mLabelFreq;
     std::unique_ptr<Slider> mSliderAmp;
     std::unique_ptr<Label> mLabelAmp;
+    std::unique_ptr<ImageButton> mPhaseInvert;
 
 
     //==============================================================================

@@ -8,17 +8,11 @@
 
 namespace BinaryData
 {
-    extern const char*   saw_png;
-    const int            saw_pngSize = 383;
-
-    extern const char*   sqr_png;
-    const int            sqr_pngSize = 251;
-
-    extern const char*   tri_png;
-    const int            tri_pngSize = 406;
+    extern const char*   BiOs_png;
+    const int            BiOs_pngSize = 1199;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 3;
+    const int namedResourceListSize = 1;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

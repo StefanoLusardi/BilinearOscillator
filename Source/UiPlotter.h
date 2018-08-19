@@ -46,12 +46,13 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
 private:
-	void plotSaw(Path& path);
-	void plotSqr(Path& path);
-	void plotTri(Path& path);
+	void plotSaw(Path& path) const;
+	void plotSqr(Path& path) const;
+	void plotTri(Path& path) const;
 
 	float getAmp() const;
 	float getFreq() const;
+	float getPhaseInvert() const;
 	Wave getWaveform() const;
 
 public:
@@ -69,6 +70,7 @@ private:
 
 	Value mAmp;
 	Value mFreq;
+	Value mPhaseInvert;
 	std::map<Wave, Value> mWaveforms;
     //[/UserVariables]
 

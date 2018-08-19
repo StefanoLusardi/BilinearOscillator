@@ -28,14 +28,12 @@
     </GROUP>
     <GROUP id="{AAC0C0B3-B1D4-9A0C-2603-199D4C507469}" name="Resources">
       <GROUP id="{43E6D431-788E-B717-052C-38E305F29D84}" name="Icons">
-        <FILE id="x4H5rP" name="saw.png" compile="0" resource="1" file="Resources/Icons/saw.png"/>
-        <FILE id="S0fU9y" name="sqr.png" compile="0" resource="1" file="Resources/Icons/sqr.png"/>
-        <FILE id="Fw2gwz" name="tri.png" compile="0" resource="1" file="Resources/Icons/tri.png"/>
+        <FILE id="LCXlKj" name="BiOs.png" compile="0" resource="1" file="Resources/Icons/BiOs.png"/>
       </GROUP>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <VS2017 targetFolder="Builds/VisualStudio2017" smallIcon="Fw2gwz" bigIcon="Fw2gwz">
+    <VS2017 targetFolder="Builds/VisualStudio2017" smallIcon="LCXlKj" bigIcon="LCXlKj">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug"/>
         <CONFIGURATION isDebug="0" name="Release"/>

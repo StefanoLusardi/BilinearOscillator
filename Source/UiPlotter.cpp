@@ -44,10 +44,12 @@ UiPlotter::UiPlotter (Component* parent, Core& core)
 
     //[Constructor] You can add your own custom stuff here..
 	const auto sliderUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "SliderStrip");
-	const auto ampModel  = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderAmp" ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
-	const auto freqModel = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderFreq").getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto ampModel   = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderAmp"  ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto freqModel  = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderFreq" ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto phaseModel = sliderUiModel.getChildWithProperty(Props[Prop::Id], "PhaseInvert").getPropertyAsValue(Props[Prop::Value], nullptr, false);
 	mAmp.referTo(ampModel);
 	mFreq.referTo(freqModel);
+	mPhaseInvert.referTo(phaseModel);
 
 	const auto buttonUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "ButtonStrip");
 	const auto sawModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonSaw").getPropertyAsValue(Props[Prop::Value], nullptr, false);
@@ -88,6 +90,17 @@ void UiPlotter::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
 
+	g.setColour(Colours::black);
+	const auto margin = proportionOfWidth(0.05f);
+
+	g.drawVerticalLine(margin, 0, getLocalBounds().getHeight());
+	g.drawVerticalLine(getLocalBounds().getWidth()-margin, 0, getLocalBounds().getHeight());
+	g.drawVerticalLine((getLocalBounds().getCentreX()-margin) * 1 / 2.0f + margin, 0, getLocalBounds().getHeight());
+	g.drawVerticalLine((getLocalBounds().getCentreX()-margin) * 3 / 2.0f + margin, 0, getLocalBounds().getHeight());
+	g.drawVerticalLine(getLocalBounds().getCentreX(), 0, getLocalBounds().getHeight());
+
+	g.drawHorizontalLine(getLocalBounds().getCentreY(), 0, getLocalBounds().getWidth());
+
 	Path p;
 	switch(getWaveform())
 	{
@@ -125,82 +138,89 @@ float UiPlotter::getFreq() const
 	return float(mFreq.getValue());
 }
 
+float UiPlotter::getPhaseInvert() const
+{
+	return int(mPhaseInvert.getValue()) == 0 ? 1.0f : -1.0f;
+}
+
 Wave UiPlotter::getWaveform() const
 {
 	return std::find_if(mWaveforms.begin(), mWaveforms.end(),
 		[](const auto& w) { return w.second == 1; })->first;
 }
 
-void UiPlotter::plotSaw(Path& path)
+void UiPlotter::plotSaw(Path& path) const
 {
+	const auto margin = proportionOfWidth(0.05f);
+	const auto width  = getLocalBounds().getWidth() - margin;
 	const auto yc = getLocalBounds().getCentreY() * getAmp();
-	const auto xq = getLocalBounds().getWidth() / 4.0f;
 
-    path.startNewSubPath(Point<float>(0, yc)); // first point
+	auto y = getPhaseInvert() == 1 ? 0.0f : 2.0f * yc;
+	auto step = 2.0f * yc / float(getLocalBounds().getWidth() - 2.0f * margin);
 
-	auto y = 0.0f;
-	auto step = 2.0f * yc / float(getLocalBounds().getWidth());
-	for (auto x = 0; x < getLocalBounds().getWidth(); ++x)
+    path.startNewSubPath(Point<float>(margin, yc)); // first point
+	for (auto x = margin; x < width; ++x)
 	{
-		y += step;
+		y += step*getPhaseInvert();
 		path.lineTo(Point<float>(x, y));
 	}
-	path.lineTo(Point<float>(getLocalBounds().getWidth()-1, yc)); // last point
+	path.lineTo(Point<float>(width-1, yc)); // last point
 
 	path.applyTransform(AffineTransform::translation(0.0f, getLocalBounds().getCentreY() - yc));
 }
 
-void UiPlotter::plotSqr(Path& path)
+void UiPlotter::plotSqr(Path& path) const
 {
+	const auto margin = proportionOfWidth(0.05f);
+	const auto width  = getLocalBounds().getWidth() - margin;
 	const auto yc = getLocalBounds().getCentreY() * getAmp();
-	const auto xq = getLocalBounds().getWidth() / 4.0f;
+	const auto xc = getLocalBounds().getWidth() / 2.0f;
 
-	const auto x_1_4 = xq;
-	const auto x_2_4 = xq * 2;
-	const auto x_3_4 = xq * 3;
-
-    path.startNewSubPath(Point<float>(0, yc)); // first point
-
-	auto y = 0.0f;
 	auto step = 0.0f;
-	for (auto x = 0; x < getLocalBounds().getWidth(); ++x)
+	auto y = step;
+
+    path.startNewSubPath(Point<float>(margin, yc)); // first point
+	for (auto x = margin; x < width; ++x)
 	{
-		if (x >= 0	   && x < x_1_4) { step = 0.0f; }
-		if (x >= x_1_4 && x < x_2_4) { step = 0.0f; }
-		if (x >= x_2_4 && x < x_3_4) { step = 2.0f*yc; }
-		if (x >= x_3_4)				 { step = 2.0f*yc; }
+		if (x <  xc) { step = getPhaseInvert() == 1 ? 0.0f : 2.0f * yc; }
+		if (x >= xc) { step = getPhaseInvert() == 1 ? 2.0f * yc : 0.0f; }
 
 		y = step;
 		path.lineTo(Point<float>(x, y));
 	}
-	path.lineTo(Point<float>(getLocalBounds().getWidth()-1, yc)); // last point
+	path.lineTo(Point<float>(width-1, yc)); // last point
 
 	path.applyTransform(AffineTransform::translation(0.0f, getLocalBounds().getCentreY() - yc));
 }
 
-void UiPlotter::plotTri(Path& path)
+void UiPlotter::plotTri(Path& path) const
 {
+	const auto margin = proportionOfWidth(0.05f);
+	const auto width  = getLocalBounds().getWidth() - margin;
 	const auto yc = getLocalBounds().getCentreY() * getAmp();
-	const auto xq = getLocalBounds().getWidth() / 4.0f;
+	const auto xc = getLocalBounds().getWidth() / 2.0f;
 
-	const auto x_1_4 = xq;
-	const auto x_2_4 = xq * 2;
-	const auto x_3_4 = xq * 3;
+	const auto x_1_4 = 1.0f * (getLocalBounds().getCentreX()-margin) / 2.0f + margin;
+	const auto x_2_4 = xc;
+	const auto x_3_4 = 3.0f * (getLocalBounds().getCentreX()-margin) / 2.0f + margin;
 
 	auto y = yc;
-    path.startNewSubPath(Point<float>(0, y)); // first point
-
 	auto step = 0.0f;
-	for (auto x = 0; x < getLocalBounds().getWidth(); ++x)
-	{
-		if (x >= 0	   && x < x_1_4) { step =  yc / xq; }
-		if (x >= x_1_4 && x < x_2_4) { step = -yc / xq; }
-		if (x >= x_2_4 && x < x_3_4) { step = -yc / xq; }
-		if (x >= x_3_4)		     	 { step =  yc / xq; }
+	const auto stepUp = -1.0f * yc / float((xc - margin) / 2.0f);
+	const auto stepDw =  2.0f * yc / float(xc - margin);
 
-		y += step;
+    path.startNewSubPath(Point<float>(margin, yc)); // first point
+	for (auto x = margin; x < width; ++x)
+	{
+		if (x >= 0	   && x < x_1_4) { step = stepUp; }
+		if (x >= x_1_4 && x < x_2_4) { step = stepDw; }
+		if (x >= x_2_4 && x < x_3_4) { step = stepDw; }
+		if (x >= x_3_4)				 { step = stepUp; }
+
+		y += step*getPhaseInvert();
 		path.lineTo(Point<float>(x, y));
 	}
+	// last point already computed
 
 	path.applyTransform(AffineTransform::translation(0.0f, getLocalBounds().getCentreY() - yc));
 }
