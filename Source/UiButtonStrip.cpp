@@ -197,9 +197,9 @@ void UiButtonStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtonSaw->setBounds (proportionOfWidth (0.0506f), proportionOfHeight (0.2576f), proportionOfWidth (0.2486f), proportionOfHeight (0.5000f));
-    mButtonSqr->setBounds (proportionOfWidth (0.3722f), proportionOfHeight (0.2576f), proportionOfWidth (0.2486f), proportionOfHeight (0.5000f));
-    mButtonTri->setBounds (proportionOfWidth (0.6994f), proportionOfHeight (0.2576f), proportionOfWidth (0.2486f), proportionOfHeight (0.5000f));
+    mButtonSaw->setBounds (proportionOfWidth (0.0509f), proportionOfHeight (0.2603f), proportionOfWidth (0.2470f), proportionOfHeight (0.5480f));
+    mButtonSqr->setBounds (proportionOfWidth (0.3743f), proportionOfHeight (0.2603f), proportionOfWidth (0.2470f), proportionOfHeight (0.5480f));
+    mButtonTri->setBounds (proportionOfWidth (0.7021f), proportionOfHeight (0.2603f), proportionOfWidth (0.2470f), proportionOfHeight (0.5480f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -229,21 +229,21 @@ BEGIN_JUCER_METADATA
                hasStroke="0"/>
   </BACKGROUND>
   <IMAGEBUTTON name="ButtonSaw" id="7db05320ddd74eb0" memberName="mButtonSaw"
-               virtualName="" explicitFocusOrder="0" pos="5.056% 25.758% 24.86% 50%"
+               virtualName="" explicitFocusOrder="0" pos="5.147% 25.758% 24.706% 54.545%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="saw_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="saw_png" opacityOver="0.89999997615814208984"
                colourOver="ffff0000" resourceDown="saw_png" opacityDown="0.89999997615814208984"
                colourDown="ff00ff00"/>
   <IMAGEBUTTON name="ButtonSqr" id="30c631eda481bac9" memberName="mButtonSqr"
-               virtualName="" explicitFocusOrder="0" pos="37.219% 25.758% 24.86% 50%"
+               virtualName="" explicitFocusOrder="0" pos="37.5% 25.758% 24.706% 54.545%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="sqr_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="sqr_png" opacityOver="0.89999997615814208984"
                colourOver="ffff0000" resourceDown="sqr_png" opacityDown="0.89999997615814208984"
                colourDown="ff00ff00"/>
   <IMAGEBUTTON name="ButtonTri" id="4ea5ec108ddbef92" memberName="mButtonTri"
-               virtualName="" explicitFocusOrder="0" pos="69.944% 25.758% 24.86% 50%"
+               virtualName="" explicitFocusOrder="0" pos="70.147% 25.758% 24.706% 54.545%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="tri_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="tri_png" opacityOver="0.89999997615814208984"

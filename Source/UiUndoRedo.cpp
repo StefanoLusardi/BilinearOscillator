@@ -98,8 +98,8 @@ void UiUndoRedo::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtonUndo->setBounds (proportionOfWidth (0.0511f), proportionOfHeight (0.2576f), proportionOfWidth (0.4000f), proportionOfHeight (0.5000f));
-    mButtonRedo->setBounds (proportionOfWidth (0.5489f), proportionOfHeight (0.2576f), proportionOfWidth (0.4000f), proportionOfHeight (0.5000f));
+    mButtonUndo->setBounds (proportionOfWidth (0.0489f), proportionOfHeight (0.2576f), proportionOfWidth (0.4000f), proportionOfHeight (0.5000f));
+    mButtonRedo->setBounds (proportionOfWidth (0.5511f), proportionOfHeight (0.2576f), proportionOfWidth (0.4000f), proportionOfHeight (0.5000f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -134,11 +134,11 @@ BEGIN_JUCER_METADATA
                hasStroke="0"/>
   </BACKGROUND>
   <TEXTBUTTON name="ButtonUndo" id="2905daae1318e8f9" memberName="mButtonUndo"
-              virtualName="" explicitFocusOrder="0" pos="5.106% 25.758% 40% 50%"
+              virtualName="" explicitFocusOrder="0" pos="4.889% 25.758% 40% 50%"
               bgColOn="ffa45c94" buttonText="Undo" connectedEdges="0" needsCallback="0"
               radioGroupId="0"/>
   <TEXTBUTTON name="ButtonRedo" id="f80fc073aaa0b332" memberName="mButtonRedo"
-              virtualName="" explicitFocusOrder="0" pos="54.894% 25.758% 40% 50%"
+              virtualName="" explicitFocusOrder="0" pos="55.111% 25.758% 40% 50%"
               bgColOn="ffa45c94" buttonText="Redo" connectedEdges="0" needsCallback="0"
               radioGroupId="0"/>
 </JUCER_COMPONENT>

@@ -52,7 +52,7 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
     bufferToFill.clearActiveBufferRegion();
 	
 	
-    const auto level = mCore.getAmp();
+    const auto level = 0.0f; //mCore.getAmp();
 
     auto* leftBuffer  = bufferToFill.buffer->getWritePointer (0, bufferToFill.startSample);
     auto* rightBuffer = bufferToFill.buffer->getWritePointer (1, bufferToFill.startSample);

@@ -106,10 +106,10 @@ void MainUi::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mUiButtonStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (0.7519f), proportionOfHeight (0.0997f));
-    mDumpModelButton->setBounds (proportionOfWidth (0.7497f), proportionOfHeight (0.0997f), proportionOfWidth (0.2503f), proportionOfHeight (0.1994f));
-    mUiSliderStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0997f), proportionOfWidth (0.7497f), proportionOfHeight (0.1994f));
-    mUiUndoRedo->setBounds (proportionOfWidth (0.7519f), proportionOfHeight (0.0000f), proportionOfWidth (0.2482f), proportionOfHeight (0.0997f));
+    mUiButtonStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (0.7514f), proportionOfHeight (0.0997f));
+    mDumpModelButton->setBounds (proportionOfWidth (0.7503f), proportionOfHeight (0.0997f), proportionOfWidth (0.2497f), proportionOfHeight (0.1994f));
+    mUiSliderStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0997f), proportionOfWidth (0.7503f), proportionOfHeight (0.1994f));
+    mUiUndoRedo->setBounds (proportionOfWidth (0.7514f), proportionOfHeight (0.0000f), proportionOfWidth (0.2486f), proportionOfHeight (0.0997f));
     mUiPlotter->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3006f), proportionOfWidth (1.0000f), proportionOfHeight (0.6994f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -153,17 +153,17 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="800" initialHeight="500">
   <BACKGROUND backgroundColour="ffffff"/>
   <JUCERCOMP name="ButtonStrip" id="94d533df8a0dd9aa" memberName="mUiButtonStrip"
-             virtualName="UiButtonStrip" explicitFocusOrder="0" pos="0% 0% 75.185% 9.97%"
+             virtualName="UiButtonStrip" explicitFocusOrder="0" pos="0% 0% 75.138% 9.97%"
              sourceFile="UiButtonStrip.cpp" constructorParams="this, core"/>
   <TEXTBUTTON name="DumpModelButton" id="4e58062973560f20" memberName="mDumpModelButton"
-              virtualName="" explicitFocusOrder="0" pos="74.974% 9.97% 25.026% 19.94%"
+              virtualName="" explicitFocusOrder="0" pos="75.028% 9.97% 24.972% 19.94%"
               bgColOff="ffffff" bgColOn="ffffff" textCol="ffff0000" textColOn="ffff0000"
               buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"/>
   <JUCERCOMP name="SliderStrip" id="187099a553730501" memberName="mUiSliderStrip"
-             virtualName="UiSliderStrip" explicitFocusOrder="0" pos="0% 9.97% 74.974% 19.94%"
+             virtualName="UiSliderStrip" explicitFocusOrder="0" pos="0% 9.97% 75.028% 19.94%"
              sourceFile="UiSliderStrip.cpp" constructorParams="this, core"/>
   <JUCERCOMP name="UndoRedo" id="d5fb429b43c90dae" memberName="mUiUndoRedo"
-             virtualName="UiUndoRedo" explicitFocusOrder="0" pos="75.185% 0% 24.815% 9.97%"
+             virtualName="UiUndoRedo" explicitFocusOrder="0" pos="75.138% 0% 24.862% 9.97%"
              sourceFile="UiUndoRedo.cpp" constructorParams="this, core"/>
   <JUCERCOMP name="Plotter" id="da26afd6fc6b0c15" memberName="mUiPlotter"
              virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 30.06% 100% 69.94%"

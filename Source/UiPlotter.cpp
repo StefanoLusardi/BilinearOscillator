@@ -88,31 +88,39 @@ void UiPlotter::paint (Graphics& g)
         g.fillRoundedRectangle (x, y, width, height, 20.000f);
     }
 
+    {
+        float x = static_cast<float> (proportionOfWidth (0.0500f)), y = static_cast<float> (proportionOfHeight (0.0500f)), width = static_cast<float> (proportionOfWidth (0.9000f)), height = static_cast<float> (proportionOfHeight (0.9000f));
+        Colour strokeColour = Colours::black;
+        //[UserPaintCustomArguments] Customize the painting arguments here..
+        //[/UserPaintCustomArguments]
+        g.setColour (strokeColour);
+        g.drawRoundedRectangle (x, y, width, height, 20.000f, 2.000f);
+    }
+
     //[UserPaint] Add your own custom painting code here..
+	{
+		// Plotter Grid 
+		const auto marginX = static_cast<float>(proportionOfWidth(0.05f));
+		const auto marginY = static_cast<float>(proportionOfHeight(0.05f));
 
-	g.setColour(Colours::black);
-	const auto margin = proportionOfWidth(0.05f);
+		g.setColour(Colours::black);
+		g.drawVerticalLine(int((getLocalBounds().getCentreX()-marginX)*1/2 + marginX), marginY, getLocalBounds().getHeight()-marginY);
+		g.drawVerticalLine(int((getLocalBounds().getCentreX()-marginX)*3/2 + marginX), marginY, getLocalBounds().getHeight()-marginY);
+		g.drawVerticalLine(getLocalBounds().getCentreX(), marginY, getLocalBounds().getHeight()-marginY);
+		g.drawHorizontalLine(getLocalBounds().getCentreY(), marginX, getLocalBounds().getWidth()-marginX);
+	}
 
-	g.drawVerticalLine(margin, 0, getLocalBounds().getHeight());
-	g.drawVerticalLine(getLocalBounds().getWidth()-margin, 0, getLocalBounds().getHeight());
-	g.drawVerticalLine((getLocalBounds().getCentreX()-margin) * 1 / 2.0f + margin, 0, getLocalBounds().getHeight());
-	g.drawVerticalLine((getLocalBounds().getCentreX()-margin) * 3 / 2.0f + margin, 0, getLocalBounds().getHeight());
-	g.drawVerticalLine(getLocalBounds().getCentreX(), 0, getLocalBounds().getHeight());
-
-	g.drawHorizontalLine(getLocalBounds().getCentreY(), 0, getLocalBounds().getWidth());
-
-	Path p;
+	Path path;
 	switch(getWaveform())
 	{
-		case Wave::Saw: plotSaw(p); break;
-		case Wave::Sqr: plotSqr(p); break;
-		case Wave::Tri: plotTri(p); break;
+		case Wave::Saw: plotSaw(path); break;
+		case Wave::Sqr: plotSqr(path); break;
+		case Wave::Tri: plotTri(path); break;
 		default: break;
 	}
 
 	g.setColour(Colours::blueviolet);
-	g.strokePath(p, PathStrokeType(5.0f));
-
+	g.strokePath(path, PathStrokeType(5.0f, PathStrokeType::mitered, PathStrokeType::EndCapStyle::rounded));
     //[/UserPaint]
 }
 
@@ -151,15 +159,16 @@ Wave UiPlotter::getWaveform() const
 
 void UiPlotter::plotSaw(Path& path) const
 {
-	const auto margin = proportionOfWidth(0.05f);
-	const auto width  = getLocalBounds().getWidth() - margin;
-	const auto yc = getLocalBounds().getCentreY() * getAmp();
+	const auto marginX = static_cast<float>(proportionOfWidth(0.05f));
+	const auto marginY = static_cast<float>(proportionOfHeight(0.05f));
+	const auto width  = getLocalBounds().getWidth() - marginX;
+	const auto yc = (getLocalBounds().getCentreY() - marginY) * getAmp();
 
 	auto y = getPhaseInvert() == 1 ? 0.0f : 2.0f * yc;
-	auto step = 2.0f * yc / float(getLocalBounds().getWidth() - 2.0f * margin);
+	auto step = 2.0f * yc / float(getLocalBounds().getWidth() - 2.0f * marginX);
 
-    path.startNewSubPath(Point<float>(margin, yc)); // first point
-	for (auto x = margin; x < width; ++x)
+    path.startNewSubPath(Point<float>(marginX, yc)); // first point
+	for (auto x = marginX; x < width; ++x)
 	{
 		y += step*getPhaseInvert();
 		path.lineTo(Point<float>(x, y));
@@ -171,16 +180,17 @@ void UiPlotter::plotSaw(Path& path) const
 
 void UiPlotter::plotSqr(Path& path) const
 {
-	const auto margin = proportionOfWidth(0.05f);
-	const auto width  = getLocalBounds().getWidth() - margin;
-	const auto yc = getLocalBounds().getCentreY() * getAmp();
+	const auto marginX = static_cast<float>(proportionOfWidth(0.05f));
+	const auto marginY = static_cast<float>(proportionOfHeight(0.05f));
+	const auto width  = getLocalBounds().getWidth() - marginX;
+	const auto yc = (getLocalBounds().getCentreY() - marginY) * getAmp();
 	const auto xc = getLocalBounds().getWidth() / 2.0f;
 
 	auto step = 0.0f;
 	auto y = step;
 
-    path.startNewSubPath(Point<float>(margin, yc)); // first point
-	for (auto x = margin; x < width; ++x)
+    path.startNewSubPath(Point<float>(marginX, yc)); // first point
+	for (auto x = marginX; x < width; ++x)
 	{
 		if (x <  xc) { step = getPhaseInvert() == 1 ? 0.0f : 2.0f * yc; }
 		if (x >= xc) { step = getPhaseInvert() == 1 ? 2.0f * yc : 0.0f; }
@@ -195,22 +205,23 @@ void UiPlotter::plotSqr(Path& path) const
 
 void UiPlotter::plotTri(Path& path) const
 {
-	const auto margin = proportionOfWidth(0.05f);
-	const auto width  = getLocalBounds().getWidth() - margin;
-	const auto yc = getLocalBounds().getCentreY() * getAmp();
+	const auto marginX = static_cast<float>(proportionOfWidth(0.05f));
+	const auto marginY = static_cast<float>(proportionOfHeight(0.05f));
+	const auto width  = getLocalBounds().getWidth() - marginX;
+	const auto yc = (getLocalBounds().getCentreY() - marginY) * getAmp();
 	const auto xc = getLocalBounds().getWidth() / 2.0f;
 
-	const auto x_1_4 = 1.0f * (getLocalBounds().getCentreX()-margin) / 2.0f + margin;
+	const auto x_1_4 = 1.0f * (getLocalBounds().getCentreX()-marginX) / 2.0f + marginX;
 	const auto x_2_4 = xc;
-	const auto x_3_4 = 3.0f * (getLocalBounds().getCentreX()-margin) / 2.0f + margin;
+	const auto x_3_4 = 3.0f * (getLocalBounds().getCentreX()-marginX) / 2.0f + marginX;
 
 	auto y = yc;
 	auto step = 0.0f;
-	const auto stepUp = -1.0f * yc / float((xc - margin) / 2.0f);
-	const auto stepDw =  2.0f * yc / float(xc - margin);
+	const auto stepUp = -1.0f * yc / float((xc - marginX) / 2.0f);
+	const auto stepDw =  2.0f * yc / float(xc - marginX);
 
-    path.startNewSubPath(Point<float>(margin, yc)); // first point
-	for (auto x = margin; x < width; ++x)
+    path.startNewSubPath(Point<float>(marginX, yc)); // first point
+	for (auto x = marginX; x < width; ++x)
 	{
 		if (x >= 0	   && x < x_1_4) { step = stepUp; }
 		if (x >= x_1_4 && x < x_2_4) { step = stepDw; }
@@ -245,6 +256,8 @@ BEGIN_JUCER_METADATA
   <BACKGROUND backgroundColour="0">
     <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
                hasStroke="0"/>
+    <ROUNDRECT pos="5% 5% 90% 90%" cornerSize="20.00000000000000000000" fill="solid: ffffff"
+               hasStroke="1" stroke="2, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
 </JUCER_COMPONENT>
 
