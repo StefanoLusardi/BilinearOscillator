@@ -28,6 +28,7 @@ class Core;
 #include "UiSliderStrip.h"
 #include "UiUndoRedo.h"
 #include "UiPlotter.h"
+#include "UiOscillator.h"
 
 
 //==============================================================================
@@ -67,11 +68,12 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    std::unique_ptr<UiButtonStrip> mUiButtonStrip;
     std::unique_ptr<TextButton> mDumpModelButton;
+    std::unique_ptr<UiButtonStrip> mUiButtonStrip;
     std::unique_ptr<UiSliderStrip> mUiSliderStrip;
     std::unique_ptr<UiUndoRedo> mUiUndoRedo;
     std::unique_ptr<UiPlotter> mUiPlotter;
+    std::unique_ptr<UiOscillator> mOsc2;
 
 
     //==============================================================================

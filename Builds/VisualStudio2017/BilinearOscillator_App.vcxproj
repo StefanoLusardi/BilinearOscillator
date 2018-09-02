@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Source\MainUi.cpp"/>
     <ClCompile Include="..\..\Source\UiButtonStrip.cpp"/>
+    <ClCompile Include="..\..\Source\UiOscillator.cpp"/>
     <ClCompile Include="..\..\Source\UiPlotter.cpp"/>
     <ClCompile Include="..\..\Source\UiSliderStrip.cpp"/>
     <ClCompile Include="..\..\Source\UiUndoRedo.cpp"/>
@@ -1822,8 +1823,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\Source\BaseLNF.h"/>
     <ClInclude Include="..\..\Source\SliderLNF.h"/>
+    <ClInclude Include="..\..\Source\SliderLNF_Horizontal.h"/>
+    <ClInclude Include="..\..\Source\SliderLNF_Vertical.h"/>
     <ClInclude Include="..\..\Source\MainUi.h"/>
     <ClInclude Include="..\..\Source\UiButtonStrip.h"/>
+    <ClInclude Include="..\..\Source\UiOscillator.h"/>
     <ClInclude Include="..\..\Source\UiPlotter.h"/>
     <ClInclude Include="..\..\Source\UiSliderStrip.h"/>
     <ClInclude Include="..\..\Source\UiUndoRedo.h"/>

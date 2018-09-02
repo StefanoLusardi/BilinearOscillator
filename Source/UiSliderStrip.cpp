@@ -20,6 +20,9 @@
 //[Headers] You can add your own extra header files here...
 #include "ParameterTags.h"
 #include "Core.h"
+#include "SliderLNF.h"
+#include "SliderLNF_Horizontal.h"
+#include "SliderLNF_Vertical.h"
 //[/Headers]
 
 #include "UiSliderStrip.h"
@@ -33,6 +36,7 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
     : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
+
     //[/Constructor_pre]
 
     setName ("SliderStrip");
@@ -89,14 +93,28 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
 
 	const auto setUiModel = [&] () -> ValueTree
 	{
-		if (!core.getModel().getChildWithProperty(Props[Prop::Id], this->getName()).isValid())
+		if (mParent && core.getModel().getChildWithProperty(Props[Prop::Id], mParent->getName()).isValid())
 		{
-			// model does not contain current Ui ValueTree. Create it and add it to model.
-			core.getModel().appendChild( { Tags[Tag::Ui], {{Props[Prop::Id], this->getName()}} }, nullptr/*&core.getUndoManager()*/);
+			if (!core.getModel()
+				.getChildWithProperty(Props[Prop::Id], mParent->getName())
+				.getChildWithProperty(Props[Prop::Id], this->getName()).isValid())
+			{
+				core.getModel()
+					.getChildWithProperty(Props[Prop::Id], mParent->getName())
+					.appendChild( { Tags[Tag::Ui], {{Props[Prop::Id], this->getName()}} }, nullptr);
+			}		
+			return core.getModel()
+				.getChildWithProperty(Props[Prop::Id], mParent->getName())
+				.getChildWithProperty(Props[Prop::Id], this->getName());
 		}
-
-		// Return current Ui ValueTree.
-		return core.getModel().getChildWithProperty(Props[Prop::Id], this->getName());
+		else
+		{
+			if (!core.getModel().getChildWithProperty(Props[Prop::Id], this->getName()).isValid())
+			{
+				core.getModel().appendChild( { Tags[Tag::Ui], {{Props[Prop::Id], this->getName()}} }, nullptr);
+			}
+			return core.getModel().getChildWithProperty(Props[Prop::Id], this->getName());
+		}
 	};
 
 	/// SLIDER BINDINGS
@@ -188,6 +206,7 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
 
 	setUiModelParam_Button(mUiModel, mPhaseInvert.get());
 	setParamBinding_Button(mUiModel, mPhaseInvert.get());
+
     //[/UserPreSize]
 
     setSize (435, 120);
@@ -217,6 +236,7 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
 		auto uiProperty = mUiModel.getChildWithProperty(Props[Prop::Id], mPhaseInvert->getName());
 		uiProperty.setProperty(Props[Prop::Value], mPhaseInvert->getToggleState(), nullptr /*&core.getUndoManager()*/);
 	};
+
     //[/Constructor]
 }
 
@@ -243,21 +263,15 @@ void UiSliderStrip::paint (Graphics& g)
     //[/UserPrePaint]
 
     {
-        float x = static_cast<float> (proportionOfWidth (0.0000f)), y = static_cast<float> (proportionOfHeight (0.0000f)), width = static_cast<float> (proportionOfWidth (1.0000f)), height = static_cast<float> (proportionOfHeight (0.5000f));
+        float x = static_cast<float> (proportionOfWidth (0.0000f)), y = static_cast<float> (proportionOfHeight (0.0000f)), width = static_cast<float> (proportionOfWidth (1.0000f)), height = static_cast<float> (proportionOfHeight (1.0000f));
         Colour fillColour = Colours::yellow;
+        Colour strokeColour = Colours::black;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.fillRoundedRectangle (x, y, width, height, 20.000f);
-    }
-
-    {
-        float x = static_cast<float> (proportionOfWidth (0.0000f)), y = static_cast<float> (proportionOfHeight (0.5000f)), width = static_cast<float> (proportionOfWidth (1.0000f)), height = static_cast<float> (proportionOfHeight (0.5000f));
-        Colour fillColour = Colours::yellow;
-        //[UserPaintCustomArguments] Customize the painting arguments here..
-        //[/UserPaintCustomArguments]
-        g.setColour (fillColour);
-        g.fillRoundedRectangle (x, y, width, height, 20.000f);
+        g.setColour (strokeColour);
+        g.drawRoundedRectangle (x, y, width, height, 20.000f, 5.000f);
     }
 
     //[UserPaint] Add your own custom painting code here..
@@ -269,12 +283,43 @@ void UiSliderStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mSliderFreq->setBounds (proportionOfWidth (0.1536f), proportionOfHeight (0.0000f), proportionOfWidth (0.5989f), proportionOfHeight (0.5151f));
-    mLabelFreq->setBounds (proportionOfWidth (0.0519f), proportionOfHeight (0.0000f), proportionOfWidth (0.1017f), proportionOfHeight (0.5151f));
-    mSliderAmp->setBounds (proportionOfWidth (0.1536f), proportionOfHeight (0.5151f), proportionOfWidth (0.5989f), proportionOfHeight (0.5151f));
-    mLabelAmp->setBounds (proportionOfWidth (0.0519f), proportionOfHeight (0.5151f), proportionOfWidth (0.1017f), proportionOfHeight (0.5151f));
-    mPhaseInvert->setBounds (proportionOfWidth (0.8022f), proportionOfHeight (0.6511f), proportionOfWidth (0.1536f), proportionOfHeight (0.2508f));
+    mSliderFreq->setBounds (proportionOfWidth (0.1569f), proportionOfHeight (0.0000f), proportionOfWidth (0.6003f), proportionOfHeight (0.5232f));
+    mLabelFreq->setBounds (proportionOfWidth (0.0501f), proportionOfHeight (0.0000f), proportionOfWidth (0.1035f), proportionOfHeight (0.5232f));
+    mSliderAmp->setBounds (proportionOfWidth (0.1569f), proportionOfHeight (0.5232f), proportionOfWidth (0.6003f), proportionOfHeight (0.5232f));
+    mLabelAmp->setBounds (proportionOfWidth (0.0501f), proportionOfHeight (0.5232f), proportionOfWidth (0.1035f), proportionOfHeight (0.5232f));
+    mPhaseInvert->setBounds (proportionOfWidth (0.8001f), proportionOfHeight (0.6516f), proportionOfWidth (0.1569f), proportionOfHeight (0.2500f));
     //[UserResized] Add your own custom resize handling here..
+
+	const auto isHorizontal = getWidth() >= 3 * getHeight();
+
+	if (mIsHorizontal != isHorizontal)
+	{
+		if (isHorizontal)
+		{
+			mLabelAmp->setVisible(true);
+			mLabelFreq->setVisible(true);
+
+			mSliderAmp->setTextBoxStyle(Slider::TextBoxRight, false, 80, 20);
+			mSliderAmp->setSliderStyle(Slider::LinearHorizontal);
+
+			mSliderFreq->setTextBoxStyle(Slider::TextBoxRight, false, 80, 20);
+			mSliderFreq->setSliderStyle(Slider::LinearHorizontal);
+		}
+		else
+		{
+			mLabelAmp->setVisible(false);
+			mLabelFreq->setVisible(false);
+
+			mSliderAmp->setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
+			mSliderAmp->setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
+
+			mSliderFreq->setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
+			mSliderFreq->setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
+		}
+
+		mIsHorizontal = isHorizontal;
+	}
+
     //[/UserResized]
 }
 
@@ -299,37 +344,35 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="435"
                  initialHeight="120">
   <BACKGROUND backgroundColour="0">
-    <ROUNDRECT pos="0% 0% 100% 50%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
-               hasStroke="0"/>
-    <ROUNDRECT pos="0% 50% 100% 50%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
-               hasStroke="0"/>
+    <ROUNDRECT pos="0% 0% 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
+               hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
   <SLIDER name="SliderFreq" id="49b85c14e9b29fb6" memberName="mSliderFreq"
-          virtualName="" explicitFocusOrder="0" pos="15.359% 0% 59.89% 51.511%"
+          virtualName="" explicitFocusOrder="0" pos="15.69% 0% 60.026% 52.315%"
           textboxtext="ff000000" min="20.00000000000000000000" max="5000.00000000000000000000"
           int="0.00100000000000000002" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
           needsCallback="0"/>
   <LABEL name="freq label" id="6bca026c5b9e7e17" memberName="mLabelFreq"
-         virtualName="" explicitFocusOrder="0" pos="5.193% 0% 10.166% 51.511%"
+         virtualName="" explicitFocusOrder="0" pos="5.013% 0% 10.352% 52.315%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Frequency"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <SLIDER name="SliderAmp" id="b06f49a585e9b552" memberName="mSliderAmp"
-          virtualName="" explicitFocusOrder="0" pos="15.359% 51.511% 59.89% 51.511%"
+          virtualName="" explicitFocusOrder="0" pos="15.69% 52.315% 60.026% 52.315%"
           textboxtext="ff000000" textboxoutline="ff8e989b" min="0.00000000000000000000"
           max="1.00000000000000000000" int="0.00100000000000000002" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.50000000000000000000" needsCallback="0"/>
   <LABEL name="amp label" id="531e30d8428f3fd" memberName="mLabelAmp"
-         virtualName="" explicitFocusOrder="0" pos="5.193% 51.511% 10.166% 51.511%"
+         virtualName="" explicitFocusOrder="0" pos="5.013% 52.315% 10.352% 52.315%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Amplitude"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <IMAGEBUTTON name="PhaseInvert" id="14f6f7c6a495ed84" memberName="mPhaseInvert"
-               virtualName="" explicitFocusOrder="0" pos="80.221% 65.106% 15.359% 25.076%"
+               virtualName="" explicitFocusOrder="0" pos="80.013% 65.162% 15.69% 25%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="phase_invert_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="phase_invert_png" opacityOver="0.89999997615814208984"

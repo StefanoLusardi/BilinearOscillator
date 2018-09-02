@@ -6,6 +6,10 @@
     <GROUP id="{480B5E67-5FBE-0961-4B31-6CB14086996F}" name="LookAndFeel">
       <FILE id="RnUlIf" name="BaseLNF.h" compile="0" resource="0" file="Source/BaseLNF.h"/>
       <FILE id="pLhHxf" name="SliderLNF.h" compile="0" resource="0" file="Source/SliderLNF.h"/>
+      <FILE id="gQRk8c" name="SliderLNF_Horizontal.h" compile="0" resource="0"
+            file="Source/SliderLNF_Horizontal.h"/>
+      <FILE id="WN5UPH" name="SliderLNF_Vertical.h" compile="0" resource="0"
+            file="Source/SliderLNF_Vertical.h"/>
     </GROUP>
     <GROUP id="{16245E02-1F5F-01D6-67C1-08CB0B89CDBA}" name="Ui">
       <FILE id="mfl7hA" name="MainUi.cpp" compile="1" resource="0" file="Source/MainUi.cpp"/>
@@ -13,6 +17,9 @@
       <FILE id="TFiOcv" name="UiButtonStrip.cpp" compile="1" resource="0"
             file="Source/UiButtonStrip.cpp"/>
       <FILE id="PBP6BH" name="UiButtonStrip.h" compile="0" resource="0" file="Source/UiButtonStrip.h"/>
+      <FILE id="MrCGCC" name="UiOscillator.cpp" compile="1" resource="0"
+            file="Source/UiOscillator.cpp"/>
+      <FILE id="HC6Lll" name="UiOscillator.h" compile="0" resource="0" file="Source/UiOscillator.h"/>
       <FILE id="hyOgWP" name="UiPlotter.cpp" compile="1" resource="0" file="Source/UiPlotter.cpp"/>
       <FILE id="GRdbMV" name="UiPlotter.h" compile="0" resource="0" file="Source/UiPlotter.h"/>
       <FILE id="lMTfQo" name="UiSliderStrip.cpp" compile="1" resource="0"

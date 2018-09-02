@@ -72,14 +72,28 @@ UiButtonStrip::UiButtonStrip (Component* parent, Core& core)
 
 	const auto setUiModel = [&] () -> ValueTree
 	{
-		if (!core.getModel().getChildWithProperty(Props[Prop::Id], this->getName()).isValid())
+		if (mParent && core.getModel().getChildWithProperty(Props[Prop::Id], mParent->getName()).isValid())
 		{
-			// model does not contain current Ui ValueTree. Create it and add it to model.
-			core.getModel().appendChild( { Tags[Tag::Ui], {{Props[Prop::Id], this->getName()}} }, nullptr/*&core.getUndoManager()*/);
+			if (!core.getModel()
+				.getChildWithProperty(Props[Prop::Id], mParent->getName())
+				.getChildWithProperty(Props[Prop::Id], this->getName()).isValid())
+			{
+				core.getModel()
+					.getChildWithProperty(Props[Prop::Id], mParent->getName())
+					.appendChild( { Tags[Tag::Ui], {{Props[Prop::Id], this->getName()}} }, nullptr);
+			}		
+			return core.getModel()
+				.getChildWithProperty(Props[Prop::Id], mParent->getName())
+				.getChildWithProperty(Props[Prop::Id], this->getName());
 		}
-
-		// Return current Ui ValueTree.
-		return core.getModel().getChildWithProperty(Props[Prop::Id], this->getName());
+		else
+		{
+			if (!core.getModel().getChildWithProperty(Props[Prop::Id], this->getName()).isValid())
+			{
+				core.getModel().appendChild( { Tags[Tag::Ui], {{Props[Prop::Id], this->getName()}} }, nullptr);
+			}
+			return core.getModel().getChildWithProperty(Props[Prop::Id], this->getName());
+		}
 	};
 
 	const auto setUiModelParam = [&] (ValueTree& uiModel, auto* component)
@@ -182,10 +196,13 @@ void UiButtonStrip::paint (Graphics& g)
     {
         float x = 0.0f, y = 0.0f, width = static_cast<float> (proportionOfWidth (1.0000f)), height = static_cast<float> (proportionOfHeight (1.0000f));
         Colour fillColour = Colours::yellow;
+        Colour strokeColour = Colours::black;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.fillRoundedRectangle (x, y, width, height, 20.000f);
+        g.setColour (strokeColour);
+        g.drawRoundedRectangle (x, y, width, height, 20.000f, 5.000f);
     }
 
     //[UserPaint] Add your own custom painting code here..
@@ -197,9 +214,9 @@ void UiButtonStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtonSaw->setBounds (proportionOfWidth (0.0509f), proportionOfHeight (0.2603f), proportionOfWidth (0.2470f), proportionOfHeight (0.5480f));
-    mButtonSqr->setBounds (proportionOfWidth (0.3743f), proportionOfHeight (0.2603f), proportionOfWidth (0.2470f), proportionOfHeight (0.5480f));
-    mButtonTri->setBounds (proportionOfWidth (0.7021f), proportionOfHeight (0.2603f), proportionOfWidth (0.2470f), proportionOfHeight (0.5480f));
+    mButtonSaw->setBounds (proportionOfWidth (0.0501f), proportionOfHeight (0.2581f), proportionOfWidth (0.2467f), proportionOfHeight (0.5451f));
+    mButtonSqr->setBounds (proportionOfWidth (0.3731f), proportionOfHeight (0.2581f), proportionOfWidth (0.2467f), proportionOfHeight (0.5451f));
+    mButtonTri->setBounds (proportionOfWidth (0.6999f), proportionOfHeight (0.2581f), proportionOfWidth (0.2467f), proportionOfHeight (0.5451f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -226,24 +243,24 @@ BEGIN_JUCER_METADATA
                  initialHeight="60">
   <BACKGROUND backgroundColour="0">
     <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
-               hasStroke="0"/>
+               hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
   <IMAGEBUTTON name="ButtonSaw" id="7db05320ddd74eb0" memberName="mButtonSaw"
-               virtualName="" explicitFocusOrder="0" pos="5.147% 25.758% 24.706% 54.545%"
+               virtualName="" explicitFocusOrder="0" pos="5.013% 25.81% 24.674% 54.514%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="saw_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="saw_png" opacityOver="0.89999997615814208984"
                colourOver="ffff0000" resourceDown="saw_png" opacityDown="0.89999997615814208984"
                colourDown="ff00ff00"/>
   <IMAGEBUTTON name="ButtonSqr" id="30c631eda481bac9" memberName="mButtonSqr"
-               virtualName="" explicitFocusOrder="0" pos="37.5% 25.758% 24.706% 54.545%"
+               virtualName="" explicitFocusOrder="0" pos="37.305% 25.81% 24.674% 54.514%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="sqr_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="sqr_png" opacityOver="0.89999997615814208984"
                colourOver="ffff0000" resourceDown="sqr_png" opacityDown="0.89999997615814208984"
                colourDown="ff00ff00"/>
   <IMAGEBUTTON name="ButtonTri" id="4ea5ec108ddbef92" memberName="mButtonTri"
-               virtualName="" explicitFocusOrder="0" pos="70.147% 25.758% 24.706% 54.545%"
+               virtualName="" explicitFocusOrder="0" pos="69.987% 25.81% 24.674% 54.514%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="tri_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="tri_png" opacityOver="0.89999997615814208984"

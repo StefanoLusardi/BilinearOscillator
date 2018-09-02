@@ -391,6 +391,9 @@
     <ClCompile Include="..\..\Source\UiButtonStrip.cpp">
       <Filter>BilinearOscillator\Ui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\UiOscillator.cpp">
+      <Filter>BilinearOscillator\Ui</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\UiPlotter.cpp">
       <Filter>BilinearOscillator\Ui</Filter>
     </ClCompile>
@@ -2229,10 +2232,19 @@
     <ClInclude Include="..\..\Source\SliderLNF.h">
       <Filter>BilinearOscillator\LookAndFeel</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\SliderLNF_Horizontal.h">
+      <Filter>BilinearOscillator\LookAndFeel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SliderLNF_Vertical.h">
+      <Filter>BilinearOscillator\LookAndFeel</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\MainUi.h">
       <Filter>BilinearOscillator\Ui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UiButtonStrip.h">
+      <Filter>BilinearOscillator\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UiOscillator.h">
       <Filter>BilinearOscillator\Ui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UiPlotter.h">

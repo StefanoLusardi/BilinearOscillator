@@ -83,10 +83,13 @@ void UiUndoRedo::paint (Graphics& g)
     {
         float x = 0.0f, y = 0.0f, width = static_cast<float> (proportionOfWidth (1.0000f)), height = static_cast<float> (proportionOfHeight (1.0000f));
         Colour fillColour = Colours::yellow;
+        Colour strokeColour = Colours::black;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.fillRoundedRectangle (x, y, width, height, 20.000f);
+        g.setColour (strokeColour);
+        g.drawRoundedRectangle (x, y, width, height, 20.000f, 5.000f);
     }
 
     //[UserPaint] Add your own custom painting code here..
@@ -131,7 +134,7 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="600" initialHeight="400">
   <BACKGROUND backgroundColour="0">
     <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
-               hasStroke="0"/>
+               hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
   <TEXTBUTTON name="ButtonUndo" id="2905daae1318e8f9" memberName="mButtonUndo"
               virtualName="" explicitFocusOrder="0" pos="4.889% 25.758% 40% 50%"

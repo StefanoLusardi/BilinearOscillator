@@ -21,10 +21,10 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "SliderLNF.h"
-class Core;
 //[/Headers]
 
+#include "UiButtonStrip.h"
+#include "UiSliderStrip.h"
 
 
 //==============================================================================
@@ -35,12 +35,12 @@ class Core;
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class UiSliderStrip  : public Component
+class UiOscillator  : public Component
 {
 public:
     //==============================================================================
-    UiSliderStrip (Component* parent, Core& core);
-    ~UiSliderStrip();
+    UiOscillator (Component* parent, Core& core);
+    ~UiOscillator();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -49,29 +49,21 @@ public:
     void paint (Graphics& g) override;
     void resized() override;
 
-    // Binary resources:
-    static const char* phase_invert_png;
-    static const int phase_invert_pngSize;
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	Component* mParent;
 	ValueTree mUiModel;
-	std::unique_ptr<SliderLNF> mSliderLNF;
-	bool mIsHorizontal;
     //[/UserVariables]
 
     //==============================================================================
-    std::unique_ptr<Slider> mSliderFreq;
-    std::unique_ptr<Label> mLabelFreq;
-    std::unique_ptr<Slider> mSliderAmp;
-    std::unique_ptr<Label> mLabelAmp;
-    std::unique_ptr<ImageButton> mPhaseInvert;
+    std::unique_ptr<UiButtonStrip> mButtons;
+    std::unique_ptr<UiSliderStrip> mSliders;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UiSliderStrip)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UiOscillator)
 };
 
 //[EndFile] You can add extra defines here...

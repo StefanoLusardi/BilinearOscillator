@@ -82,10 +82,13 @@ void UiPlotter::paint (Graphics& g)
     {
         float x = 0.0f, y = 0.0f, width = static_cast<float> (proportionOfWidth (1.0000f)), height = static_cast<float> (proportionOfHeight (1.0000f));
         Colour fillColour = Colours::yellow;
+        Colour strokeColour = Colours::black;
         //[UserPaintCustomArguments] Customize the painting arguments here..
         //[/UserPaintCustomArguments]
         g.setColour (fillColour);
         g.fillRoundedRectangle (x, y, width, height, 20.000f);
+        g.setColour (strokeColour);
+        g.drawRoundedRectangle (x, y, width, height, 20.000f, 5.000f);
     }
 
     {
@@ -99,7 +102,7 @@ void UiPlotter::paint (Graphics& g)
 
     //[UserPaint] Add your own custom painting code here..
 	{
-		// Plotter Grid 
+		// Plotter Grid
 		const auto marginX = static_cast<float>(proportionOfWidth(0.05f));
 		const auto marginY = static_cast<float>(proportionOfHeight(0.05f));
 
@@ -109,7 +112,7 @@ void UiPlotter::paint (Graphics& g)
 		g.drawVerticalLine(getLocalBounds().getCentreX(), marginY, getLocalBounds().getHeight()-marginY);
 		g.drawHorizontalLine(getLocalBounds().getCentreY(), marginX, getLocalBounds().getWidth()-marginX);
 	}
-
+	
 	Path path;
 	switch(getWaveform())
 	{
@@ -121,7 +124,8 @@ void UiPlotter::paint (Graphics& g)
 
 	g.setColour(Colours::blueviolet);
 	g.strokePath(path, PathStrokeType(5.0f, PathStrokeType::mitered, PathStrokeType::EndCapStyle::rounded));
-    //[/UserPaint]
+    
+	//[/UserPaint]
 }
 
 void UiPlotter::resized()
@@ -255,7 +259,7 @@ BEGIN_JUCER_METADATA
                  initialHeight="400">
   <BACKGROUND backgroundColour="0">
     <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
-               hasStroke="0"/>
+               hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
     <ROUNDRECT pos="5% 5% 90% 90%" cornerSize="20.00000000000000000000" fill="solid: ffffff"
                hasStroke="1" stroke="2, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
