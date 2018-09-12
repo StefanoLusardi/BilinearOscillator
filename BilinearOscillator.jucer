@@ -29,12 +29,6 @@
       <FILE id="iFmO3y" name="UiUndoRedo.h" compile="0" resource="0" file="Source/UiUndoRedo.h"/>
     </GROUP>
     <GROUP id="{5DADDD06-4DF5-F3D9-CF9C-899BDB1C5061}" name="Core">
-      <FILE id="il9n6K" name="Wavetable.h" compile="0" resource="0" file="Source/Wavetable.h"/>
-      <FILE id="EdWydH" name="Interpolator.cpp" compile="1" resource="0"
-            file="Source/Interpolator.cpp"/>
-      <FILE id="b2d6nr" name="Interpolator.h" compile="0" resource="0" file="Source/Interpolator.h"/>
-      <FILE id="TrG3bU" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
-      <FILE id="vZn0sR" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
       <FILE id="rLMY78" name="Core.cpp" compile="1" resource="0" file="Source/Core.cpp"/>
       <FILE id="rCp1rh" name="Core.h" compile="0" resource="0" file="Source/Core.h"/>
       <FILE id="H3RnoL" name="ParameterTags.h" compile="0" resource="0" file="Source/ParameterTags.h"/>
