@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="BilinearOscillator\LookAndFeel">
+      <UniqueIdentifier>{FE048E38-9607-1477-D5DA-30321AB0CA86}</UniqueIdentifier>
+    </Filter>
     <Filter Include="BilinearOscillator\Ui">
       <UniqueIdentifier>{B0805D76-6E1D-4B61-5027-8396D248F9B3}</UniqueIdentifier>
     </Filter>
@@ -400,6 +402,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\UiUndoRedo.cpp">
       <Filter>BilinearOscillator\Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Interpolator.cpp">
+      <Filter>BilinearOscillator\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Oscillator.cpp">
+      <Filter>BilinearOscillator\Core</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Core.cpp">
       <Filter>BilinearOscillator\Core</Filter>
@@ -1269,9 +1277,6 @@
       <Filter>JUCE Modules\juce_events\native</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\Libraries\JUCE\modules\juce_events\native\juce_mac_MessageManager.mm">
-      <Filter>JUCE Modules\juce_events\native</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Libraries\JUCE\modules\juce_events\native\juce_linux_Messaging.cpp">
       <Filter>JUCE Modules\juce_events\native</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\Libraries\JUCE\modules\juce_events\native\juce_win32_Messaging.cpp">
@@ -2256,6 +2261,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\UiUndoRedo.h">
       <Filter>BilinearOscillator\Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Wavetable.h">
+      <Filter>BilinearOscillator\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Interpolator.h">
+      <Filter>BilinearOscillator\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Oscillator.h">
+      <Filter>BilinearOscillator\Core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Core.h">
       <Filter>BilinearOscillator\Core</Filter>

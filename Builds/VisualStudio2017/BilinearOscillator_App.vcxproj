@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Project DefaultTargets="Build"
+         ToolsVersion="15.0"
+         xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -137,7 +140,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <LargeAddressAware>true</LargeAddressAware>
-      <AdditionalLibraryDirectories>D:\Workspace\Projects\Juce\BilinearOscillator\Builds\VisualStudio2017\BilinearOscillator_Core\lib</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -152,6 +154,8 @@
     <ClCompile Include="..\..\Source\UiPlotter.cpp"/>
     <ClCompile Include="..\..\Source\UiSliderStrip.cpp"/>
     <ClCompile Include="..\..\Source\UiUndoRedo.cpp"/>
+    <ClCompile Include="..\..\Source\Interpolator.cpp"/>
+    <ClCompile Include="..\..\Source\Oscillator.cpp"/>
     <ClCompile Include="..\..\Source\Core.cpp"/>
     <ClCompile Include="..\..\Source\MainComponent.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
@@ -1829,6 +1833,9 @@
     <ClInclude Include="..\..\Source\UiPlotter.h"/>
     <ClInclude Include="..\..\Source\UiSliderStrip.h"/>
     <ClInclude Include="..\..\Source\UiUndoRedo.h"/>
+    <ClInclude Include="..\..\Source\Wavetable.h"/>
+    <ClInclude Include="..\..\Source\Interpolator.h"/>
+    <ClInclude Include="..\..\Source\Oscillator.h"/>
     <ClInclude Include="..\..\Source\Core.h"/>
     <ClInclude Include="..\..\Source\ParameterTags.h"/>
     <ClInclude Include="..\..\Source\MainComponent.h"/>
