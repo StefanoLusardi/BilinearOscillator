@@ -77,14 +77,14 @@ namespace Interpolation
 		const T& ShiftInterpolate(const T& alpha, const T& sample) override
 		{
 			ShiftSamples(sample);
-			return mSamples[1] + 0.5*alpha*(mSamples[2] - mSamples[0] + alpha*(mSamples[2] - 2 * mSamples[1] + mSamples[0]));
+			return this->mSamples[1] + 0.5*alpha*(this->mSamples[2] - this->mSamples[0] + alpha*(this->mSamples[2] - 2 * this->mSamples[1] + this->mSamples[0]));
 		}
 
 		const T& Interpolate(const T& alpha, const std::vector<T>& samples) override
 		{
 			assert(samples.size() == mSamplesSize);
-			mSamples = samples;
-			return mSamples[1] + 0.5*alpha*(mSamples[2] - mSamples[0] + alpha*(mSamples[2] - 2 * mSamples[1] + mSamples[0]));
+			this->mSamples = samples;
+			return this->mSamples[1] + 0.5*alpha*(this->mSamples[2] - this->mSamples[0] + alpha*(this->mSamples[2] - 2 * this->mSamples[1] + this->mSamples[0]));
 		} 
 
 	private:
@@ -101,14 +101,14 @@ namespace Interpolation
 		const T& ShiftInterpolate(const T& alpha, const T& sample) override
 		{
 			ShiftSamples(sample);
-			return mSamples[1] + 0.5*alpha*(mSamples[2] - mSamples[0] + alpha*(2.0*mSamples[0] - 5.0*mSamples[1] + 4.0*mSamples[2] - mSamples[3] + alpha*(3.0*(mSamples[1] - mSamples[2]) + mSamples[3] - mSamples[0])));
+			return this->mSamples[1] + 0.5*alpha*(this->mSamples[2] - this->mSamples[0] + alpha*(2.0*this->mSamples[0] - 5.0*this->mSamples[1] + 4.0*this->mSamples[2] - this->mSamples[3] + alpha*(3.0*(this->mSamples[1] - this->mSamples[2]) + this->mSamples[3] - this->mSamples[0])));
 		}
 
 		const T& Interpolate(const T& alpha, const std::vector<T>& samples) override
 		{
 			assert(samples.size() == mSamplesSize);   
-			mSamples = samples;
-			return mSamples[1] + 0.5*alpha*(mSamples[2] - mSamples[0] + alpha*(2.0*mSamples[0] - 5.0*mSamples[1] + 4.0*mSamples[2] - mSamples[3] + alpha*(3.0*(mSamples[1] - mSamples[2]) + mSamples[3] - mSamples[0])));
+			this->mSamples = samples;
+			return this->mSamples[1] + 0.5*alpha*(this->mSamples[2] - this->mSamples[0] + alpha*(2.0*this->mSamples[0] - 5.0*this->mSamples[1] + 4.0*this->mSamples[2] - this->mSamples[3] + alpha*(3.0*(this->mSamples[1] - this->mSamples[2]) + this->mSamples[3] - this->mSamples[0])));
 		}
 
 	private:
