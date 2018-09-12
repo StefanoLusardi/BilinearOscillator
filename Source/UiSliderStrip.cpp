@@ -102,7 +102,7 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
 				core.getModel()
 					.getChildWithProperty(Props[Prop::Id], mParent->getName())
 					.appendChild( { Tags[Tag::Ui], {{Props[Prop::Id], this->getName()}} }, nullptr);
-			}		
+			}
 			return core.getModel()
 				.getChildWithProperty(Props[Prop::Id], mParent->getName())
 				.getChildWithProperty(Props[Prop::Id], this->getName());
@@ -283,43 +283,78 @@ void UiSliderStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mSliderFreq->setBounds (proportionOfWidth (0.1569f), proportionOfHeight (0.0000f), proportionOfWidth (0.6003f), proportionOfHeight (0.5232f));
-    mLabelFreq->setBounds (proportionOfWidth (0.0501f), proportionOfHeight (0.0000f), proportionOfWidth (0.1035f), proportionOfHeight (0.5232f));
-    mSliderAmp->setBounds (proportionOfWidth (0.1569f), proportionOfHeight (0.5232f), proportionOfWidth (0.6003f), proportionOfHeight (0.5232f));
-    mLabelAmp->setBounds (proportionOfWidth (0.0501f), proportionOfHeight (0.5232f), proportionOfWidth (0.1035f), proportionOfHeight (0.5232f));
-    mPhaseInvert->setBounds (proportionOfWidth (0.8001f), proportionOfHeight (0.6516f), proportionOfWidth (0.1569f), proportionOfHeight (0.2500f));
+    mSliderFreq->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.0000f), proportionOfWidth (0.6000f), proportionOfHeight (0.5000f));
+    mLabelFreq->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.0000f), proportionOfWidth (0.1028f), proportionOfHeight (0.0997f));
+    mSliderAmp->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.5000f), proportionOfWidth (0.6000f), proportionOfHeight (0.5000f));
+    mLabelAmp->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.5272f), proportionOfWidth (0.1028f), proportionOfHeight (0.0997f));
+    mPhaseInvert->setBounds (proportionOfWidth (0.8000f), proportionOfHeight (0.6496f), proportionOfWidth (0.1558f), proportionOfHeight (0.2523f));
     //[UserResized] Add your own custom resize handling here..
+	const auto isHorizontal = getLocalBounds().getCentreX() > getLocalBounds().getHeight();
 
-	const auto isHorizontal = getWidth() >= 3 * getHeight();
-
-	if (mIsHorizontal != isHorizontal)
+	if (isHorizontal)
 	{
-		if (isHorizontal)
-		{
-			mLabelAmp->setVisible(true);
-			mLabelFreq->setVisible(true);
+		const auto marginH = static_cast<float>(proportionOfHeight(0.1f));
+		const auto marginW = static_cast<float>(proportionOfWidth(0.1f));
 
-			mSliderAmp->setTextBoxStyle(Slider::TextBoxRight, false, 80, 20);
-			mSliderAmp->setSliderStyle(Slider::LinearHorizontal);
+	    mSliderAmp->setSliderStyle(Slider::SliderStyle::LinearHorizontal);
+		mSliderAmp->setTextBoxStyle(Slider::TextBoxRight, false, 80, 20);
 
-			mSliderFreq->setTextBoxStyle(Slider::TextBoxRight, false, 80, 20);
-			mSliderFreq->setSliderStyle(Slider::LinearHorizontal);
-		}
-		else
-		{
-			mLabelAmp->setVisible(false);
-			mLabelFreq->setVisible(false);
+		mSliderFreq->setSliderStyle(Slider::SliderStyle::LinearHorizontal);
+		mSliderFreq->setTextBoxStyle(Slider::TextBoxRight, false, 80, 20);
 
-			mSliderAmp->setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
-			mSliderAmp->setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
+		// Frequency
+		FlexBox flexboxFrq;
+		flexboxFrq.flexDirection = FlexBox::Direction::row;
+		flexboxFrq.items.add(FlexItem(*mSliderFreq).withFlex(0.8f));
+		flexboxFrq.items.add(FlexItem().withFlex(0.2f));
 
-			mSliderFreq->setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
-			mSliderFreq->setSliderStyle(Slider::RotaryHorizontalVerticalDrag);
-		}
+		// Amplitude
+		FlexBox flexboxAmp;
+		flexboxAmp.flexDirection = FlexBox::Direction::row;
+		flexboxAmp.items.add(FlexItem(*mSliderAmp).withFlex(0.8f));
+		flexboxAmp.items.add(FlexItem(*mPhaseInvert).withFlex(0.2f));
 
-		mIsHorizontal = isHorizontal;
+		// Parent Flexbox
+		FlexBox flexBox;
+		flexBox.flexDirection = FlexBox::Direction::column;
+		flexBox.items.add(FlexItem(*mLabelFreq).withFlex(0.8f));
+		flexBox.items.add(FlexItem(flexboxFrq ).withFlex(1.2f));
+		flexBox.items.add(FlexItem(*mLabelAmp ).withFlex(0.8f));
+		flexBox.items.add(FlexItem(flexboxAmp ).withFlex(1.2f));
+
+		flexBox.performLayout(getLocalBounds().toFloat().reduced(marginW, marginH));
 	}
+	else
+	{
+		const auto labelHeight  { getHeight() / 4.0f };
+		const auto sliderHeight { labelHeight * 3.0f };
 
+		mSliderAmp->setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+		mSliderAmp->setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
+
+		mSliderFreq->setSliderStyle(Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+		mSliderFreq->setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
+
+		// Amplitude
+		FlexBox flexboxAmp;
+		flexboxAmp.flexDirection = FlexBox::Direction::column;
+		flexboxAmp.items.add(FlexItem(*mSliderAmp).withFlex(0, 1, sliderHeight));
+		flexboxAmp.items.add(FlexItem(*mLabelAmp ).withFlex(0, 1, labelHeight ));
+		flexboxAmp.performLayout(getLocalBounds().removeFromRight(getLocalBounds().getCentreX()).toFloat());
+
+		// Invert
+		FlexBox flexboxInvert;
+		flexboxInvert.items.add(FlexItem(*mPhaseInvert).withFlex(1.0f));
+		const auto invertBounds = flexboxAmp.items.getFirst().currentBounds.getProportion(Rectangle<float>{0.3f, 0.3f, 0.4f, 0.4f});
+		flexboxInvert.performLayout(invertBounds);
+
+		// Frequency
+		FlexBox flexboxFreq;
+		flexboxFreq.flexDirection = FlexBox::Direction::column;
+		flexboxFreq.items.add(FlexItem(*mSliderFreq ).withFlex(0, 1, sliderHeight));
+		flexboxFreq.items.add(FlexItem(*mLabelFreq  ).withFlex(0, 1, labelHeight ));
+		flexboxFreq.performLayout(getLocalBounds().removeFromLeft(getLocalBounds().getCentreX()).toFloat());
+	}
     //[/UserResized]
 }
 
@@ -348,31 +383,31 @@ BEGIN_JUCER_METADATA
                hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
   <SLIDER name="SliderFreq" id="49b85c14e9b29fb6" memberName="mSliderFreq"
-          virtualName="" explicitFocusOrder="0" pos="15.69% 0% 60.026% 52.315%"
+          virtualName="" explicitFocusOrder="0" pos="9.945% 0% 60% 50%"
           textboxtext="ff000000" min="20.00000000000000000000" max="5000.00000000000000000000"
           int="0.00100000000000000002" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
           needsCallback="0"/>
   <LABEL name="freq label" id="6bca026c5b9e7e17" memberName="mLabelFreq"
-         virtualName="" explicitFocusOrder="0" pos="5.013% 0% 10.352% 52.315%"
+         virtualName="" explicitFocusOrder="0" pos="9.945% 0% 10.276% 9.97%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Frequency"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <SLIDER name="SliderAmp" id="b06f49a585e9b552" memberName="mSliderAmp"
-          virtualName="" explicitFocusOrder="0" pos="15.69% 52.315% 60.026% 52.315%"
+          virtualName="" explicitFocusOrder="0" pos="9.945% 50% 60% 50%"
           textboxtext="ff000000" textboxoutline="ff8e989b" min="0.00000000000000000000"
           max="1.00000000000000000000" int="0.00100000000000000002" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.50000000000000000000" needsCallback="0"/>
   <LABEL name="amp label" id="531e30d8428f3fd" memberName="mLabelAmp"
-         virtualName="" explicitFocusOrder="0" pos="5.013% 52.315% 10.352% 52.315%"
+         virtualName="" explicitFocusOrder="0" pos="9.945% 52.719% 10.276% 9.97%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Amplitude"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <IMAGEBUTTON name="PhaseInvert" id="14f6f7c6a495ed84" memberName="mPhaseInvert"
-               virtualName="" explicitFocusOrder="0" pos="80.013% 65.162% 15.69% 25%"
+               virtualName="" explicitFocusOrder="0" pos="80% 64.955% 15.58% 25.227%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="phase_invert_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="phase_invert_png" opacityOver="0.89999997615814208984"

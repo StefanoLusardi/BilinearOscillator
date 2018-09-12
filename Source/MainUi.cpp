@@ -58,7 +58,7 @@ MainUi::MainUi (Component* parent, Core& core)
     addAndMakeVisible (mUiUndoRedo.get());
     mUiPlotter.reset (new UiPlotter (this, core));
     addAndMakeVisible (mUiPlotter.get());
-	mOsc2.reset (new UiOscillator (this, core));
+    mOsc2.reset (new UiOscillator (this, core));
     addAndMakeVisible (mOsc2.get());
 
     //[UserPreSize]
@@ -117,7 +117,7 @@ void MainUi::resized()
     mUiSliderStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0997f), proportionOfWidth (0.7503f), proportionOfHeight (0.1994f));
     mUiUndoRedo->setBounds (proportionOfWidth (0.7514f), proportionOfHeight (0.0000f), proportionOfWidth (0.2486f), proportionOfHeight (0.0997f));
     mUiPlotter->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.5997f), proportionOfWidth (1.0000f), proportionOfHeight (0.4003f));
-    mOsc2->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3000f), proportionOfWidth (0.7500f), proportionOfHeight (0.3000f));
+    mOsc2->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3006f), proportionOfWidth (0.7503f), proportionOfHeight (0.3006f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }

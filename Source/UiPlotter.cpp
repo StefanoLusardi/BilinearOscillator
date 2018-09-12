@@ -112,7 +112,7 @@ void UiPlotter::paint (Graphics& g)
 		g.drawVerticalLine(getLocalBounds().getCentreX(), marginY, getLocalBounds().getHeight()-marginY);
 		g.drawHorizontalLine(getLocalBounds().getCentreY(), marginX, getLocalBounds().getWidth()-marginX);
 	}
-	
+
 	Path path;
 	switch(getWaveform())
 	{
@@ -124,8 +124,8 @@ void UiPlotter::paint (Graphics& g)
 
 	g.setColour(Colours::blueviolet);
 	g.strokePath(path, PathStrokeType(5.0f, PathStrokeType::mitered, PathStrokeType::EndCapStyle::rounded));
-    
-	//[/UserPaint]
+
+    //[/UserPaint]
 }
 
 void UiPlotter::resized()

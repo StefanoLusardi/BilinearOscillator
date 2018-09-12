@@ -81,7 +81,7 @@ UiButtonStrip::UiButtonStrip (Component* parent, Core& core)
 				core.getModel()
 					.getChildWithProperty(Props[Prop::Id], mParent->getName())
 					.appendChild( { Tags[Tag::Ui], {{Props[Prop::Id], this->getName()}} }, nullptr);
-			}		
+			}
 			return core.getModel()
 				.getChildWithProperty(Props[Prop::Id], mParent->getName())
 				.getChildWithProperty(Props[Prop::Id], this->getName());
@@ -214,10 +214,22 @@ void UiButtonStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtonSaw->setBounds (proportionOfWidth (0.0501f), proportionOfHeight (0.2581f), proportionOfWidth (0.2467f), proportionOfHeight (0.5451f));
-    mButtonSqr->setBounds (proportionOfWidth (0.3731f), proportionOfHeight (0.2581f), proportionOfWidth (0.2467f), proportionOfHeight (0.5451f));
-    mButtonTri->setBounds (proportionOfWidth (0.6999f), proportionOfHeight (0.2581f), proportionOfWidth (0.2467f), proportionOfHeight (0.5451f));
+    mButtonSaw->setBounds (proportionOfWidth (0.0501f), proportionOfHeight (0.2576f), proportionOfWidth (0.2474f), proportionOfHeight (0.5455f));
+    mButtonSqr->setBounds (proportionOfWidth (0.3726f), proportionOfHeight (0.2576f), proportionOfWidth (0.2474f), proportionOfHeight (0.5455f));
+    mButtonTri->setBounds (proportionOfWidth (0.6996f), proportionOfHeight (0.2576f), proportionOfWidth (0.2474f), proportionOfHeight (0.5455f));
     //[UserResized] Add your own custom resize handling here..
+	FlexBox fb;
+    fb.flexWrap = FlexBox::Wrap::wrap;
+    fb.justifyContent = FlexBox::JustifyContent::spaceAround;
+
+	const auto margin = static_cast<float>(proportionOfHeight(0.1f));
+	const auto flexMargin = FlexItem::Margin(margin, margin, margin, margin);
+
+	fb.items.add (FlexItem(*mButtonSaw).withFlex(1).withMargin(flexMargin));
+	fb.items.add (FlexItem(*mButtonSqr).withFlex(1).withMargin(flexMargin));
+	fb.items.add (FlexItem(*mButtonTri).withFlex(1).withMargin(flexMargin));
+
+	fb.performLayout (getLocalBounds().toFloat());
     //[/UserResized]
 }
 
@@ -246,21 +258,21 @@ BEGIN_JUCER_METADATA
                hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
   <IMAGEBUTTON name="ButtonSaw" id="7db05320ddd74eb0" memberName="mButtonSaw"
-               virtualName="" explicitFocusOrder="0" pos="5.013% 25.81% 24.674% 54.514%"
+               virtualName="" explicitFocusOrder="0" pos="5.013% 25.81% 24.74% 54.514%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="saw_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="saw_png" opacityOver="0.89999997615814208984"
                colourOver="ffff0000" resourceDown="saw_png" opacityDown="0.89999997615814208984"
                colourDown="ff00ff00"/>
   <IMAGEBUTTON name="ButtonSqr" id="30c631eda481bac9" memberName="mButtonSqr"
-               virtualName="" explicitFocusOrder="0" pos="37.305% 25.81% 24.674% 54.514%"
+               virtualName="" explicitFocusOrder="0" pos="37.24% 25.81% 24.74% 54.514%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="sqr_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="sqr_png" opacityOver="0.89999997615814208984"
                colourOver="ffff0000" resourceDown="sqr_png" opacityDown="0.89999997615814208984"
                colourDown="ff00ff00"/>
   <IMAGEBUTTON name="ButtonTri" id="4ea5ec108ddbef92" memberName="mButtonTri"
-               virtualName="" explicitFocusOrder="0" pos="69.987% 25.81% 24.674% 54.514%"
+               virtualName="" explicitFocusOrder="0" pos="69.987% 25.81% 24.74% 54.514%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="tri_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="tri_png" opacityOver="0.89999997615814208984"

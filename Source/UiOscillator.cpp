@@ -24,6 +24,7 @@
 
 #include "UiOscillator.h"
 
+
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
@@ -57,7 +58,7 @@ UiOscillator::UiOscillator (Component* parent, Core& core)
 				core.getModel()
 					.getChildWithProperty(Props[Prop::Id], mParent->getName())
 					.appendChild( { Tags[Tag::Ui], {{Props[Prop::Id], this->getName()}} }, nullptr);
-			}		
+			}
 			return core.getModel()
 				.getChildWithProperty(Props[Prop::Id], mParent->getName())
 				.getChildWithProperty(Props[Prop::Id], this->getName());
@@ -121,8 +122,8 @@ void UiOscillator::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtons->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (1.0000f), proportionOfHeight (0.3293f));
-    mSliders->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3293f), proportionOfWidth (1.0000f), proportionOfHeight (0.6601f));
+    mButtons->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (1.0000f), proportionOfHeight (0.3317f));
+    mSliders->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3317f), proportionOfWidth (1.0000f), proportionOfHeight (0.6583f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -149,10 +150,10 @@ BEGIN_JUCER_METADATA
                  initialHeight="180">
   <BACKGROUND backgroundColour="ff323e44"/>
   <JUCERCOMP name="Buttons" id="d53e1e56aa8f0e71" memberName="mButtons" virtualName="UiButtonStrip"
-             explicitFocusOrder="0" pos="0% 0% 100% 33%" sourceFile="UiButtonStrip.cpp"
+             explicitFocusOrder="0" pos="0% 0% 100% 33.166%" sourceFile="UiButtonStrip.cpp"
              constructorParams="this, core"/>
   <JUCERCOMP name="Sliders" id="bbb8682bd56b35e2" memberName="mSliders" virtualName="UiSliderStrip"
-             explicitFocusOrder="0" pos="0% 33% 100% 66%" sourceFile="UiSliderStrip.cpp"
+             explicitFocusOrder="0" pos="0% 33.166% 100% 65.829%" sourceFile="UiSliderStrip.cpp"
              constructorParams="this, core"/>
 </JUCER_COMPONENT>
 
