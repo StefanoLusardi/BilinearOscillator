@@ -40,7 +40,7 @@ class UiPlotter  : public Component
 {
 public:
     //==============================================================================
-    UiPlotter (Component* parent, Core& core);
+    UiPlotter (Component* parent, Core& core, const String& objId);
     ~UiPlotter();
 
     //==============================================================================

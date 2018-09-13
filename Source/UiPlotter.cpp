@@ -28,13 +28,13 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-UiPlotter::UiPlotter (Component* parent, Core& core)
+UiPlotter::UiPlotter (Component* parent, Core& core, const String& objId)
     : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
+	setName("Plotter" + objId);
     //[/Constructor_pre]
 
-    setName ("UiPlotter");
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -43,7 +43,7 @@ UiPlotter::UiPlotter (Component* parent, Core& core)
 
 
     //[Constructor] You can add your own custom stuff here..
-	const auto sliderUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "SliderStrip");
+	const auto sliderUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "Oscillator"+objId).getChildWithProperty(Props[Prop::Id], "SliderStrip");
 	const auto ampModel   = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderAmp"  ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
 	const auto freqModel  = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderFreq" ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
 	const auto phaseModel = sliderUiModel.getChildWithProperty(Props[Prop::Id], "PhaseInvert").getPropertyAsValue(Props[Prop::Value], nullptr, false);
@@ -51,7 +51,7 @@ UiPlotter::UiPlotter (Component* parent, Core& core)
 	mFreq.referTo(freqModel);
 	mPhaseInvert.referTo(phaseModel);
 
-	const auto buttonUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "ButtonStrip");
+	const auto buttonUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "Oscillator"+objId).getChildWithProperty(Props[Prop::Id], "ButtonStrip");
 	const auto sawModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonSaw").getPropertyAsValue(Props[Prop::Value], nullptr, false);
 	const auto sqrModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonSqr").getPropertyAsValue(Props[Prop::Value], nullptr, false);
 	const auto triModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonTri").getPropertyAsValue(Props[Prop::Value], nullptr, false);
@@ -157,8 +157,8 @@ float UiPlotter::getPhaseInvert() const
 
 Wave UiPlotter::getWaveform() const
 {
-	return std::find_if(mWaveforms.begin(), mWaveforms.end(),
-		[](const auto& w) { return w.second == 1; })->first;
+	const auto wave = std::find_if(mWaveforms.begin(), mWaveforms.end(), [](const auto& w) { return w.second == 1; });
+	return wave!=mWaveforms.end() ? wave->first : Wave::None;
 }
 
 void UiPlotter::plotSaw(Path& path) const
@@ -252,8 +252,8 @@ void UiPlotter::plotTri(Path& path) const
 
 BEGIN_JUCER_METADATA
 
-<JUCER_COMPONENT documentType="Component" className="UiPlotter" componentName="UiPlotter"
-                 parentClasses="public Component" constructorParams="Component* parent, Core&amp; core"
+<JUCER_COMPONENT documentType="Component" className="UiPlotter" componentName=""
+                 parentClasses="public Component" constructorParams="Component* parent, Core&amp; core, const String&amp; objId"
                  variableInitialisers="mParent{parent}" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">

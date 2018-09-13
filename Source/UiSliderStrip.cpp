@@ -283,11 +283,11 @@ void UiSliderStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mSliderFreq->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.0000f), proportionOfWidth (0.6000f), proportionOfHeight (0.5000f));
-    mLabelFreq->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.0000f), proportionOfWidth (0.1028f), proportionOfHeight (0.0997f));
-    mSliderAmp->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.5000f), proportionOfWidth (0.6000f), proportionOfHeight (0.5000f));
-    mLabelAmp->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.5272f), proportionOfWidth (0.1028f), proportionOfHeight (0.0997f));
-    mPhaseInvert->setBounds (proportionOfWidth (0.8000f), proportionOfHeight (0.6496f), proportionOfWidth (0.1558f), proportionOfHeight (0.2523f));
+    mSliderFreq->setBounds (proportionOfWidth (0.0951f), proportionOfHeight (0.0000f), proportionOfWidth (0.5996f), proportionOfHeight (0.5038f));
+    mLabelFreq->setBounds (proportionOfWidth (0.0951f), proportionOfHeight (0.0000f), proportionOfWidth (0.1018f), proportionOfHeight (0.0992f));
+    mSliderAmp->setBounds (proportionOfWidth (0.0951f), proportionOfHeight (0.5038f), proportionOfWidth (0.5996f), proportionOfHeight (0.5038f));
+    mLabelAmp->setBounds (proportionOfWidth (0.0951f), proportionOfHeight (0.5267f), proportionOfWidth (0.1018f), proportionOfHeight (0.0992f));
+    mPhaseInvert->setBounds (proportionOfWidth (0.7987f), proportionOfHeight (0.6489f), proportionOfWidth (0.1571f), proportionOfHeight (0.2519f));
     //[UserResized] Add your own custom resize handling here..
 	const auto isHorizontal = getLocalBounds().getCentreX() > getLocalBounds().getHeight();
 
@@ -383,31 +383,31 @@ BEGIN_JUCER_METADATA
                hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
   <SLIDER name="SliderFreq" id="49b85c14e9b29fb6" memberName="mSliderFreq"
-          virtualName="" explicitFocusOrder="0" pos="9.945% 0% 60% 50%"
+          virtualName="" explicitFocusOrder="0" pos="9.513% 0% 59.956% 50.382%"
           textboxtext="ff000000" min="20.00000000000000000000" max="5000.00000000000000000000"
           int="0.00100000000000000002" style="LinearHorizontal" textBoxPos="TextBoxRight"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
           needsCallback="0"/>
   <LABEL name="freq label" id="6bca026c5b9e7e17" memberName="mLabelFreq"
-         virtualName="" explicitFocusOrder="0" pos="9.945% 0% 10.276% 9.97%"
+         virtualName="" explicitFocusOrder="0" pos="9.513% 0% 10.177% 9.924%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Frequency"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <SLIDER name="SliderAmp" id="b06f49a585e9b552" memberName="mSliderAmp"
-          virtualName="" explicitFocusOrder="0" pos="9.945% 50% 60% 50%"
+          virtualName="" explicitFocusOrder="0" pos="9.513% 50.382% 59.956% 50.382%"
           textboxtext="ff000000" textboxoutline="ff8e989b" min="0.00000000000000000000"
           max="1.00000000000000000000" int="0.00100000000000000002" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="0.50000000000000000000" needsCallback="0"/>
   <LABEL name="amp label" id="531e30d8428f3fd" memberName="mLabelAmp"
-         virtualName="" explicitFocusOrder="0" pos="9.945% 52.719% 10.276% 9.97%"
+         virtualName="" explicitFocusOrder="0" pos="9.513% 52.672% 10.177% 9.924%"
          textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Amplitude"
          editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
          fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
          bold="0" italic="0" justification="33"/>
   <IMAGEBUTTON name="PhaseInvert" id="14f6f7c6a495ed84" memberName="mPhaseInvert"
-               virtualName="" explicitFocusOrder="0" pos="80% 64.955% 15.58% 25.227%"
+               virtualName="" explicitFocusOrder="0" pos="79.867% 64.885% 15.708% 25.191%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="phase_invert_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="phase_invert_png" opacityOver="0.89999997615814208984"

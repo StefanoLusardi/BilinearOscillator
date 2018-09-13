@@ -39,7 +39,7 @@ class UiOscillator  : public Component
 {
 public:
     //==============================================================================
-    UiOscillator (Component* parent, Core& core);
+    UiOscillator (Component* parent, Core& core, const String& objId);
     ~UiOscillator();
 
     //==============================================================================

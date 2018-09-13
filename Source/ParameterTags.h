@@ -14,7 +14,7 @@
 enum class Tag { Ui, Param };
 enum class Prop { Id, Value };
 enum class Param { Amp, Freq, Play, Mute};
-enum class Wave {Saw, Sqr, Tri };
+enum class Wave {Saw, Sqr, Tri, None};
 
 static std::map<Tag, const char*> Tags 
 { 
