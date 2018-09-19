@@ -32,7 +32,7 @@ UiPlotter::UiPlotter (Component* parent, Core& core, const String& objId)
     : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
-	setName("Plotter" + objId);
+	setName(Widgets[Widget::Plotter] + objId);
     //[/Constructor_pre]
 
 
@@ -43,18 +43,18 @@ UiPlotter::UiPlotter (Component* parent, Core& core, const String& objId)
 
 
     //[Constructor] You can add your own custom stuff here..
-	const auto sliderUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "Oscillator"+objId).getChildWithProperty(Props[Prop::Id], "SliderStrip");
-	const auto ampModel   = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderAmp"  ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
-	const auto freqModel  = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderFreq" ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
-	const auto phaseModel = sliderUiModel.getChildWithProperty(Props[Prop::Id], "PhaseInvert").getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto sliderUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], Widgets[Widget::Osc]+objId).getChildWithProperty(Props[Prop::Id], Widgets[Widget::SliderStrip]);
+	const auto ampModel   = sliderUiModel.getChildWithProperty(Props[Prop::Id], Params[Param::Amp]  ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto freqModel  = sliderUiModel.getChildWithProperty(Props[Prop::Id], Params[Param::Freq] ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto phaseModel = sliderUiModel.getChildWithProperty(Props[Prop::Id], Params[Param::PhInv]).getPropertyAsValue(Props[Prop::Value], nullptr, false);
 	mAmp.referTo(ampModel);
 	mFreq.referTo(freqModel);
 	mPhaseInvert.referTo(phaseModel);
 
-	const auto buttonUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "Oscillator"+objId).getChildWithProperty(Props[Prop::Id], "ButtonStrip");
-	const auto sawModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonSaw").getPropertyAsValue(Props[Prop::Value], nullptr, false);
-	const auto sqrModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonSqr").getPropertyAsValue(Props[Prop::Value], nullptr, false);
-	const auto triModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonTri").getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto buttonUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], Widgets[Widget::Osc]+objId).getChildWithProperty(Props[Prop::Id], Widgets[Widget::ButtonStrip]);
+	const auto sawModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], Waves[Wave::Saw]).getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto sqrModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], Waves[Wave::Sqr]).getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto triModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], Waves[Wave::Tri]).getPropertyAsValue(Props[Prop::Value], nullptr, false);
 	mWaveforms[Wave::Saw].referTo(sawModel);
 	mWaveforms[Wave::Sqr].referTo(sqrModel);
 	mWaveforms[Wave::Tri].referTo(triModel);

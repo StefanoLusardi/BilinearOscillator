@@ -48,8 +48,7 @@ public:
     MainUi (Component* parent, Core& core);
     ~MainUi();
 
-
-	//==============================================================================
+    //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
 	void searchTree(juce::ValueTree tree, const juce::Identifier & propertyToSearchFor);
 	void valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged, const Identifier& property) override;

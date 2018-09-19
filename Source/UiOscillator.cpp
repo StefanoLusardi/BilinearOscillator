@@ -33,7 +33,7 @@ UiOscillator::UiOscillator (Component* parent, Core& core, const String& objId)
     : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
-    setName ("Oscillator" + objId);
+    setName (Widgets[Widget::Osc] + objId);
 
 	//const auto setUiModel = [&] () -> ValueTree
 	//{
@@ -149,10 +149,10 @@ BEGIN_JUCER_METADATA
                  initialHeight="180">
   <BACKGROUND backgroundColour="ff323e44"/>
   <JUCERCOMP name="Buttons" id="d53e1e56aa8f0e71" memberName="mButtons" virtualName="UiButtonStrip"
-             explicitFocusOrder="0" pos="0% 0% 100% 33.233%" sourceFile="UiButtonStrip.cpp"
+             explicitFocusOrder="0" pos="0% 0% 100% 32.995%" sourceFile="UiButtonStrip.cpp"
              constructorParams="this, core"/>
   <JUCERCOMP name="Sliders" id="bbb8682bd56b35e2" memberName="mSliders" virtualName="UiSliderStrip"
-             explicitFocusOrder="0" pos="0% 33.233% 100% 65.861%" sourceFile="UiSliderStrip.cpp"
+             explicitFocusOrder="0" pos="0% 32.995% 100% 65.99%" sourceFile="UiSliderStrip.cpp"
              constructorParams="this, core"/>
 </JUCER_COMPONENT>
 

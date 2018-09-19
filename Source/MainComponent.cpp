@@ -15,6 +15,8 @@ MainComponent::MainComponent()
 	mMainUi.reset(new MainUi(this, mCore));
 	addAndMakeVisible(mMainUi.get());
 
+	mCore.setupModel();
+
 	// Make sure you set the size of the component after
     // you add any child components.
     setSize (800, 500);
@@ -52,7 +54,7 @@ void MainComponent::getNextAudioBlock (const AudioSourceChannelInfo& bufferToFil
     bufferToFill.clearActiveBufferRegion();
 	
 	
-    const auto level = 0.0f; //mCore.getAmp();
+    const auto level = 0.0; //mCore.getOsc1Amp();
 
     auto* leftBuffer  = bufferToFill.buffer->getWritePointer (0, bufferToFill.startSample);
     auto* rightBuffer = bufferToFill.buffer->getWritePointer (1, bufferToFill.startSample);

@@ -33,28 +33,25 @@ UiButtonStrip::UiButtonStrip (Component* parent, Core& core)
     : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
+    setName (Widgets[Widget::ButtonStrip]);
     //[/Constructor_pre]
 
-    setName ("ButtonStrip");
-    mButtonSaw.reset (new ImageButton ("ButtonSaw"));
+    mButtonSaw.reset (new ImageButton (String()));
     addAndMakeVisible (mButtonSaw.get());
-    mButtonSaw->setButtonText (String());
 
     mButtonSaw->setImages (false, true, true,
                            ImageCache::getFromMemory (saw_png, saw_pngSize), 0.900f, Colour (0xffa45c94),
                            ImageCache::getFromMemory (saw_png, saw_pngSize), 0.900f, Colours::red,
                            ImageCache::getFromMemory (saw_png, saw_pngSize), 0.900f, Colours::lime);
-    mButtonSqr.reset (new ImageButton ("ButtonSqr"));
+    mButtonSqr.reset (new ImageButton (String()));
     addAndMakeVisible (mButtonSqr.get());
-    mButtonSqr->setButtonText (String());
 
     mButtonSqr->setImages (false, true, true,
                            ImageCache::getFromMemory (sqr_png, sqr_pngSize), 0.900f, Colour (0xffa45c94),
                            ImageCache::getFromMemory (sqr_png, sqr_pngSize), 0.900f, Colours::red,
                            ImageCache::getFromMemory (sqr_png, sqr_pngSize), 0.900f, Colours::lime);
-    mButtonTri.reset (new ImageButton ("ButtonTri"));
+    mButtonTri.reset (new ImageButton (String()));
     addAndMakeVisible (mButtonTri.get());
-    mButtonTri->setButtonText (String());
 
     mButtonTri->setImages (false, true, true,
                            ImageCache::getFromMemory (tri_png, tri_pngSize), 0.900f, Colour (0xffa45c94),
@@ -62,6 +59,10 @@ UiButtonStrip::UiButtonStrip (Component* parent, Core& core)
                            ImageCache::getFromMemory (tri_png, tri_pngSize), 0.900f, Colours::lime);
 
     //[UserPreSize]
+	mButtonSaw->setName(Waves[Wave::Saw]);
+	mButtonSqr->setName(Waves[Wave::Sqr]);
+	mButtonTri->setName(Waves[Wave::Tri]);
+
 	mButtonSaw->setClickingTogglesState(true);
 	mButtonSqr->setClickingTogglesState(true);
 	mButtonTri->setClickingTogglesState(true);
@@ -214,9 +215,9 @@ void UiButtonStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtonSaw->setBounds (proportionOfWidth (0.0509f), proportionOfHeight (0.2576f), proportionOfWidth (0.2478f), proportionOfHeight (0.5455f));
-    mButtonSqr->setBounds (proportionOfWidth (0.3717f), proportionOfHeight (0.2576f), proportionOfWidth (0.2478f), proportionOfHeight (0.5455f));
-    mButtonTri->setBounds (proportionOfWidth (0.6991f), proportionOfHeight (0.2576f), proportionOfWidth (0.2478f), proportionOfHeight (0.5455f));
+    mButtonSaw->setBounds (proportionOfWidth (0.0453f), proportionOfHeight (0.2613f), proportionOfWidth (0.2541f), proportionOfHeight (0.5378f));
+    mButtonSqr->setBounds (proportionOfWidth (0.3735f), proportionOfHeight (0.2613f), proportionOfWidth (0.2541f), proportionOfHeight (0.5378f));
+    mButtonTri->setBounds (proportionOfWidth (0.7017f), proportionOfHeight (0.2613f), proportionOfWidth (0.2541f), proportionOfHeight (0.5378f));
     //[UserResized] Add your own custom resize handling here..
 	FlexBox fb;
     fb.flexWrap = FlexBox::Wrap::wrap;
@@ -248,7 +249,7 @@ void UiButtonStrip::resized()
 
 BEGIN_JUCER_METADATA
 
-<JUCER_COMPONENT documentType="Component" className="UiButtonStrip" componentName="ButtonStrip"
+<JUCER_COMPONENT documentType="Component" className="UiButtonStrip" componentName=""
                  parentClasses="public Component" constructorParams="Component* parent, Core&amp; core"
                  variableInitialisers="mParent{parent}" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="435"
@@ -257,22 +258,22 @@ BEGIN_JUCER_METADATA
     <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
                hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
-  <IMAGEBUTTON name="ButtonSaw" id="7db05320ddd74eb0" memberName="mButtonSaw"
-               virtualName="" explicitFocusOrder="0" pos="5.088% 25.758% 24.779% 54.545%"
-               buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
-               keepProportions="1" resourceNormal="saw_png" opacityNormal="0.89999997615814208984"
+  <IMAGEBUTTON name="" id="7db05320ddd74eb0" memberName="mButtonSaw" virtualName=""
+               explicitFocusOrder="0" pos="4.53% 26.133% 25.414% 53.776%" buttonText=""
+               connectedEdges="0" needsCallback="0" radioGroupId="0" keepProportions="1"
+               resourceNormal="saw_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="saw_png" opacityOver="0.89999997615814208984"
                colourOver="ffff0000" resourceDown="saw_png" opacityDown="0.89999997615814208984"
                colourDown="ff00ff00"/>
-  <IMAGEBUTTON name="ButtonSqr" id="30c631eda481bac9" memberName="mButtonSqr"
-               virtualName="" explicitFocusOrder="0" pos="37.168% 25.758% 24.779% 54.545%"
+  <IMAGEBUTTON name="" id="30c631eda481bac9" memberName="mButtonSqr" virtualName=""
+               explicitFocusOrder="0" pos="37.348% 26.133% 25.414% 53.776%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="sqr_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="sqr_png" opacityOver="0.89999997615814208984"
                colourOver="ffff0000" resourceDown="sqr_png" opacityDown="0.89999997615814208984"
                colourDown="ff00ff00"/>
-  <IMAGEBUTTON name="ButtonTri" id="4ea5ec108ddbef92" memberName="mButtonTri"
-               virtualName="" explicitFocusOrder="0" pos="69.912% 25.758% 24.779% 54.545%"
+  <IMAGEBUTTON name="" id="4ea5ec108ddbef92" memberName="mButtonTri" virtualName=""
+               explicitFocusOrder="0" pos="70.166% 26.133% 25.414% 53.776%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
                keepProportions="1" resourceNormal="tri_png" opacityNormal="0.89999997615814208984"
                colourNormal="ffa45c94" resourceOver="tri_png" opacityOver="0.89999997615814208984"

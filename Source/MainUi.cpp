@@ -77,7 +77,7 @@ MainUi::MainUi (Component* parent, Core& core)
 		const StringRef xmlModelFile { "model_dump_ui.xml" };
 		const auto xmlModelFilePath { File::getCurrentWorkingDirectory().getChildFile(xmlModelFile) };
 		const auto ok =  core.getModel().createXml()->writeToFile(xmlModelFilePath, StringRef{});
-		mDumpModelButton->setButtonText(ok ? "" : "MODEL DUMP ERROR!");
+		if (!ok) mDumpModelButton->setButtonText("MODEL DUMP ERROR!");
 	};
     //[/Constructor]
 }
@@ -126,35 +126,7 @@ void MainUi::resized()
     //[/UserResized]
 }
 
-/*
- template <typename Function>
-static void applyFunctionRecursively (const ValueTree& tree, const Function& function)
-{
-    function (tree);
 
-    for (auto&& child : tree)
-        applyFunctionRecursively (child, function);
-}
-
-applyFunctionRecursively (myTree, [] (const ValueTree& v)
-{
-    if (auto* p = v.getPropertyPointer (propertyToSearchFor))
-        DBG (propertyToSearchFor << ": " << p->toString());
-});
- */
-
-void MainUi::searchTree(ValueTree tree, const Identifier& propertyToSearchFor)
-{
-	for (auto& child : tree)
-	{
-		if (child.getPropertyPointer(propertyToSearchFor) != nullptr)
-		{
-			DBG(propertyToSearchFor + ": " + child.getProperty(propertyToSearchFor));
-		}
-
-		searchTree(child, propertyToSearchFor);
-	}
-};
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void MainUi::valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged, const Identifier& property)
@@ -163,13 +135,14 @@ void MainUi::valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged, co
 	const auto& uiParam		{ treeWhosePropertyHasChanged.getProperty(Props[Prop::Id]) };
 	const auto& paramValue	{ treeWhosePropertyHasChanged.getProperty(property) };
 
-	mUiPlotter->repaint();
 	mOsc1Plotter->repaint();
 	mOsc2Plotter->repaint();
-
+	mUiPlotter->repaint();
+	/*
 	DBG("Ui Name: "		<< uiName.toString());
 	DBG("Ui Param: "	<< uiParam.toString());
 	DBG("Param Value: " << paramValue.toString() << "\n");
+	*/
 }
 //[/MiscUserCode]
 
@@ -190,26 +163,26 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="800" initialHeight="500">
   <BACKGROUND backgroundColour="ffffff"/>
   <TEXTBUTTON name="DumpModelButton" id="4e58062973560f20" memberName="mDumpModelButton"
-              virtualName="" explicitFocusOrder="0" pos="83.094% 50.755% 9.724% 8.459%"
+              virtualName="" explicitFocusOrder="0" pos="82.963% 50.765% 9.63% 8.41%"
               bgColOff="ff4dff00" bgColOn="ffffff" textCol="ff000000" textColOn="ffff0000"
               buttonText="Save" connectedEdges="0" needsCallback="0" radioGroupId="0"/>
   <JUCERCOMP name="UndoRedo" id="d5fb429b43c90dae" memberName="mUiUndoRedo"
-             virtualName="UiUndoRedo" explicitFocusOrder="0" pos="39.779% 49.547% 20% 9.97%"
+             virtualName="UiUndoRedo" explicitFocusOrder="0" pos="40% 49.541% 20% 9.939%"
              sourceFile="UiUndoRedo.cpp" constructorParams="this, core"/>
   <JUCERCOMP name="Plotter" id="da26afd6fc6b0c15" memberName="mUiPlotter"
-             virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 59.97% 100% 40.03%"
+             virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 59.939% 100% 40.061%"
              sourceFile="UiPlotter.cpp" constructorParams="this, core, String(&quot;Main&quot;)"/>
   <JUCERCOMP name="Osc1" id="14853f5da6cdd18a" memberName="mOsc1" virtualName="UiOscillator"
-             explicitFocusOrder="0" pos="0% 0% 49.945% 30.06%" sourceFile="UiOscillator.cpp"
+             explicitFocusOrder="0" pos="0% 0% 49.63% 30.122%" sourceFile="UiOscillator.cpp"
              constructorParams="this, core, String(&quot;1&quot;)"/>
   <JUCERCOMP name="Osc2" id="c063d797912deb50" memberName="mOsc2" virtualName="UiOscillator"
-             explicitFocusOrder="0" pos="49.945% 0% 49.945% 30.06%" sourceFile="UiOscillator.cpp"
+             explicitFocusOrder="0" pos="49.63% 0% 49.63% 30.122%" sourceFile="UiOscillator.cpp"
              constructorParams="this, core, String(&quot;2&quot;)"/>
   <JUCERCOMP name="Osc2Plotter" id="b2ffffd1aa82b8ac" memberName="mOsc2Plotter"
-             virtualName="UiPlotter" explicitFocusOrder="0" pos="49.945% 30.06% 49.945% 19.94%"
+             virtualName="UiPlotter" explicitFocusOrder="0" pos="49.63% 30.122% 49.63% 19.878%"
              sourceFile="UiPlotter.cpp" constructorParams="this, core, String(&quot;2&quot;)"/>
   <JUCERCOMP name="Osc1Plotter" id="9a446a2cd534d444" memberName="mOsc1Plotter"
-             virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 30.06% 49.945% 19.94%"
+             virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 30.122% 49.63% 19.878%"
              sourceFile="UiPlotter.cpp" constructorParams="this, core, String(&quot;1&quot;)"/>
 </JUCER_COMPONENT>
 
