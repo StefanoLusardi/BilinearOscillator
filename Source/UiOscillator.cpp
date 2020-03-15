@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Projucer version: 5.3.2
+  Created with Projucer version: 5.4.3
 
   ------------------------------------------------------------------------------
 
@@ -121,8 +121,8 @@ void UiOscillator::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtons->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (1.0000f), proportionOfHeight (0.3323f));
-    mSliders->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3323f), proportionOfWidth (1.0000f), proportionOfHeight (0.6586f));
+    mButtons->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (1.0000f), proportionOfHeight (0.3298f));
+    mSliders->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3298f), proportionOfWidth (1.0000f), proportionOfHeight (0.6544f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -149,10 +149,10 @@ BEGIN_JUCER_METADATA
                  initialHeight="180">
   <BACKGROUND backgroundColour="ff323e44"/>
   <JUCERCOMP name="Buttons" id="d53e1e56aa8f0e71" memberName="mButtons" virtualName="UiButtonStrip"
-             explicitFocusOrder="0" pos="0% 0% 100% 32.995%" sourceFile="UiButtonStrip.cpp"
+             explicitFocusOrder="0" pos="0% 0% 100% 32.964%" sourceFile="UiButtonStrip.cpp"
              constructorParams="this, core"/>
   <JUCERCOMP name="Sliders" id="bbb8682bd56b35e2" memberName="mSliders" virtualName="UiSliderStrip"
-             explicitFocusOrder="0" pos="0% 32.995% 100% 65.99%" sourceFile="UiSliderStrip.cpp"
+             explicitFocusOrder="0" pos="0% 32.964% 100% 65.452%" sourceFile="UiSliderStrip.cpp"
              constructorParams="this, core"/>
 </JUCER_COMPONENT>
 
@@ -163,3 +163,4 @@ END_JUCER_METADATA
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
+

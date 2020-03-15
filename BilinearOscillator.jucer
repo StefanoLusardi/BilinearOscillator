@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="BsBq6k" name="BilinearOscillator" projectType="guiapp" jucerVersion="5.3.2"
+<JUCERPROJECT id="BsBq6k" name="BilinearOscillator" projectType="guiapp" jucerVersion="5.4.3"
               cppLanguageStandard="17">
   <MAINGROUP id="sN5qq1" name="BilinearOscillator">
     <GROUP id="{480B5E67-5FBE-0961-4B31-6CB14086996F}" name="LookAndFeel">

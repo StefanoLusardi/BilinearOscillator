@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Projucer version: 5.3.2
+  Created with Projucer version: 5.4.3
 
   ------------------------------------------------------------------------------
 
@@ -215,9 +215,9 @@ void UiButtonStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtonSaw->setBounds (proportionOfWidth (0.0453f), proportionOfHeight (0.2613f), proportionOfWidth (0.2541f), proportionOfHeight (0.5378f));
-    mButtonSqr->setBounds (proportionOfWidth (0.3735f), proportionOfHeight (0.2613f), proportionOfWidth (0.2541f), proportionOfHeight (0.5378f));
-    mButtonTri->setBounds (proportionOfWidth (0.7017f), proportionOfHeight (0.2613f), proportionOfWidth (0.2541f), proportionOfHeight (0.5378f));
+    mButtonSaw->setBounds (proportionOfWidth (0.0444f), proportionOfHeight (0.2540f), proportionOfWidth (0.2533f), proportionOfHeight (0.5397f));
+    mButtonSqr->setBounds (proportionOfWidth (0.3733f), proportionOfHeight (0.2540f), proportionOfWidth (0.2533f), proportionOfHeight (0.5397f));
+    mButtonTri->setBounds (proportionOfWidth (0.7022f), proportionOfHeight (0.2540f), proportionOfWidth (0.2533f), proportionOfHeight (0.5397f));
     //[UserResized] Add your own custom resize handling here..
 	FlexBox fb;
     fb.flexWrap = FlexBox::Wrap::wrap;
@@ -255,29 +255,28 @@ BEGIN_JUCER_METADATA
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="435"
                  initialHeight="60">
   <BACKGROUND backgroundColour="0">
-    <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
+    <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.0" fill="solid: ffffff00"
                hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
   <IMAGEBUTTON name="" id="7db05320ddd74eb0" memberName="mButtonSaw" virtualName=""
-               explicitFocusOrder="0" pos="4.53% 26.133% 25.414% 53.776%" buttonText=""
+               explicitFocusOrder="0" pos="4.415% 25.481% 25.386% 53.846%" buttonText=""
                connectedEdges="0" needsCallback="0" radioGroupId="0" keepProportions="1"
-               resourceNormal="saw_png" opacityNormal="0.89999997615814208984"
-               colourNormal="ffa45c94" resourceOver="saw_png" opacityOver="0.89999997615814208984"
-               colourOver="ffff0000" resourceDown="saw_png" opacityDown="0.89999997615814208984"
-               colourDown="ff00ff00"/>
+               resourceNormal="saw_png" opacityNormal="0.8999999761581421" colourNormal="ffa45c94"
+               resourceOver="saw_png" opacityOver="0.8999999761581421" colourOver="ffff0000"
+               resourceDown="saw_png" opacityDown="0.8999999761581421" colourDown="ff00ff00"/>
   <IMAGEBUTTON name="" id="30c631eda481bac9" memberName="mButtonSqr" virtualName=""
-               explicitFocusOrder="0" pos="37.348% 26.133% 25.414% 53.776%"
+               explicitFocusOrder="0" pos="37.307% 25.481% 25.386% 53.846%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
-               keepProportions="1" resourceNormal="sqr_png" opacityNormal="0.89999997615814208984"
-               colourNormal="ffa45c94" resourceOver="sqr_png" opacityOver="0.89999997615814208984"
-               colourOver="ffff0000" resourceDown="sqr_png" opacityDown="0.89999997615814208984"
+               keepProportions="1" resourceNormal="sqr_png" opacityNormal="0.8999999761581421"
+               colourNormal="ffa45c94" resourceOver="sqr_png" opacityOver="0.8999999761581421"
+               colourOver="ffff0000" resourceDown="sqr_png" opacityDown="0.8999999761581421"
                colourDown="ff00ff00"/>
   <IMAGEBUTTON name="" id="4ea5ec108ddbef92" memberName="mButtonTri" virtualName=""
-               explicitFocusOrder="0" pos="70.166% 26.133% 25.414% 53.776%"
+               explicitFocusOrder="0" pos="70.199% 25.481% 25.386% 53.846%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
-               keepProportions="1" resourceNormal="tri_png" opacityNormal="0.89999997615814208984"
-               colourNormal="ffa45c94" resourceOver="tri_png" opacityOver="0.89999997615814208984"
-               colourOver="ffff0000" resourceDown="tri_png" opacityDown="0.89999997615814208984"
+               keepProportions="1" resourceNormal="tri_png" opacityNormal="0.8999999761581421"
+               colourNormal="ffa45c94" resourceOver="tri_png" opacityOver="0.8999999761581421"
+               colourOver="ffff0000" resourceDown="tri_png" opacityDown="0.8999999761581421"
                colourDown="ff00ff00"/>
 </JUCER_COMPONENT>
 
@@ -326,3 +325,4 @@ const int UiButtonStrip::tri_pngSize = 406;
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
+

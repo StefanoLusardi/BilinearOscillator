@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Projucer version: 5.3.2
+  Created with Projucer version: 5.4.3
 
   ------------------------------------------------------------------------------
 
@@ -115,13 +115,13 @@ void MainUi::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mDumpModelButton->setBounds (proportionOfWidth (0.8309f), proportionOfHeight (0.5076f), proportionOfWidth (0.0972f), proportionOfHeight (0.0846f));
-    mUiUndoRedo->setBounds (proportionOfWidth (0.3978f), proportionOfHeight (0.4955f), proportionOfWidth (0.2000f), proportionOfHeight (0.0997f));
-    mUiPlotter->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.5997f), proportionOfWidth (1.0000f), proportionOfHeight (0.4003f));
-    mOsc1->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (0.4995f), proportionOfHeight (0.3006f));
-    mOsc2->setBounds (proportionOfWidth (0.4995f), proportionOfHeight (0.0000f), proportionOfWidth (0.4995f), proportionOfHeight (0.3006f));
-    mOsc2Plotter->setBounds (proportionOfWidth (0.4995f), proportionOfHeight (0.3006f), proportionOfWidth (0.4995f), proportionOfHeight (0.1994f));
-    mOsc1Plotter->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3006f), proportionOfWidth (0.4995f), proportionOfHeight (0.1994f));
+    mDumpModelButton->setBounds (proportionOfWidth (0.8302f), proportionOfHeight (0.5083f), proportionOfWidth (0.0958f), proportionOfHeight (0.0843f));
+    mUiUndoRedo->setBounds (proportionOfWidth (0.3997f), proportionOfHeight (0.4964f), proportionOfWidth (0.1999f), proportionOfHeight (0.0995f));
+    mUiPlotter->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.6007f), proportionOfWidth (1.0000f), proportionOfHeight (0.3993f));
+    mOsc1->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (0.4967f), proportionOfHeight (0.3022f));
+    mOsc2->setBounds (proportionOfWidth (0.4967f), proportionOfHeight (0.0000f), proportionOfWidth (0.4967f), proportionOfHeight (0.3022f));
+    mOsc2Plotter->setBounds (proportionOfWidth (0.4967f), proportionOfHeight (0.3022f), proportionOfWidth (0.4967f), proportionOfHeight (0.1978f));
+    mOsc1Plotter->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3022f), proportionOfWidth (0.4967f), proportionOfHeight (0.1978f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -163,26 +163,26 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="800" initialHeight="500">
   <BACKGROUND backgroundColour="ffffff"/>
   <TEXTBUTTON name="DumpModelButton" id="4e58062973560f20" memberName="mDumpModelButton"
-              virtualName="" explicitFocusOrder="0" pos="82.963% 50.765% 9.63% 8.41%"
+              virtualName="" explicitFocusOrder="0" pos="83.002% 50.872% 9.603% 8.399%"
               bgColOff="ff4dff00" bgColOn="ffffff" textCol="ff000000" textColOn="ffff0000"
               buttonText="Save" connectedEdges="0" needsCallback="0" radioGroupId="0"/>
   <JUCERCOMP name="UndoRedo" id="d5fb429b43c90dae" memberName="mUiUndoRedo"
-             virtualName="UiUndoRedo" explicitFocusOrder="0" pos="40% 49.541% 20% 9.939%"
+             virtualName="UiUndoRedo" explicitFocusOrder="0" pos="39.956% 49.604% 19.978% 9.984%"
              sourceFile="UiUndoRedo.cpp" constructorParams="this, core"/>
   <JUCERCOMP name="Plotter" id="da26afd6fc6b0c15" memberName="mUiPlotter"
-             virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 59.939% 100% 40.061%"
+             virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 60.063% 100% 39.937%"
              sourceFile="UiPlotter.cpp" constructorParams="this, core, String(&quot;Main&quot;)"/>
   <JUCERCOMP name="Osc1" id="14853f5da6cdd18a" memberName="mOsc1" virtualName="UiOscillator"
-             explicitFocusOrder="0" pos="0% 0% 49.63% 30.122%" sourceFile="UiOscillator.cpp"
+             explicitFocusOrder="0" pos="0% 0% 49.669% 30.269%" sourceFile="UiOscillator.cpp"
              constructorParams="this, core, String(&quot;1&quot;)"/>
   <JUCERCOMP name="Osc2" id="c063d797912deb50" memberName="mOsc2" virtualName="UiOscillator"
-             explicitFocusOrder="0" pos="49.63% 0% 49.63% 30.122%" sourceFile="UiOscillator.cpp"
+             explicitFocusOrder="0" pos="49.669% 0% 49.669% 30.269%" sourceFile="UiOscillator.cpp"
              constructorParams="this, core, String(&quot;2&quot;)"/>
   <JUCERCOMP name="Osc2Plotter" id="b2ffffd1aa82b8ac" memberName="mOsc2Plotter"
-             virtualName="UiPlotter" explicitFocusOrder="0" pos="49.63% 30.122% 49.63% 19.878%"
+             virtualName="UiPlotter" explicitFocusOrder="0" pos="49.669% 30.269% 49.669% 19.81%"
              sourceFile="UiPlotter.cpp" constructorParams="this, core, String(&quot;2&quot;)"/>
   <JUCERCOMP name="Osc1Plotter" id="9a446a2cd534d444" memberName="mOsc1Plotter"
-             virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 30.122% 49.63% 19.878%"
+             virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 30.269% 49.669% 19.81%"
              sourceFile="UiPlotter.cpp" constructorParams="this, core, String(&quot;1&quot;)"/>
 </JUCER_COMPONENT>
 
@@ -193,3 +193,4 @@ END_JUCER_METADATA
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
+
