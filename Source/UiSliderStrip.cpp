@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Projucer version: 5.3.2
+  Created with Projucer version: 5.4.3
 
   ------------------------------------------------------------------------------
 
@@ -36,11 +36,10 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
     : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
-
+    setName (Widgets[Widget::SliderStrip]);
     //[/Constructor_pre]
 
-    setName ("SliderStrip");
-    mSliderFreq.reset (new Slider ("SliderFreq"));
+    mSliderFreq.reset (new Slider (String()));
     addAndMakeVisible (mSliderFreq.get());
     mSliderFreq->setRange (20, 5000, 0.001);
     mSliderFreq->setSliderStyle (Slider::LinearHorizontal);
@@ -48,7 +47,7 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
     mSliderFreq->setColour (Slider::textBoxTextColourId, Colours::black);
     mSliderFreq->setSkewFactor (0.5);
 
-    mLabelFreq.reset (new Label ("freq label",
+    mLabelFreq.reset (new Label (String(),
                                  TRANS("Frequency")));
     addAndMakeVisible (mLabelFreq.get());
     mLabelFreq->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
@@ -58,7 +57,7 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
     mLabelFreq->setColour (TextEditor::textColourId, Colours::black);
     mLabelFreq->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    mSliderAmp.reset (new Slider ("SliderAmp"));
+    mSliderAmp.reset (new Slider (String()));
     addAndMakeVisible (mSliderAmp.get());
     mSliderAmp->setRange (0, 1, 0.001);
     mSliderAmp->setSliderStyle (Slider::LinearHorizontal);
@@ -67,7 +66,7 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
     mSliderAmp->setColour (Slider::textBoxOutlineColourId, Colour (0xff8e989b));
     mSliderAmp->setSkewFactor (0.5);
 
-    mLabelAmp.reset (new Label ("amp label",
+    mLabelAmp.reset (new Label (String(),
                                 TRANS("Amplitude")));
     addAndMakeVisible (mLabelAmp.get());
     mLabelAmp->setFont (Font (15.00f, Font::plain).withTypefaceStyle ("Regular"));
@@ -77,9 +76,8 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
     mLabelAmp->setColour (TextEditor::textColourId, Colours::black);
     mLabelAmp->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    mPhaseInvert.reset (new ImageButton ("PhaseInvert"));
+    mPhaseInvert.reset (new ImageButton (String()));
     addAndMakeVisible (mPhaseInvert.get());
-    mPhaseInvert->setButtonText (String());
 
     mPhaseInvert->setImages (false, true, true,
                              ImageCache::getFromMemory (phase_invert_png, phase_invert_pngSize), 0.900f, Colour (0xffa45c94),
@@ -87,6 +85,10 @@ UiSliderStrip::UiSliderStrip (Component* parent, Core& core)
                              ImageCache::getFromMemory (phase_invert_png, phase_invert_pngSize), 0.900f, Colours::lime);
 
     //[UserPreSize]
+	mSliderAmp->setName(Params[Param::Amp]);
+	mSliderFreq->setName(Params[Param::Freq]);
+	mPhaseInvert->setName(Params[Param::PhInv]);
+
 	mPhaseInvert->setClickingTogglesState(true);
 
 	/// MODEL BINDING
@@ -283,11 +285,11 @@ void UiSliderStrip::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mSliderFreq->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.0000f), proportionOfWidth (0.6000f), proportionOfHeight (0.5000f));
-    mLabelFreq->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.0000f), proportionOfWidth (0.1028f), proportionOfHeight (0.0997f));
-    mSliderAmp->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.5000f), proportionOfWidth (0.6000f), proportionOfHeight (0.5000f));
-    mLabelAmp->setBounds (proportionOfWidth (0.0995f), proportionOfHeight (0.5272f), proportionOfWidth (0.1028f), proportionOfHeight (0.0997f));
-    mPhaseInvert->setBounds (proportionOfWidth (0.8000f), proportionOfHeight (0.6496f), proportionOfWidth (0.1558f), proportionOfHeight (0.2523f));
+    mSliderFreq->setBounds (proportionOfWidth (0.0889f), proportionOfHeight (0.0000f), proportionOfWidth (0.6000f), proportionOfHeight (0.4960f));
+    mLabelFreq->setBounds (proportionOfWidth (0.0889f), proportionOfHeight (0.0000f), proportionOfWidth (0.1022f), proportionOfHeight (0.1040f));
+    mSliderAmp->setBounds (proportionOfWidth (0.0889f), proportionOfHeight (0.4960f), proportionOfWidth (0.6000f), proportionOfHeight (0.4960f));
+    mLabelAmp->setBounds (proportionOfWidth (0.0889f), proportionOfHeight (0.5120f), proportionOfWidth (0.1022f), proportionOfHeight (0.1040f));
+    mPhaseInvert->setBounds (proportionOfWidth (0.8089f), proportionOfHeight (0.6480f), proportionOfWidth (0.1622f), proportionOfHeight (0.2560f));
     //[UserResized] Add your own custom resize handling here..
 	const auto isHorizontal = getLocalBounds().getCentreX() > getLocalBounds().getHeight();
 
@@ -373,45 +375,41 @@ void UiSliderStrip::resized()
 
 BEGIN_JUCER_METADATA
 
-<JUCER_COMPONENT documentType="Component" className="UiSliderStrip" componentName="SliderStrip"
+<JUCER_COMPONENT documentType="Component" className="UiSliderStrip" componentName=""
                  parentClasses="public Component" constructorParams="Component* parent, Core&amp; core"
                  variableInitialisers="mParent{parent}" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="435"
                  initialHeight="120">
   <BACKGROUND backgroundColour="0">
-    <ROUNDRECT pos="0% 0% 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
+    <ROUNDRECT pos="0% 0% 100% 100%" cornerSize="20.0" fill="solid: ffffff00"
                hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
-  <SLIDER name="SliderFreq" id="49b85c14e9b29fb6" memberName="mSliderFreq"
-          virtualName="" explicitFocusOrder="0" pos="9.63% 0% 60% 50%"
-          textboxtext="ff000000" min="20.00000000000000000000" max="5000.00000000000000000000"
-          int="0.00100000000000000002" style="LinearHorizontal" textBoxPos="TextBoxRight"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.50000000000000000000"
-          needsCallback="0"/>
-  <LABEL name="freq label" id="6bca026c5b9e7e17" memberName="mLabelFreq"
-         virtualName="" explicitFocusOrder="0" pos="9.63% 0% 10.37% 9.939%"
-         textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Frequency"
-         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
-         bold="0" italic="0" justification="33"/>
-  <SLIDER name="SliderAmp" id="b06f49a585e9b552" memberName="mSliderAmp"
-          virtualName="" explicitFocusOrder="0" pos="9.63% 50% 60% 50%"
-          textboxtext="ff000000" textboxoutline="ff8e989b" min="0.00000000000000000000"
-          max="1.00000000000000000000" int="0.00100000000000000002" style="LinearHorizontal"
+  <SLIDER name="" id="49b85c14e9b29fb6" memberName="mSliderFreq" virtualName=""
+          explicitFocusOrder="0" pos="8.94% 0% 60.044% 49.637%" textboxtext="ff000000"
+          min="20.0" max="5000.0" int="0.001" style="LinearHorizontal"
           textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="0.50000000000000000000" needsCallback="0"/>
-  <LABEL name="amp label" id="531e30d8428f3fd" memberName="mLabelAmp"
-         virtualName="" explicitFocusOrder="0" pos="9.63% 52.752% 10.37% 9.939%"
-         textCol="ff000000" edTextCol="ff000000" edBkgCol="0" labelText="Amplitude"
-         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="15.00000000000000000000" kerning="0.00000000000000000000"
-         bold="0" italic="0" justification="33"/>
-  <IMAGEBUTTON name="PhaseInvert" id="14f6f7c6a495ed84" memberName="mPhaseInvert"
-               virtualName="" explicitFocusOrder="0" pos="80% 64.985% 15.556% 25.229%"
+          textBoxHeight="20" skewFactor="0.5" needsCallback="0"/>
+  <LABEL name="" id="6bca026c5b9e7e17" memberName="mLabelFreq" virtualName=""
+         explicitFocusOrder="0" pos="8.94% 0% 10.265% 10.412%" textCol="ff000000"
+         edTextCol="ff000000" edBkgCol="0" labelText="Frequency" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
+  <SLIDER name="" id="b06f49a585e9b552" memberName="mSliderAmp" virtualName=""
+          explicitFocusOrder="0" pos="8.94% 49.637% 60.044% 49.637%" textboxtext="ff000000"
+          textboxoutline="ff8e989b" min="0.0" max="1.0" int="0.001" style="LinearHorizontal"
+          textBoxPos="TextBoxRight" textBoxEditable="1" textBoxWidth="80"
+          textBoxHeight="20" skewFactor="0.5" needsCallback="0"/>
+  <LABEL name="" id="531e30d8428f3fd" memberName="mLabelAmp" virtualName=""
+         explicitFocusOrder="0" pos="8.94% 51.09% 10.265% 10.412%" textCol="ff000000"
+         edTextCol="ff000000" edBkgCol="0" labelText="Amplitude" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15.0" kerning="0.0" bold="0" italic="0" justification="33"/>
+  <IMAGEBUTTON name="" id="14f6f7c6a495ed84" memberName="mPhaseInvert" virtualName=""
+               explicitFocusOrder="0" pos="80.905% 64.891% 16.225% 25.666%"
                buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"
-               keepProportions="1" resourceNormal="phase_invert_png" opacityNormal="0.89999997615814208984"
-               colourNormal="ffa45c94" resourceOver="phase_invert_png" opacityOver="0.89999997615814208984"
-               colourOver="ffff0000" resourceDown="phase_invert_png" opacityDown="0.89999997615814208984"
+               keepProportions="1" resourceNormal="phase_invert_png" opacityNormal="0.8999999761581421"
+               colourNormal="ffa45c94" resourceOver="phase_invert_png" opacityOver="0.8999999761581421"
+               colourOver="ffff0000" resourceDown="phase_invert_png" opacityDown="0.8999999761581421"
                colourDown="ff00ff00"/>
 </JUCER_COMPONENT>
 
@@ -454,3 +452,4 @@ const int UiSliderStrip::phase_invert_pngSize = 1368;
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
+

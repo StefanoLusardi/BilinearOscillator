@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Projucer version: 5.3.2
+  Created with Projucer version: 5.4.3
 
   ------------------------------------------------------------------------------
 
@@ -44,22 +44,24 @@ MainUi::MainUi (Component* parent, Core& core)
     setName ("MainUi");
     mDumpModelButton.reset (new TextButton ("DumpModelButton"));
     addAndMakeVisible (mDumpModelButton.get());
-    mDumpModelButton->setButtonText (String());
-    mDumpModelButton->setColour (TextButton::buttonColourId, Colour (0x00ffffff));
+    mDumpModelButton->setButtonText (TRANS("Save"));
+    mDumpModelButton->setColour (TextButton::buttonColourId, Colour (0xff4dff00));
     mDumpModelButton->setColour (TextButton::buttonOnColourId, Colour (0x00ffffff));
-    mDumpModelButton->setColour (TextButton::textColourOffId, Colours::red);
+    mDumpModelButton->setColour (TextButton::textColourOffId, Colours::black);
     mDumpModelButton->setColour (TextButton::textColourOnId, Colours::red);
 
-    mUiButtonStrip.reset (new UiButtonStrip (this, core));
-    addAndMakeVisible (mUiButtonStrip.get());
-    mUiSliderStrip.reset (new UiSliderStrip (this, core));
-    addAndMakeVisible (mUiSliderStrip.get());
     mUiUndoRedo.reset (new UiUndoRedo (this, core));
     addAndMakeVisible (mUiUndoRedo.get());
-    mUiPlotter.reset (new UiPlotter (this, core));
+    mUiPlotter.reset (new UiPlotter (this, core, String("Main")));
     addAndMakeVisible (mUiPlotter.get());
-    mOsc2.reset (new UiOscillator (this, core));
+    mOsc1.reset (new UiOscillator (this, core, String("1")));
+    addAndMakeVisible (mOsc1.get());
+    mOsc2.reset (new UiOscillator (this, core, String("2")));
     addAndMakeVisible (mOsc2.get());
+    mOsc2Plotter.reset (new UiPlotter (this, core, String("2")));
+    addAndMakeVisible (mOsc2Plotter.get());
+    mOsc1Plotter.reset (new UiPlotter (this, core, String("1")));
+    addAndMakeVisible (mOsc1Plotter.get());
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -75,7 +77,7 @@ MainUi::MainUi (Component* parent, Core& core)
 		const StringRef xmlModelFile { "model_dump_ui.xml" };
 		const auto xmlModelFilePath { File::getCurrentWorkingDirectory().getChildFile(xmlModelFile) };
 		const auto ok =  core.getModel().createXml()->writeToFile(xmlModelFilePath, StringRef{});
-		mDumpModelButton->setButtonText(ok ? "" : "MODEL DUMP ERROR!");
+		if (!ok) mDumpModelButton->setButtonText("MODEL DUMP ERROR!");
 	};
     //[/Constructor]
 }
@@ -86,11 +88,12 @@ MainUi::~MainUi()
     //[/Destructor_pre]
 
     mDumpModelButton = nullptr;
-    mUiButtonStrip = nullptr;
-    mUiSliderStrip = nullptr;
     mUiUndoRedo = nullptr;
     mUiPlotter = nullptr;
+    mOsc1 = nullptr;
     mOsc2 = nullptr;
+    mOsc2Plotter = nullptr;
+    mOsc1Plotter = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -112,12 +115,13 @@ void MainUi::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mDumpModelButton->setBounds (proportionOfWidth (0.7503f), proportionOfHeight (0.0997f), proportionOfWidth (0.2497f), proportionOfHeight (0.1994f));
-    mUiButtonStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (0.7514f), proportionOfHeight (0.0997f));
-    mUiSliderStrip->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0997f), proportionOfWidth (0.7503f), proportionOfHeight (0.1994f));
-    mUiUndoRedo->setBounds (proportionOfWidth (0.7514f), proportionOfHeight (0.0000f), proportionOfWidth (0.2486f), proportionOfHeight (0.0997f));
-    mUiPlotter->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.5997f), proportionOfWidth (1.0000f), proportionOfHeight (0.4003f));
-    mOsc2->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3006f), proportionOfWidth (0.7503f), proportionOfHeight (0.3006f));
+    mDumpModelButton->setBounds (proportionOfWidth (0.8302f), proportionOfHeight (0.5083f), proportionOfWidth (0.0958f), proportionOfHeight (0.0843f));
+    mUiUndoRedo->setBounds (proportionOfWidth (0.3997f), proportionOfHeight (0.4964f), proportionOfWidth (0.1999f), proportionOfHeight (0.0995f));
+    mUiPlotter->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.6007f), proportionOfWidth (1.0000f), proportionOfHeight (0.3993f));
+    mOsc1->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (0.4967f), proportionOfHeight (0.3022f));
+    mOsc2->setBounds (proportionOfWidth (0.4967f), proportionOfHeight (0.0000f), proportionOfWidth (0.4967f), proportionOfHeight (0.3022f));
+    mOsc2Plotter->setBounds (proportionOfWidth (0.4967f), proportionOfHeight (0.3022f), proportionOfWidth (0.4967f), proportionOfHeight (0.1978f));
+    mOsc1Plotter->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3022f), proportionOfWidth (0.4967f), proportionOfHeight (0.1978f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -131,15 +135,14 @@ void MainUi::valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged, co
 	const auto& uiParam		{ treeWhosePropertyHasChanged.getProperty(Props[Prop::Id]) };
 	const auto& paramValue	{ treeWhosePropertyHasChanged.getProperty(property) };
 
-	if (uiName == mUiSliderStrip->getName() ||
-		uiName == mUiButtonStrip->getName())
-	{
-		mUiPlotter->repaint();
-	}
-
+	mOsc1Plotter->repaint();
+	mOsc2Plotter->repaint();
+	mUiPlotter->repaint();
+	/*
 	DBG("Ui Name: "		<< uiName.toString());
 	DBG("Ui Param: "	<< uiParam.toString());
 	DBG("Param Value: " << paramValue.toString() << "\n");
+	*/
 }
 //[/MiscUserCode]
 
@@ -160,24 +163,27 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="800" initialHeight="500">
   <BACKGROUND backgroundColour="ffffff"/>
   <TEXTBUTTON name="DumpModelButton" id="4e58062973560f20" memberName="mDumpModelButton"
-              virtualName="" explicitFocusOrder="0" pos="75.028% 9.97% 24.972% 19.94%"
-              bgColOff="ffffff" bgColOn="ffffff" textCol="ffff0000" textColOn="ffff0000"
-              buttonText="" connectedEdges="0" needsCallback="0" radioGroupId="0"/>
-  <JUCERCOMP name="ButtonStrip" id="94d533df8a0dd9aa" memberName="mUiButtonStrip"
-             virtualName="UiButtonStrip" explicitFocusOrder="0" pos="0% 0% 75.138% 9.97%"
-             sourceFile="UiButtonStrip.cpp" constructorParams="this, core"/>
-  <JUCERCOMP name="SliderStrip" id="187099a553730501" memberName="mUiSliderStrip"
-             virtualName="UiSliderStrip" explicitFocusOrder="0" pos="0% 9.97% 75.028% 19.94%"
-             sourceFile="UiSliderStrip.cpp" constructorParams="this, core"/>
+              virtualName="" explicitFocusOrder="0" pos="83.002% 50.872% 9.603% 8.399%"
+              bgColOff="ff4dff00" bgColOn="ffffff" textCol="ff000000" textColOn="ffff0000"
+              buttonText="Save" connectedEdges="0" needsCallback="0" radioGroupId="0"/>
   <JUCERCOMP name="UndoRedo" id="d5fb429b43c90dae" memberName="mUiUndoRedo"
-             virtualName="UiUndoRedo" explicitFocusOrder="0" pos="75.138% 0% 24.862% 9.97%"
+             virtualName="UiUndoRedo" explicitFocusOrder="0" pos="39.956% 49.604% 19.978% 9.984%"
              sourceFile="UiUndoRedo.cpp" constructorParams="this, core"/>
   <JUCERCOMP name="Plotter" id="da26afd6fc6b0c15" memberName="mUiPlotter"
-             virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 59.97% 100% 40.03%"
-             sourceFile="UiPlotter.cpp" constructorParams="this, core"/>
+             virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 60.063% 100% 39.937%"
+             sourceFile="UiPlotter.cpp" constructorParams="this, core, String(&quot;Main&quot;)"/>
+  <JUCERCOMP name="Osc1" id="14853f5da6cdd18a" memberName="mOsc1" virtualName="UiOscillator"
+             explicitFocusOrder="0" pos="0% 0% 49.669% 30.269%" sourceFile="UiOscillator.cpp"
+             constructorParams="this, core, String(&quot;1&quot;)"/>
   <JUCERCOMP name="Osc2" id="c063d797912deb50" memberName="mOsc2" virtualName="UiOscillator"
-             explicitFocusOrder="0" pos="0% 30.06% 75.028% 30.06%" sourceFile="UiOscillator.cpp"
-             constructorParams="this, core"/>
+             explicitFocusOrder="0" pos="49.669% 0% 49.669% 30.269%" sourceFile="UiOscillator.cpp"
+             constructorParams="this, core, String(&quot;2&quot;)"/>
+  <JUCERCOMP name="Osc2Plotter" id="b2ffffd1aa82b8ac" memberName="mOsc2Plotter"
+             virtualName="UiPlotter" explicitFocusOrder="0" pos="49.669% 30.269% 49.669% 19.81%"
+             sourceFile="UiPlotter.cpp" constructorParams="this, core, String(&quot;2&quot;)"/>
+  <JUCERCOMP name="Osc1Plotter" id="9a446a2cd534d444" memberName="mOsc1Plotter"
+             virtualName="UiPlotter" explicitFocusOrder="0" pos="0% 30.269% 49.669% 19.81%"
+             sourceFile="UiPlotter.cpp" constructorParams="this, core, String(&quot;1&quot;)"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
@@ -187,3 +193,4 @@ END_JUCER_METADATA
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
+

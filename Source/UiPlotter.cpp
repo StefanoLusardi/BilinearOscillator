@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Projucer version: 5.3.2
+  Created with Projucer version: 5.4.3
 
   ------------------------------------------------------------------------------
 
@@ -28,13 +28,13 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-UiPlotter::UiPlotter (Component* parent, Core& core)
+UiPlotter::UiPlotter (Component* parent, Core& core, const String& objId)
     : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
+	setName(Widgets[Widget::Plotter] + objId);
     //[/Constructor_pre]
 
-    setName ("UiPlotter");
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -43,18 +43,18 @@ UiPlotter::UiPlotter (Component* parent, Core& core)
 
 
     //[Constructor] You can add your own custom stuff here..
-	const auto sliderUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "SliderStrip");
-	const auto ampModel   = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderAmp"  ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
-	const auto freqModel  = sliderUiModel.getChildWithProperty(Props[Prop::Id], "SliderFreq" ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
-	const auto phaseModel = sliderUiModel.getChildWithProperty(Props[Prop::Id], "PhaseInvert").getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto sliderUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], Widgets[Widget::Osc]+objId).getChildWithProperty(Props[Prop::Id], Widgets[Widget::SliderStrip]);
+	const auto ampModel   = sliderUiModel.getChildWithProperty(Props[Prop::Id], Params[Param::Amp]  ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto freqModel  = sliderUiModel.getChildWithProperty(Props[Prop::Id], Params[Param::Freq] ).getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto phaseModel = sliderUiModel.getChildWithProperty(Props[Prop::Id], Params[Param::PhInv]).getPropertyAsValue(Props[Prop::Value], nullptr, false);
 	mAmp.referTo(ampModel);
 	mFreq.referTo(freqModel);
 	mPhaseInvert.referTo(phaseModel);
 
-	const auto buttonUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], "ButtonStrip");
-	const auto sawModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonSaw").getPropertyAsValue(Props[Prop::Value], nullptr, false);
-	const auto sqrModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonSqr").getPropertyAsValue(Props[Prop::Value], nullptr, false);
-	const auto triModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], "ButtonTri").getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto buttonUiModel  = core.getModel().getChildWithProperty(Props[Prop::Id], Widgets[Widget::Osc]+objId).getChildWithProperty(Props[Prop::Id], Widgets[Widget::ButtonStrip]);
+	const auto sawModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], Waves[Wave::Saw]).getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto sqrModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], Waves[Wave::Sqr]).getPropertyAsValue(Props[Prop::Value], nullptr, false);
+	const auto triModel = buttonUiModel.getChildWithProperty(Props[Prop::Id], Waves[Wave::Tri]).getPropertyAsValue(Props[Prop::Value], nullptr, false);
 	mWaveforms[Wave::Saw].referTo(sawModel);
 	mWaveforms[Wave::Sqr].referTo(sqrModel);
 	mWaveforms[Wave::Tri].referTo(triModel);
@@ -157,8 +157,8 @@ float UiPlotter::getPhaseInvert() const
 
 Wave UiPlotter::getWaveform() const
 {
-	return std::find_if(mWaveforms.begin(), mWaveforms.end(),
-		[](const auto& w) { return w.second == 1; })->first;
+	const auto wave = std::find_if(mWaveforms.begin(), mWaveforms.end(), [](const auto& w) { return w.second == 1; });
+	return wave!=mWaveforms.end() ? wave->first : Wave::None;
 }
 
 void UiPlotter::plotSaw(Path& path) const
@@ -252,16 +252,16 @@ void UiPlotter::plotTri(Path& path) const
 
 BEGIN_JUCER_METADATA
 
-<JUCER_COMPONENT documentType="Component" className="UiPlotter" componentName="UiPlotter"
-                 parentClasses="public Component" constructorParams="Component* parent, Core&amp; core"
+<JUCER_COMPONENT documentType="Component" className="UiPlotter" componentName=""
+                 parentClasses="public Component" constructorParams="Component* parent, Core&amp; core, const String&amp; objId"
                  variableInitialisers="mParent{parent}" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="600"
                  initialHeight="400">
   <BACKGROUND backgroundColour="0">
-    <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.00000000000000000000" fill="solid: ffffff00"
+    <ROUNDRECT pos="0 0 100% 100%" cornerSize="20.0" fill="solid: ffffff00"
                hasStroke="1" stroke="5, mitered, butt" strokeColour="solid: ff000000"/>
-    <ROUNDRECT pos="5% 5% 90% 90%" cornerSize="20.00000000000000000000" fill="solid: ffffff"
-               hasStroke="1" stroke="2, mitered, butt" strokeColour="solid: ff000000"/>
+    <ROUNDRECT pos="5% 5% 90% 90%" cornerSize="20.0" fill="solid: ffffff" hasStroke="1"
+               stroke="2, mitered, butt" strokeColour="solid: ff000000"/>
   </BACKGROUND>
 </JUCER_COMPONENT>
 
@@ -272,3 +272,4 @@ END_JUCER_METADATA
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
+

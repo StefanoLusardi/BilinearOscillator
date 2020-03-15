@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Projucer version: 5.3.2
+  Created with Projucer version: 5.4.3
 
   ------------------------------------------------------------------------------
 
@@ -29,11 +29,11 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-UiOscillator::UiOscillator (Component* parent, Core& core)
+UiOscillator::UiOscillator (Component* parent, Core& core, const String& objId)
     : mParent{parent}
 {
     //[Constructor_pre] You can add your own custom stuff here..
-    setName ("Oscillator");
+    setName (Widgets[Widget::Osc] + objId);
 
 	//const auto setUiModel = [&] () -> ValueTree
 	//{
@@ -76,7 +76,6 @@ UiOscillator::UiOscillator (Component* parent, Core& core)
 	mUiModel = setUiModel();
     //[/Constructor_pre]
 
-    setName ("Oscillator");
     mButtons.reset (new UiButtonStrip (this, core));
     addAndMakeVisible (mButtons.get());
     mSliders.reset (new UiSliderStrip (this, core));
@@ -122,8 +121,8 @@ void UiOscillator::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    mButtons->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (1.0000f), proportionOfHeight (0.3317f));
-    mSliders->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3317f), proportionOfWidth (1.0000f), proportionOfHeight (0.6583f));
+    mButtons->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (1.0000f), proportionOfHeight (0.3298f));
+    mSliders->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.3298f), proportionOfWidth (1.0000f), proportionOfHeight (0.6544f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -143,17 +142,17 @@ void UiOscillator::resized()
 
 BEGIN_JUCER_METADATA
 
-<JUCER_COMPONENT documentType="Component" className="UiOscillator" componentName="Oscillator"
-                 parentClasses="public Component" constructorParams="Component* parent, Core&amp; core"
+<JUCER_COMPONENT documentType="Component" className="UiOscillator" componentName=""
+                 parentClasses="public Component" constructorParams="Component* parent, Core&amp; core, const String&amp; objId"
                  variableInitialisers="mParent{parent}" snapPixels="8" snapActive="1"
                  snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="435"
                  initialHeight="180">
   <BACKGROUND backgroundColour="ff323e44"/>
   <JUCERCOMP name="Buttons" id="d53e1e56aa8f0e71" memberName="mButtons" virtualName="UiButtonStrip"
-             explicitFocusOrder="0" pos="0% 0% 100% 33.166%" sourceFile="UiButtonStrip.cpp"
+             explicitFocusOrder="0" pos="0% 0% 100% 32.964%" sourceFile="UiButtonStrip.cpp"
              constructorParams="this, core"/>
   <JUCERCOMP name="Sliders" id="bbb8682bd56b35e2" memberName="mSliders" virtualName="UiSliderStrip"
-             explicitFocusOrder="0" pos="0% 33.166% 100% 65.829%" sourceFile="UiSliderStrip.cpp"
+             explicitFocusOrder="0" pos="0% 32.964% 100% 65.452%" sourceFile="UiSliderStrip.cpp"
              constructorParams="this, core"/>
 </JUCER_COMPONENT>
 
@@ -164,3 +163,4 @@ END_JUCER_METADATA
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
+

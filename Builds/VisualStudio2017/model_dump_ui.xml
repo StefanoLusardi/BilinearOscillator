@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MainUi>
+  <Ui id="Osc1">
+    <Ui id="ButtonStrip">
+      <Param id="Saw" value="0"/>
+      <Param id="Sqr" value="0"/>
+      <Param id="Tri" value="1"/>
+    </Ui>
+    <Ui id="SliderStrip">
+      <Param id="Amp" value="0.896"/>
+      <Param id="Freq" value="2399.75"/>
+      <Param id="PhInv" value="1"/>
+    </Ui>
+  </Ui>
+  <Ui id="Osc2">
+    <Ui id="ButtonStrip">
+      <Param id="Saw" value="0"/>
+      <Param id="Sqr" value="1"/>
+      <Param id="Tri" value="0"/>
+    </Ui>
+    <Ui id="SliderStrip">
+      <Param id="Amp" value="0.295"/>
+      <Param id="Freq" value="23.261"/>
+      <Param id="PhInv" value="0"/>
+    </Ui>
+  </Ui>
+</MainUi>

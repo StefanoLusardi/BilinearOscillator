@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Projucer version: 5.3.2
+  Created with Projucer version: 5.4.3
 
   ------------------------------------------------------------------------------
 
@@ -24,11 +24,12 @@
 class Core;
 //[/Headers]
 
-#include "UiButtonStrip.h"
-#include "UiSliderStrip.h"
 #include "UiUndoRedo.h"
 #include "UiPlotter.h"
 #include "UiOscillator.h"
+#include "UiOscillator.h"
+#include "UiPlotter.h"
+#include "UiPlotter.h"
 
 
 //==============================================================================
@@ -49,6 +50,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void searchTree(juce::ValueTree tree, const juce::Identifier & propertyToSearchFor);
 	void valueTreePropertyChanged(ValueTree& treeWhosePropertyHasChanged, const Identifier& property) override;
 	void valueTreeChildAdded(ValueTree& parentTree, ValueTree& childWhichHasBeenAdded) override { }
 	void valueTreeChildRemoved(ValueTree& parentTree, ValueTree& childWhichHasBeenRemoved, int indexFromWhichChildWasRemoved) override { }
@@ -69,11 +71,12 @@ private:
 
     //==============================================================================
     std::unique_ptr<TextButton> mDumpModelButton;
-    std::unique_ptr<UiButtonStrip> mUiButtonStrip;
-    std::unique_ptr<UiSliderStrip> mUiSliderStrip;
     std::unique_ptr<UiUndoRedo> mUiUndoRedo;
     std::unique_ptr<UiPlotter> mUiPlotter;
+    std::unique_ptr<UiOscillator> mOsc1;
     std::unique_ptr<UiOscillator> mOsc2;
+    std::unique_ptr<UiPlotter> mOsc2Plotter;
+    std::unique_ptr<UiPlotter> mOsc1Plotter;
 
 
     //==============================================================================
@@ -82,3 +85,4 @@ private:
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
+
